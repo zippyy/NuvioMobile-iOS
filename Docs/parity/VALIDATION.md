@@ -1,5 +1,13 @@
 # Native build and parity validation
 
+## Sideload packaging correction
+
+The green build at `ff24f917` produced an archive with 27 unused MPVKit dummy frameworks embedded by Xcode. Each declared `MinimumOSVersion=100.0`; each device Mach-O slice also declared iOS 100.0 and had no symbols or exports. The app and widget load only system libraries, so none of these stubs is a runtime dependency. The user reported Feather and KSign hanging at installation. ZIP integrity alone did not catch this invalid embedded-bundle metadata and was insufficient installation evidence.
+
+`scripts/prepare-ios-ipa.py` removes only verified empty, unreferenced `com.mpvkit.*` iOS-100 stubs. It refuses referenced stubs and nonempty frameworks, preserves real supported dylibs, checks device ARM64/platform and bundle metadata, verifies ZIP CRCs, and compares every retained payload file byte-for-byte with the source. The repaired original IPA removes 27 stubs while preserving both executable hashes. Four package-guard tests pass. No lowering of a framework's deployment target or alteration of app/widget code is performed.
+
+The Full build workflow applies this correction to future IPAs. `repack-ios.yml` can repair a previously built unsigned `Nuvio-iOS-Full` artifact without compiling again, and uploads `Nuvio-iOS-Full-Sideload` with a package audit. Actual Feather/KSign installation remains unverified until the repaired IPA is tested on the user's device. Do not represent the original artifact as install-tested.
+
 ## Scope and evidence
 
 The aggregate commit `6bf2b8e567d5f4010ad94e3ae403ad35e63fee7a` failed its Full iOS build: [run 37021150898](https://github.com/zippyy/NuvioMobile-iOS/actions/runs/37021150898). IPA packaging was skipped. Failures included common Kotlin `toSortedMap`, invalid `ProfileRepository.uiState` access, missing image alignment argument, and iOS NSDate/zlib interop errors. Takeover commit `7775fbe30afc93a109d6841cd1332c85f1c249ad` repairs those reported errors.

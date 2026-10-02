@@ -133,6 +133,7 @@ jobs:
 
       - name: Run iOS parity regression tests
         run: |
+          python3 scripts/test_prepare_ios_ipa.py
           ./gradlew :composeApp:iosSimulatorArm64Test \
             --console=plain --no-configuration-cache --max-workers=1 \
             --tests 'com.nuvio.app.features.livetv.*' \
@@ -185,6 +186,8 @@ jobs:
           mkdir -p Payload
           ditto Nuvio.app Payload/Nuvio.app
           zip -q -r "Nuvio-v${APP_VERSION}-Full.ipa" Payload
+          python3 "${GITHUB_WORKSPACE}/scripts/prepare-ios-ipa.py" \
+            "Nuvio-v${APP_VERSION}-Full.ipa" --report "${RUNNER_TEMP}/ipa-package-audit.json"
           unzip -tq "Nuvio-v${APP_VERSION}-Full.ipa"
           echo "IPA_FILENAME=Nuvio-v${APP_VERSION}-Full.ipa" >> "$GITHUB_ENV"
 
@@ -193,4 +196,6 @@ jobs:
         with:
           name: Nuvio-iOS-Full
           if-no-files-found: error
-          path: iosApp/build/Build/Products/Release-iphoneos/${{ env.IPA_FILENAME }}
+          path: |
+            iosApp/build/Build/Products/Release-iphoneos/${{ env.IPA_FILENAME }}
+            ${{ runner.temp }}/ipa-package-audit.json
