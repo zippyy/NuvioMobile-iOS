@@ -102,6 +102,10 @@ actual fun PlatformPlayerSurface(
                 bridge.retry()
             }
 
+            override fun setVolumeBoostPercent(percent: Int) {
+                bridge.setVolumeBoostPercent(percent.coerceIn(0, 200))
+            }
+
             override fun updateNowPlayingMetadata(info: PlayerNowPlayingInfo) {
                 runCatching {
                     bridge.updateNowPlayingMetadata(
