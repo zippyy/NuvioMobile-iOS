@@ -1,6 +1,7 @@
 package com.nuvio.app.features.shuffle
 
 import com.nuvio.app.features.details.MetaVideo
+import com.nuvio.app.features.watchprogress.WatchProgressEntry
 import kotlin.random.Random
 import kotlin.test.Test
 import kotlin.test.assertEquals
