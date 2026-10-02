@@ -63,6 +63,7 @@ internal fun LazyListScope.advancedSettingsContent(
     isTablet: Boolean,
     rememberLastProfileEnabled: Boolean,
 ) {
+    item { SettingsBackupPanel(isTablet) }
     item {
         SettingsSection(
             title = stringResource(Res.string.settings_advanced_section_startup),

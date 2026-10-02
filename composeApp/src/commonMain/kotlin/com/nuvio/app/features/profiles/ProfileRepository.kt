@@ -447,9 +447,17 @@ object ProfileRepository {
         ProfilePinCacheStorage.savePayload(profileIndex, json.encodeToString(payload))
     }
 
+    private val pinThrottle = com.nuvio.app.core.sync.ProfilePinThrottle()
+
     private fun verifyPinLocally(profileIndex: Int, pin: String): PinVerifyResult {
+        val throttleScope = "${loadedCacheForUserId.orEmpty()}:$profileIndex"
+        val now = kotlin.time.Clock.System.now().toEpochMilliseconds()
+        if (!pinThrottle.allowed(throttleScope, now)) {
+            return PinVerifyResult(unlocked = false, message = "Too many attempts. Try again in 30 seconds.")
+        }
         val profile = _state.value.profiles.find { it.profileIndex == profileIndex }
-        if (profile?.pinEnabled != true) {
+        if (profile == null) return PinVerifyResult(unlocked = false, message = "Profile unavailable")
+        if (!profile.pinEnabled) {
             return PinVerifyResult(unlocked = true)
         }
 
@@ -482,8 +490,10 @@ object ProfileRepository {
 
         val digest = hashProfilePin(profileIndex = profileIndex, salt = cached.salt, pin = pin)
         return if (digest == cached.digest) {
+            pinThrottle.succeeded(throttleScope)
             PinVerifyResult(unlocked = true)
         } else {
+            pinThrottle.failed(throttleScope, now)
             PinVerifyResult(unlocked = false, message = localizedString(Res.string.pin_incorrect))
         }
     }

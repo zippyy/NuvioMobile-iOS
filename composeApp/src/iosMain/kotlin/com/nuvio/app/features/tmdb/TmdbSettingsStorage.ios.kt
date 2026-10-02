@@ -51,10 +51,10 @@ actual object TmdbSettingsStorage {
     }
 
     actual fun loadApiKey(): String? =
-        NSUserDefaults.standardUserDefaults.stringForKey(ProfileScopedKey.of(apiKeyKey))
+        com.nuvio.app.core.storage.ProfileSecureStorage.load(ProfileScopedKey.of(apiKeyKey))
 
     actual fun saveApiKey(apiKey: String) {
-        NSUserDefaults.standardUserDefaults.setObject(apiKey, forKey = ProfileScopedKey.of(apiKeyKey))
+        com.nuvio.app.core.storage.ProfileSecureStorage.save(ProfileScopedKey.of(apiKeyKey), apiKey)
     }
 
     actual fun loadLanguage(): String? =
