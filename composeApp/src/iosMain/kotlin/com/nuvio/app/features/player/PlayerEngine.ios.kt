@@ -61,6 +61,12 @@ actual fun PlatformPlayerSurface(
     onError: (String?) -> Unit,
 ) {
     sanitizePlaybackResponseHeaders(sourceResponseHeaders)
+    com.nuvio.app.features.connection.ConnectionSpeedEstimator.ensureLoaded()
+    val throughput = remember(sourceUrl) {
+        com.nuvio.app.features.connection.PlaybackThroughputSampler(sourceUrl,
+            onSample = com.nuvio.app.features.connection.ConnectionSpeedEstimator::record)
+    }
+    DisposableEffect(throughput) { onDispose { throughput.finish() } }
     val latestOnControllerReady = rememberUpdatedState(onControllerReady)
     val latestOnSnapshot = rememberUpdatedState(onSnapshot)
     val latestOnError = rememberUpdatedState(onError)
@@ -101,6 +107,13 @@ actual fun PlatformPlayerSurface(
             override fun retry() {
                 bridge.retry()
             }
+
+            override fun setAudioDelayMs(delayMs: Int) = bridge.setAudioDelayMs(delayMs.coerceIn(-60_000, 60_000))
+            override fun getAudioDelayMs(): Int = bridge.getAudioDelayMs()
+            override fun supportsAudioDelay(): Boolean = true
+            override fun seekToLiveEdge() = bridge.seekToLiveEdge()
+            override fun requestSeekPreview(positionMs: Long) = bridge.requestSeekPreview(positionMs)
+            override fun cancelSeekPreview() = bridge.cancelSeekPreview()
 
             override fun setVolumeBoostPercent(percent: Int) {
                 bridge.setVolumeBoostPercent(percent.coerceIn(0, 200))
@@ -285,6 +298,7 @@ actual fun PlatformPlayerSurface(
     // Load file and set initial state
     LaunchedEffect(bridge, sourceUrl, sourceAudioUrl, sourceHeaders, externalSubtitles) {
         bridge.applyIosVideoOutputSettings(latestPlayerSettings.value)
+        bridge.configurePlayback(live = streamType.equals("live", ignoreCase = true) || streamType.equals("tv", ignoreCase = true))
         bridge.loadFileWithAudio(
             videoUrl = sourceUrl,
             audioUrl = sourceAudioUrl,
@@ -319,7 +333,7 @@ actual fun PlatformPlayerSurface(
     }
 
     // Polling for snapshots
-    LaunchedEffect(bridge) {
+    LaunchedEffect(bridge, throughput) {
         var lastReportedError: String? = null
         while (isActive) {
             val snapshot = PlayerPlaybackSnapshot(
@@ -331,6 +345,7 @@ actual fun PlatformPlayerSurface(
                 bufferedPositionMs = bridge.getBufferedMs(),
                 playbackSpeed = bridge.getPlaybackSpeed(),
             )
+            throughput.onRateTick(bridge.getCacheSpeedBytesPerSecond(), bridge.getIsCacheFetching())
             latestOnSnapshot.value(snapshot)
             val errorMessage = bridge.getErrorMessage().ifBlank { null }
             if (errorMessage != lastReportedError) {

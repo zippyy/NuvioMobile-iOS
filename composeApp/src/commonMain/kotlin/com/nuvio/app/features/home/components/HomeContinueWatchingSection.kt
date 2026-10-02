@@ -46,7 +46,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil3.compose.AsyncImage
+import com.nuvio.app.features.artwork.ArtworkAsyncImage as AsyncImage
 import com.nuvio.app.core.ui.DisintegratingContainer
 import com.nuvio.app.core.ui.DisintegrationRequest
 import com.nuvio.app.core.ui.NuvioCardDepthSurface
@@ -312,9 +312,18 @@ private fun HomeContinueWatchingSectionContent(
             animatePlacement = true,
             state = listState,
         ) { entry ->
-            val item = entry.item
-            val onClick = if (entry.exiting) null else onItemClick?.let { { it(item) } }
-            val onLongClick = if (entry.exiting) null else onItemLongPress?.let { { it(item) } }
+            val artworkRevision = com.nuvio.app.features.artwork.rememberArtworkRevision()
+            val item = androidx.compose.runtime.remember(entry.item, artworkRevision) {
+                com.nuvio.app.features.artwork.ArtworkRepository.store.let { store ->
+                    entry.item.copy(
+                        poster = store.resolve(entry.item.parentMetaType, entry.item.parentMetaId, com.nuvio.app.features.artwork.ArtworkScreen.CONTINUE_WATCHING, com.nuvio.app.features.artwork.ArtworkKind.POSTER, entry.item.poster),
+                        background = store.resolve(entry.item.parentMetaType, entry.item.parentMetaId, com.nuvio.app.features.artwork.ArtworkScreen.CONTINUE_WATCHING, com.nuvio.app.features.artwork.ArtworkKind.BACKGROUND, entry.item.background),
+                        logo = store.resolve(entry.item.parentMetaType, entry.item.parentMetaId, com.nuvio.app.features.artwork.ArtworkScreen.CONTINUE_WATCHING, com.nuvio.app.features.artwork.ArtworkKind.LOGO, entry.item.logo),
+                    )
+                }
+            }
+            val onClick = if (entry.exiting) null else onItemClick?.let { { it(entry.item) } }
+            val onLongClick = if (entry.exiting) null else onItemLongPress?.let { { it(entry.item) } }
             DisintegratingContainer(
                 disintegrating = entry.exiting,
                 onDisintegrated = { disintegration.onDisintegrated(entry.key) },

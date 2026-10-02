@@ -469,7 +469,7 @@ fun HomeScreen(
             cloudLibraryUiState = cloudLibraryUiState,
         )
     }
-    val (continueWatchingItems, upcomingItems) = remember(
+    val (sequentialContinueWatchingItems, upcomingItems) = remember(
         allContinueWatchingItems,
         continueWatchingPreferences.sortMode,
     ) {
@@ -478,6 +478,7 @@ fun HomeScreen(
             mode = continueWatchingPreferences.sortMode,
         )
     }
+    val continueWatchingItems = com.nuvio.app.features.shuffle.rememberHomeShuffleItems(sequentialContinueWatchingItems)
     val hasContinueWatchingRows = continueWatchingItems.isNotEmpty() || upcomingItems.isNotEmpty()
 
     LaunchedEffect(activeProfileId, continueWatchingItems.isNotEmpty(), hasUserScrolledContinueWatching) {

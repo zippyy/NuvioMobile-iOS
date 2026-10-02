@@ -1,6 +1,9 @@
 package com.nuvio.app.features.home.components
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import com.nuvio.app.features.artwork.rememberArtworkRevision
+import com.nuvio.app.features.artwork.withArtwork
 import androidx.compose.ui.Modifier
 import com.nuvio.app.core.format.formatReleaseDateForDisplay
 import com.nuvio.app.core.ui.NuvioPosterCard
@@ -17,18 +20,21 @@ fun HomePosterCard(
     isWatched: Boolean = false,
     onClick: (() -> Unit)? = null,
     onLongClick: (() -> Unit)? = null,
+    artworkScreen: com.nuvio.app.features.artwork.ArtworkScreen = com.nuvio.app.features.artwork.ArtworkScreen.HOME,
 ) {
+    val artworkRevision = rememberArtworkRevision()
+    val artwork = remember(item, artworkRevision, artworkScreen) { item.withArtwork(artworkScreen) }
     val posterCardStyle = rememberPosterCardStyleUiState()
     val isLandscapeMode = useLandscapeBackdropMode || posterCardStyle.catalogLandscapeModeEnabled
 
     NuvioPosterCard(
         title = item.name,
-        imageUrl = if (isLandscapeMode) (item.banner ?: item.poster) else item.poster,
+        imageUrl = if (isLandscapeMode) (artwork.banner ?: artwork.poster) else artwork.poster,
         modifier = modifier,
         shape = if (isLandscapeMode) NuvioPosterShape.Landscape else item.posterShape.toNuvioPosterShape(),
         detailLine = if (isLandscapeMode || posterCardStyle.hideLabelsEnabled) null else item.releaseInfo?.let { formatReleaseDateForDisplay(it) },
         showTitleBelow = !posterCardStyle.hideLabelsEnabled,
-        bottomLeftLogoUrl = if (isLandscapeMode) item.logo else null,
+        bottomLeftLogoUrl = if (isLandscapeMode) artwork.logo else null,
         bottomLeftText = if (isLandscapeMode && item.logo.isNullOrBlank() && !posterCardStyle.hideLabelsEnabled) item.name else null,
         isWatched = isWatched,
         onClick = onClick,

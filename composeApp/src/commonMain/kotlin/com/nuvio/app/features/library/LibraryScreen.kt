@@ -1215,6 +1215,7 @@ private fun LazyListScope.librarySections(
                 onDisintegrated = { onDisintegrated(entry.globalKey) },
             ) {
                 HomePosterCard(
+                    artworkScreen = com.nuvio.app.features.artwork.ArtworkScreen.LIBRARY,
                     item = posterItem,
                     isWatched = WatchingState.isPosterWatched(
                         watchedKeys = watchedKeys,

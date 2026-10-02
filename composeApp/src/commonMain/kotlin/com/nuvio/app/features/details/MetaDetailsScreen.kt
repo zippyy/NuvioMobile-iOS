@@ -70,7 +70,11 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import co.touchlab.kermit.Logger
-import coil3.compose.AsyncImage
+import com.nuvio.app.features.artwork.ArtworkAsyncImage as AsyncImage
+import com.nuvio.app.features.artwork.withArtwork
+import com.nuvio.app.features.artwork.rememberArtworkRevision
+import com.nuvio.app.features.shuffle.EpisodeShuffleRuntime
+import com.nuvio.app.features.shuffle.ShuffleSurface
 import com.nuvio.app.core.build.AppFeaturePolicy
 import com.nuvio.app.core.build.TrailerPlaybackMode
 import com.nuvio.app.core.network.NetworkCondition
@@ -453,7 +457,9 @@ fun MetaDetailsScreen(
             }
 
             displayedMeta != null -> {
+                val artworkRevision = rememberArtworkRevision()
                 val meta = displayedMeta
+                val artworkMeta = remember(displayedMeta, artworkRevision) { displayedMeta.withArtwork() }
                 val metaPreview = remember(meta) { meta.toMetaPreview() }
                 val todayIsoDate = CurrentDateProvider.todayIsoDate()
                 val isSaved = remember(
@@ -709,7 +715,15 @@ fun MetaDetailsScreen(
                     }
                 }
                 val onPrimaryPlayClick: () -> Unit = {
+                    val shuffled = if ((seriesAction?.resumePositionMs ?: 0L) > 0L) null else EpisodeShuffleRuntime.select(meta, ShuffleSurface.DETAIL)
                     when {
+                        shuffled != null -> {
+                            val saved = watchProgressUiState.progressForVideo(shuffled.id, meta.id, shuffled.season, shuffled.episode)?.takeUnless { it.isEffectivelyCompleted }
+                            onPlay?.invoke(meta.type, shuffled.id, meta.id, meta.type, meta.name, meta.logo, meta.poster, meta.background,
+                                shuffled.season, shuffled.episode, shuffled.title, shuffled.thumbnail, shuffled.overview, saved?.lastPositionMs)
+                        }
+                        EpisodeShuffleRuntime.store.settings(meta.id, meta.type).enabled && (seriesAction?.resumePositionMs ?: 0L) <= 0L -> Unit
+
                         (meta.type == "series" || hasEpisodes) && seriesAction != null -> {
                             onPlay?.invoke(
                                 meta.type,
@@ -908,7 +922,7 @@ fun MetaDetailsScreen(
                     val isTablet = maxWidth >= 720.dp
                     val contentHorizontalPadding = if (isTablet) 32.dp else 18.dp
                     val contentMaxWidth = detailTabletContentMaxWidth(maxWidth, isTablet)
-                    val backdropUrl = meta.background ?: meta.poster
+                    val backdropUrl = artworkMeta.background ?: artworkMeta.poster
                     val backgroundMode = metaScreenSettingsUiState.backgroundMode
                     val dominantColorEnabled = backgroundMode == MetaScreenBackgroundMode.DominantColor &&
                         deferredMetaWorkAllowed &&
@@ -995,7 +1009,7 @@ fun MetaDetailsScreen(
                         ) {
                             item(key = "detail-hero") {
                                 DetailHero(
-                                    meta = meta,
+                                    meta = artworkMeta,
                                     isTablet = isTablet,
                                     contentMaxWidth = contentMaxWidth,
                                     scrollOffset = heroScrollOffset,
@@ -1032,6 +1046,11 @@ fun MetaDetailsScreen(
                                         heroTrailerFinished = true
                                     },
                                 )
+                            }
+
+                            item(key = "shuffle-artwork-controls") {
+                                if (meta.videos.isNotEmpty()) com.nuvio.app.features.shuffle.DetailShuffleControls(meta, onEpisodePlayClick)
+                                com.nuvio.app.features.artwork.DetailArtworkControls(meta)
                             }
 
                             configuredMetaSectionItems(

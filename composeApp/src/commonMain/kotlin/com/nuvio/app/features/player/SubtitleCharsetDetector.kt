@@ -689,8 +689,8 @@ internal object SubtitleCharsetDetector {
             }
             return sb.toString()
         }
-        // Multi-byte charset: fallback to UTF-8 decoding (platform-specific impl via expect/actual in future)
-        return decodeUtf8(bytes, offset, length)
+        // A failed native probe must not look like successfully decoded CJK text.
+        return decodeSubtitleCharset(bytes, offset, length, charset).orEmpty()
     }
 
     // Encode a string to Windows-1252 bytes (for double-encoded Hebrew repair)

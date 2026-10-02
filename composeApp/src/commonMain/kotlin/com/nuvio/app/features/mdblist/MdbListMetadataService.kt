@@ -1,19 +1,8 @@
 package com.nuvio.app.features.mdblist
 
-import co.touchlab.kermit.Logger
-import com.nuvio.app.features.addons.httpPostJson
 import com.nuvio.app.features.details.MetaDetails
 import com.nuvio.app.features.details.MetaExternalRating
 import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.withContext
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 
 object MdbListMetadataService {
     const val PROVIDER_IMDB = "imdb"
@@ -36,10 +25,19 @@ object MdbListMetadataService {
         PROVIDER_MAL,
     )
 
-    private val log = Logger.withTag("MdbListMetadata")
-    private val json = Json { ignoreUnknownKeys = true }
-    private val ratingsCache = mutableMapOf<String, List<MetaExternalRating>>()
-    private val imdbRegex = Regex("tt\\d+")
+    private val client = MdbListClient(
+        clock = { kotlin.time.Clock.System.now().toEpochMilliseconds() },
+        transport = { method, url, body ->
+            val response = com.nuvio.app.features.addons.httpRequestRaw(
+                method = method, url = url, headers = mapOf("Content-Type" to "application/json"),
+                body = body, followRedirects = false,
+            )
+            MdbListResponse(response.status, response.body, response.headers)
+        },
+    )
+    private val _error = kotlinx.coroutines.flow.MutableStateFlow<String?>(null)
+    val error: kotlinx.coroutines.flow.StateFlow<String?> = _error
+    private val imdbRegex = Regex("^(tt\\d+)(?::\\d+:\\d+)?$")
 
     fun shouldFetchForMeta(
         meta: MetaDetails,
@@ -79,63 +77,54 @@ object MdbListMetadataService {
     }
 
     fun clearCache() {
-        ratingsCache.clear()
+        client.clearCache()
+        _error.value = null
+    }
+
+    suspend fun loadList(listId: Long): List<MdbListItem> {
+        val settings = MdbListSettingsRepository.snapshot()
+        require(settings.hasApiKey) { "Add an MDBList API key first" }
+        return try {
+            client.listItems(listId, settings.apiKey.trim())
+        } catch (cancelled: CancellationException) {
+            throw cancelled
+        } catch (failure: Exception) {
+            val message = if (failure is MdbListApiException) failure.message else "Unable to load MDBList list"
+            _error.value = message
+            throw IllegalStateException(message)
+        }
+    }
+
+    /** Home/catalog callers can prefetch up to 200 IDs per provider request. */
+    suspend fun prefetchRatings(ids: List<String>, mediaType: String, settings: MdbListSettings) {
+        if (!settings.enabled || !settings.hasApiKey) return
+        for (provider in settings.enabledProvidersInPriorityOrder()) {
+            fetchBatch(ids, mediaType, provider, settings.apiKey.trim())
+        }
+    }
+
+    private suspend fun fetchBatch(ids: List<String>, mediaType: String, provider: String, apiKey: String): Map<String, Double> {
+        return try {
+            client.ratings(ids, mediaType, provider, apiKey).also { _error.value = null }
+        } catch (error: CancellationException) {
+            throw error
+        } catch (error: Exception) {
+            _error.value = if (error is MdbListApiException) error.message else "Unable to load MDBList ratings"
+            emptyMap()
+        }
     }
 
     private suspend fun fetchRatings(
-        imdbId: String,
-        mediaType: String,
-        apiKey: String,
-        providers: List<String>,
-    ): List<MetaExternalRating> = withContext(Dispatchers.Default) {
-        val cacheKey = "$mediaType:$imdbId:$apiKey:${providers.joinToString(",")}"
-        ratingsCache[cacheKey]?.let { return@withContext it }
-
-        val ratings = coroutineScope {
-            providers.map { providerId ->
-                async {
-                    fetchProviderRating(
-                        imdbId = imdbId,
-                        mediaType = mediaType,
-                        providerId = providerId,
-                        apiKey = apiKey,
-                    )
-                }
-            }.awaitAll().filterNotNull()
+        imdbId: String, mediaType: String, apiKey: String, providers: List<String>,
+    ): List<MetaExternalRating> = providers.mapNotNull { provider ->
+        fetchBatch(listOf(imdbId), mediaType, provider, apiKey)[imdbId]?.let {
+            MetaExternalRating(source = provider, value = it)
         }
-
-        ratingsCache[cacheKey] = ratings
-        ratings
-    }
-
-    private suspend fun fetchProviderRating(
-        imdbId: String,
-        mediaType: String,
-        providerId: String,
-        apiKey: String,
-    ): MetaExternalRating? {
-        val url = "https://api.mdblist.com/rating/$mediaType/$providerId?apikey=$apiKey"
-        val requestBody = json.encodeToString(
-            RatingRequest(
-                ids = listOf(imdbId),
-                provider = PROVIDER_IMDB,
-            ),
-        )
-
-        return runCatching {
-            val payload = httpPostJson(url = url, body = requestBody)
-            val parsed = json.decodeFromString<RatingResponse>(payload)
-            val rating = parsed.ratings.firstOrNull()?.rating ?: return@runCatching null
-            MetaExternalRating(source = providerId, value = rating)
-        }.onFailure { error ->
-            if (error is CancellationException) throw error
-            log.w { "MDBList request failed for $providerId/$imdbId: ${error.message}" }
-        }.getOrNull()
     }
 
     private fun extractImdbId(value: String?): String? {
         if (value.isNullOrBlank()) return null
-        return imdbRegex.find(value)?.value
+        return imdbRegex.matchEntire(value)?.groupValues?.get(1)
     }
 
     private fun toMdbListMediaType(metaType: String): String {
@@ -143,19 +132,3 @@ object MdbListMetadataService {
         return if (normalized == "movie") "movie" else "show"
     }
 }
-
-@Serializable
-private data class RatingRequest(
-    val ids: List<String>,
-    val provider: String,
-)
-
-@Serializable
-private data class RatingResponse(
-    val ratings: List<RatingItem> = emptyList(),
-)
-
-@Serializable
-private data class RatingItem(
-    val rating: Double? = null,
-)

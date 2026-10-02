@@ -117,6 +117,7 @@ internal fun LazyListScope.libraryVerticalContent(
         },
     ) { rowEntries ->
         PosterGridRow(
+                    artworkScreen = com.nuvio.app.features.artwork.ArtworkScreen.LIBRARY,
             items = rowEntries.map { entry -> entry.item.toMetaPreview() },
             columns = columns,
             modifier = libraryContentTransitionModifier()

@@ -50,7 +50,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
+import com.nuvio.app.features.artwork.ArtworkAsyncImage as AsyncImage
+import com.nuvio.app.features.artwork.withArtwork
+import com.nuvio.app.features.artwork.rememberArtworkRevision
 import com.nuvio.app.core.format.formatReleaseDateForDisplay
 import com.nuvio.app.core.ui.heroStretchHeight
 import com.nuvio.app.core.ui.heroStretchZoom
@@ -99,6 +101,8 @@ fun HomeHeroSection(
 ) {
     if (items.isEmpty()) return
 
+    val artworkRevision = rememberArtworkRevision()
+    val artworkItems = remember(items, artworkRevision) { items.map { it.withArtwork() } }
     val pagerState = rememberPagerState(pageCount = { items.size })
     val coroutineScope = rememberCoroutineScope()
     val autoScrollPage = pagerState.currentPage
@@ -196,7 +200,7 @@ fun HomeHeroSection(
                 ) {
                     visiblePages.forEach { layer ->
                         AsyncImage(
-                            model = items[layer.page].banner ?: items[layer.page].poster,
+                            model = artworkItems[layer.page].let { it.banner ?: it.poster },
                             contentDescription = items[layer.page].name,
                             modifier = Modifier
                                 .fillMaxSize()
@@ -267,7 +271,7 @@ fun HomeHeroSection(
                                 },
                             ) {
                                 HeroContentBlock(
-                                    item = items[layer.page],
+                                    item = artworkItems[layer.page],
                                     layout = layout,
                                     onItemClick = onItemClick,
                                 )

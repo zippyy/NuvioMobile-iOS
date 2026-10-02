@@ -18,6 +18,7 @@ final class MPVPlayerBridgeImpl: NSObject, NuvioPlayerBridge {
         if let playerVC { return playerVC }
         let vc = MPVPlayerViewController()
         self.playerVC = vc
+        vc.loadViewIfNeeded()
         return vc
     }
 
@@ -82,7 +83,7 @@ final class MPVPlayerBridgeImpl: NSObject, NuvioPlayerBridge {
         saturation: Int32,
         gamma: Int32
     ) {
-        playerVC?.configureVideoOutput(
+        ensurePlayerViewController().configureVideoOutput(
             hardwareDecoder: hardwareDecoder,
             targetColorspaceHint: targetColorspaceHint,
             toneMapping: toneMapping,
@@ -99,8 +100,16 @@ final class MPVPlayerBridgeImpl: NSObject, NuvioPlayerBridge {
         )
     }
     func configureAudioOutput(audioOutput: String) {
-        playerVC?.configureAudioOutput(audioOutput: audioOutput)
+        ensurePlayerViewController().configureAudioOutput(audioOutput: audioOutput)
     }
+    func configurePlayback(live: Bool) { ensurePlayerViewController().configurePlayback(live: live) }
+    func getCacheSpeedBytesPerSecond() -> Int64 { playerVC?.cacheSpeedBytesPerSecond ?? 0 }
+    func getIsCacheFetching() -> Bool { playerVC?.isCacheFetching ?? false }
+    func setAudioDelayMs(delayMs: Int32) { playerVC?.setAudioDelayMs(Int(delayMs)) }
+    func getAudioDelayMs() -> Int32 { Int32(playerVC?.audioDelayMs ?? 0) }
+    func seekToLiveEdge() { playerVC?.seekToLiveEdge() }
+    func requestSeekPreview(positionMs: Int64) { playerVC?.requestSeekPreview(positionMs) }
+    func cancelSeekPreview() { playerVC?.cancelSeekPreview() }
     func setPlaybackSpeed(speed: Float) { playerVC?.setSpeed(speed) }
     func setMuted(muted: Bool) { playerVC?.setMuted(muted) }
     func setVolumeBoostPercent(percent: Int32) { playerVC?.setVolumeBoostPercent(Int(percent)) }
@@ -267,6 +276,27 @@ final class MPVPlayerViewController: UIViewController {
     private lazy var eventQueue = DispatchQueue(label: "mpv-events", qos: .userInitiated)
     private var recentPlaybackLogs: [String] = []
     private var activeRequestHeaders: [String: String] = [:]
+    private var activeLoadRequest: PendingLoadRequest?
+    private var attachmentsPending = false
+    private var loadGeneration = 0
+    private var recoveryBudget = MPVRecoveryBudget()
+    private var recoveryWorkItem: DispatchWorkItem?
+    private var hasRendered = false
+    private var loadStartedAt: TimeInterval = 0
+    private var lastProgressAt: TimeInterval = 0
+    private var lastProgressPosition: Double = 0
+    private var recoveryPosition: Double?
+    private var wantsPlayback = true
+    private var isLive = false
+    private var displayLink: CADisplayLink?
+    private var displayFPS: Double = 0
+    private var previewGenerator: AVAssetImageGenerator?
+    private var previewGeneration = 0
+    private var previewCue: Int64?
+    private let previewImageView = UIImageView()
+    var cacheSpeedBytesPerSecond: Int64 = 0
+    var isCacheFetching = false
+    var audioDelayMs = 0
 
     // Cached track lists
     var audioTracks: [TrackInfo] = []
@@ -327,6 +357,7 @@ final class MPVPlayerViewController: UIViewController {
         setupMpv()
         activateAudioSessionForPlayback()
         setupNotifications()
+        audioRouteChanged()
         refreshImmersiveSystemUI()
     }
 
@@ -473,7 +504,10 @@ final class MPVPlayerViewController: UIViewController {
         checkError(mpv_set_option_string(mpv, "hwdec", "videotoolbox"))
         checkError(mpv_set_option_string(mpv, "ao", Self.defaultAudioOutput))
         checkError(mpv_set_option_string(mpv, "audio-channels", "auto"))
-        checkError(mpv_set_option_string(mpv, "audio-fallback-to-null", "yes"))
+        checkError(mpv_set_option_string(mpv, "audio-fallback-to-null", "no"))
+        checkError(mpv_set_option_string(mpv, "audio-spdif", ""))
+        checkError(mpv_set_option_string(mpv, "audio-pitch-correction", "yes"))
+        checkError(mpv_set_option_string(mpv, "hwdec-codecs", "h264,hevc,vp9,av1"))
         checkError(mpv_set_option_string(mpv, "vulkan-swap-mode", "fifo"))
         checkError(mpv_set_option_string(mpv, "vulkan-queue-count", "1"))
         checkError(mpv_set_option_string(mpv, "vulkan-async-compute", "no"))
@@ -504,6 +538,8 @@ final class MPVPlayerViewController: UIViewController {
     }
 
     private func setupNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(audioRouteChanged),
+            name: AVAudioSession.routeChangeNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(enterBackground),
                                                name: UIApplication.didEnterBackgroundNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(enterForeground),
@@ -520,6 +556,154 @@ final class MPVPlayerViewController: UIViewController {
         guard mpv != nil else { return }
         setStringProperty("vid", "auto")
         playPlayback()
+    }
+
+    // MARK: - Native playback adaptation
+
+    func configurePlayback(live: Bool) {
+        isLive = live
+        applyCachePolicy()
+    }
+
+    private func applyCachePolicy() {
+        guard mpv != nil else { return }
+        MPVPlaybackPolicy.cacheOptions(live: isLive).forEach { setStringProperty($0.key, $0.value) }
+    }
+
+    private func attachPendingTracks() {
+        guard attachmentsPending, let request = activeLoadRequest,
+              getString("path") == request.urlString else { return }
+        attachmentsPending = false
+        if let audio = request.audioUrl, !audio.isEmpty {
+            command("audio-add", args: [audio, "select"])
+        }
+        request.subtitles.forEach { addSubtitle($0, mode: "auto") }
+    }
+
+    func seekToLiveEdge() {
+        guard mpv != nil, isLive, getFlag("seekable") else { return }
+        // Cached ranges have absolute timestamps; duration/percent is undefined for live.
+        var edge = 0.0
+        for index in 0..<64 {
+            let end = getDouble("demuxer-cache-state/seekable-ranges/\(index)/end")
+            if end <= 0 { break }
+            edge = max(edge, end)
+        }
+        guard edge > 0 else { return }
+        command("seek", args: [String(max(0, edge - 3)), "absolute+keyframes"])
+        lastProgressAt = ProcessInfo.processInfo.systemUptime
+    }
+
+    private func routeKey() -> String {
+        AVAudioSession.sharedInstance().currentRoute.outputs
+            .map { "\($0.portType.rawValue):\($0.uid)" }.sorted().joined(separator: "|")
+    }
+
+    func setAudioDelayMs(_ delay: Int) {
+        audioDelayMs = max(-60_000, min(60_000, delay))
+        setStringProperty("audio-delay", String(Double(audioDelayMs) / 1000))
+        UserDefaults.standard.set(audioDelayMs, forKey: "nuvio.audio-delay.\(routeKey())")
+    }
+
+    @objc private func audioRouteChanged() {
+        let outputs = AVAudioSession.sharedInstance().currentRoute.outputs
+        let bluetooth = outputs.contains { [.bluetoothA2DP, .bluetoothHFP, .bluetoothLE].contains($0.portType) }
+        // AudioUnit is PCM-only; don't advertise encoded passthrough on iOS.
+        setStringProperty("audio-spdif", "")
+        setStringProperty("audio-channels", bluetooth ? "stereo" : "auto")
+        audioDelayMs = max(-60_000, min(60_000,
+            UserDefaults.standard.integer(forKey: "nuvio.audio-delay.\(routeKey())")))
+        setStringProperty("audio-delay", String(Double(audioDelayMs) / 1000))
+    }
+
+    private func checkWatchdogs(position: Double, paused: Bool, seeking: Bool, eof: Bool) {
+        guard activeLoadRequest != nil, pendingLoadRequest == nil, recoveryWorkItem == nil else { return }
+        let now = ProcessInfo.processInfo.systemUptime
+        // Never mistake suspension, pause, or a user seek for a network stall.
+        if now - lastProgressAt > 2 && UIApplication.shared.applicationState != .active {
+            lastProgressAt = now
+            return
+        }
+        guard wantsPlayback, !paused, !eof else { lastProgressAt = now; return }
+        if seeking { lastProgressAt = now }
+        if abs(position - lastProgressPosition) > 0.05 {
+            lastProgressPosition = position
+            lastProgressAt = now
+        }
+        if let failure = MPVPlaybackPolicy.watchdogFailure(rendered: hasRendered,
+            loadingFor: now - loadStartedAt, stalledFor: now - lastProgressAt,
+            playing: wantsPlayback, paused: paused, seeking: seeking, ended: eof,
+            foreground: UIApplication.shared.applicationState == .active) {
+            scheduleRecovery(error: failure)
+        }
+    }
+
+    private func updateDisplayAdaptation() {
+        let fps = MPVPlaybackPolicy.normalizedFPS(getDouble("container-fps"))
+        guard fps > 0 else { return }
+        // Public iOS frame-rate hints are advisory, not Android-style mode switches.
+        if displayLink == nil {
+            let link = CADisplayLink(target: self, selector: #selector(displayTick(_:)))
+            let maxFPS = Float(view.window?.screen.maximumFramesPerSecond ?? 60)
+            let cadence = Float(fps) * max(1, floor(maxFPS / Float(fps)))
+            if #available(iOS 15.0, *) {
+                link.preferredFrameRateRange = CAFrameRateRange(minimum: min(Float(fps), maxFPS), maximum: maxFPS,
+                                                               preferred: min(cadence, maxFPS))
+            }
+            link.add(to: .main, forMode: .common)
+            displayLink = link
+        }
+        setStringProperty("video-sync", "display-resample")
+    }
+
+    @objc private func displayTick(_ link: CADisplayLink) {
+        guard mpv != nil, wantsPlayback, UIApplication.shared.applicationState == .active else { return }
+        let interval = link.targetTimestamp - link.timestamp
+        guard interval > 0 else { return }
+        let measured = 1 / interval
+        if measured.isFinite, abs(measured - displayFPS) > 0.5 {
+            displayFPS = measured
+            // Supply actual compositor cadence, not merely the panel's maximum capability.
+            setStringProperty("override-display-fps", String(measured))
+        }
+    }
+
+    func requestSeekPreview(_ position: Int64) {
+        guard !isLive, let request = activeLoadRequest, let url = URL(string: request.urlString), url.isFileURL else { return }
+        let cue = max(0, position / 2000) * 2000
+        guard cue != previewCue else { return }
+        previewCue = cue
+        previewGeneration += 1
+        let generation = previewGeneration
+        previewGenerator?.cancelAllCGImageGeneration()
+        let generator = AVAssetImageGenerator(asset: AVURLAsset(url: url))
+        generator.appliesPreferredTrackTransform = true
+        generator.maximumSize = CGSize(width: 320, height: 180)
+        generator.requestedTimeToleranceBefore = CMTime(seconds: 1, preferredTimescale: 600)
+        generator.requestedTimeToleranceAfter = CMTime(seconds: 1, preferredTimescale: 600)
+        previewGenerator = generator
+        generator.generateCGImagesAsynchronously(forTimes: [NSValue(time: CMTime(value: cue, timescale: 1000))]) {
+            [weak self] _, image, _, result, _ in
+            guard result == .succeeded, let image else { return }
+            DispatchQueue.main.async {
+                guard let self, generation == self.previewGeneration else { return }
+                self.previewImageView.image = UIImage(cgImage: image)
+                self.previewImageView.contentMode = .scaleAspectFit
+                self.previewImageView.frame = CGRect(x: (self.view.bounds.width - 240) / 2,
+                    y: max(16, self.view.bounds.height - 240), width: 240, height: 135)
+                if self.previewImageView.superview == nil { self.view.addSubview(self.previewImageView) }
+                self.previewImageView.isHidden = false
+            }
+        }
+    }
+
+    func cancelSeekPreview() {
+        previewGeneration += 1
+        previewGenerator?.cancelAllCGImageGeneration()
+        previewGenerator = nil
+        previewCue = nil
+        previewImageView.image = nil
+        previewImageView.isHidden = true
     }
 
     // MARK: - Playback API
@@ -543,6 +727,21 @@ final class MPVPlayerViewController: UIViewController {
     }
 
     private func queueLoad(_ request: PendingLoadRequest) {
+        loadGeneration += 1
+        recoveryWorkItem?.cancel()
+        recoveryWorkItem = nil
+        recoveryBudget = MPVRecoveryBudget()
+        recoveryPosition = nil
+        hasRendered = false
+        displayLink?.invalidate()
+        displayLink = nil
+        displayFPS = 0
+        setStringProperty("override-display-fps", "0")
+        setStringProperty("video-sync", "audio")
+        cancelSeekPreview()
+        activeLoadRequest = request
+        loadStartedAt = ProcessInfo.processInfo.systemUptime
+        lastProgressAt = loadStartedAt
         pendingLoadRequest = request
         attemptStartPendingLoad()
     }
@@ -571,18 +770,10 @@ final class MPVPlayerViewController: UIViewController {
         applyRequestHeaders(sanitizedHeaders)
         isPlayerLoading = true
         isPlayerEnded = false
+        attachmentsPending = true
+        applyCachePolicy()
         command("loadfile", args: [request.urlString, "replace"])
-        if let audioUrl = request.audioUrl, !audioUrl.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
-                self?.command("audio-add", args: [audioUrl, "select"], checkForErrors: false)
-            }
-        }
 
-        for subtitle in request.subtitles {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
-                self?.addSubtitle(subtitle, mode: "auto")
-            }
-        }
     }
 
     private func isViewportReadyForPlayback(queuedAtUptime: TimeInterval) -> Bool {
@@ -608,6 +799,8 @@ final class MPVPlayerViewController: UIViewController {
 
     func playPlayback() {
         guard mpv != nil else { return }
+        wantsPlayback = true
+        lastProgressAt = ProcessInfo.processInfo.systemUptime
         publishNowPlayingForPlaybackSession()
         setFlag("pause", false)
         isPlayerPlaying = true
@@ -616,6 +809,7 @@ final class MPVPlayerViewController: UIViewController {
 
     func pausePlayback() {
         guard mpv != nil else { return }
+        wantsPlayback = false
         setFlag("pause", true)
         isPlayerPlaying = false
         syncNowPlayingPlaybackState(isPlaying: false)
@@ -635,16 +829,32 @@ final class MPVPlayerViewController: UIViewController {
     }
 
     func retryPlayback() {
-        guard mpv != nil else { return }
-        if let path = getString("path") {
-            clearPlaybackError()
-            applyRequestHeaders(activeRequestHeaders)
-            let pos = getDouble("time-pos")
-            command("loadfile", args: [path, "replace"])
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
-                self?.command("seek", args: [String(format: "%.3f", pos), "absolute"])
-            }
+        scheduleRecovery(error: currentErrorMessage.isEmpty ? "manual retry" : currentErrorMessage)
+    }
+
+    private func scheduleRecovery(error: String) {
+        guard mpv != nil, recoveryWorkItem == nil, let request = activeLoadRequest else { return }
+        guard let delay = recoveryBudget.nextDelay(error: error, hasRendered: hasRendered) else {
+            setPlaybackError(error)
+            return
         }
+        if !hasRendered && recoveryBudget.attempts == 1 &&
+            (error.localizedCaseInsensitiveContains("decoder") || error.localizedCaseInsensitiveContains("codec") ||
+             error.contains("First frame")) {
+            setStringProperty("hwdec", "no")
+        }
+        if error.localizedCaseInsensitiveContains("audio") { setStringProperty("audio-channels", "stereo") }
+        recoveryPosition = isLive ? nil : max(getDouble("time-pos"), Double(positionMs) / 1000)
+        let generation = loadGeneration
+        let work = DispatchWorkItem { [weak self] in
+            guard let self, self.mpv != nil, generation == self.loadGeneration else { return }
+            self.recoveryWorkItem = nil
+            self.loadStartedAt = ProcessInfo.processInfo.systemUptime
+            self.lastProgressAt = self.loadStartedAt
+            self.startLoad(request)
+        }
+        recoveryWorkItem = work
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: work)
     }
 
     func configureVideoOutput(
@@ -692,7 +902,8 @@ final class MPVPlayerViewController: UIViewController {
 
     func setSpeed(_ speed: Float) {
         guard mpv != nil else { return }
-        var s = Double(speed)
+        setStringProperty("audio-spdif", "")
+        var s = Double(max(0.25, min(4, speed.isFinite ? speed : 1)))
         mpv_set_property(mpv, "speed", MPV_FORMAT_DOUBLE, &s)
     }
 
@@ -703,6 +914,7 @@ final class MPVPlayerViewController: UIViewController {
 
     func setResize(_ mode: Int) {
         guard mpv != nil else { return }
+        setStringProperty("video-zoom", mode == 2 ? "0.15" : "0")
         switch mode {
         case 1: // Fill
             setStringProperty("panscan", "1.0")
@@ -793,7 +1005,14 @@ final class MPVPlayerViewController: UIViewController {
 
     func setVolumeBoostPercent(_ percent: Int) {
         guard mpv != nil else { return }
-        var volume = Double(max(0, min(200, percent)))
+        let clamped = max(0, min(200, percent))
+        let filter = MPVPlaybackPolicy.audioFilter(percent: clamped)
+        command("af", args: ["remove", "@nuvio-boost"], checkForErrors: false)
+        if !filter.isEmpty {
+            command("af", args: ["add", "@nuvio-boost:lavfi=[\(filter)]"])
+        }
+        // Gain above unity belongs inside the limiter, never downstream in mpv volume.
+        var volume = Double(min(100, clamped))
         checkError(mpv_set_property(mpv, "volume", MPV_FORMAT_DOUBLE, &volume))
     }
 
@@ -840,6 +1059,13 @@ final class MPVPlayerViewController: UIViewController {
         pendingSurfaceLayoutWorkItems.forEach { $0.cancel() }
         pendingSurfaceLayoutWorkItems.removeAll(keepingCapacity: false)
         pendingLoadRequest = nil
+        activeLoadRequest = nil
+        loadGeneration += 1
+        recoveryWorkItem?.cancel()
+        recoveryWorkItem = nil
+        displayLink?.invalidate()
+        displayLink = nil
+        cancelSeekPreview()
         nowPlayingController.invalidate()
         clearPlaybackError()
         deactivateAudioSession()
@@ -887,8 +1113,12 @@ final class MPVPlayerViewController: UIViewController {
         isPlayerEnded = eofReached
         durationMs = Int64(duration * 1000)
         positionMs = Int64(max(position, 0) * 1000)
-        bufferedMs = Int64(max(position + cached, 0) * 1000)
+        bufferedMs = Int64(MPVPlaybackPolicy.bufferedEnd(position: position, cacheEnd: cached, duration: duration) * 1000)
         currentSpeed = Float(speed > 0 ? speed : 1.0)
+        let cacheSpeed = getDouble("cache-speed")
+        cacheSpeedBytesPerSecond = cacheSpeed.isFinite && cacheSpeed > 0 ? Int64(min(cacheSpeed, 1_000_000_000)) : 0
+        isCacheFetching = !getFlag("demuxer-cache-idle") && !seeking && !eofReached
+        checkWatchdogs(position: position, paused: paused, seeking: seeking, eof: eofReached)
 
         let shouldPublishNowPlayingState = !isPlayerLoading || isPlayerPlaying || durationMs > 0 || positionMs > 0
         if shouldPublishNowPlayingState {
@@ -1136,12 +1366,23 @@ final class MPVPlayerViewController: UIViewController {
                     DispatchQueue.main.async {
                         self.clearPlaybackError()
                         self.isPlayerLoading = false
+                        self.attachPendingTracks()
+                        if let position = self.recoveryPosition {
+                            self.command("seek", args: [String(position), "absolute+exact"])
+                            self.recoveryPosition = nil
+                        } else if self.isLive {
+                            self.seekToLiveEdge()
+                        }
+                        self.setFlag("pause", !self.wantsPlayback)
                         self.updateState()
                         self.publishNowPlayingForPlaybackSession()
                         self.logCurrentAudioOutput()
                     }
                 case MPV_EVENT_PLAYBACK_RESTART:
                     DispatchQueue.main.async {
+                        self.hasRendered = true
+                        self.lastProgressAt = ProcessInfo.processInfo.systemUptime
+                        self.updateDisplayAdaptation()
                         self.updateState()
                         self.publishNowPlayingForPlaybackSession()
                     }
@@ -1152,6 +1393,7 @@ final class MPVPlayerViewController: UIViewController {
                             let errorText = String(cString: mpv_error_string(endFile.error))
                             self.setPlaybackError("[mpv] \(errorText)")
                             print("[MPV] End file error: \(errorText)")
+                            DispatchQueue.main.async { self.scheduleRecovery(error: self.currentErrorMessage) }
                         }
                     }
                 case MPV_EVENT_SHUTDOWN:
@@ -1205,14 +1447,14 @@ final class MPVPlayerViewController: UIViewController {
 
     private func getFlag(_ name: String) -> Bool {
         guard mpv != nil else { return false }
-        var data = Int64()
+        var data = Int32()
         mpv_get_property(mpv, name, MPV_FORMAT_FLAG, &data)
         return data > 0
     }
 
     private func setFlag(_ name: String, _ flag: Bool) {
         guard mpv != nil else { return }
-        var data: Int = flag ? 1 : 0
+        var data: Int32 = flag ? 1 : 0
         mpv_set_property(mpv, name, MPV_FORMAT_FLAG, &data)
     }
 

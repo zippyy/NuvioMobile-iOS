@@ -29,6 +29,11 @@ internal class RandomEpisodePicker(
     fun find(videoId: String, includeWatched: Boolean, current: Pair<Int, Int>? = null): MetaVideo? =
         candidates(includeWatched).firstOrNull { it.id == videoId && it.season to it.episode != current }
 
+    fun restorePlayedHistory(ids: List<String>) {
+        shownIds.addAll(ids)
+        lastPickedId = ids.lastOrNull() ?: lastPickedId
+    }
+
     fun inheritHistoryFrom(previous: RandomEpisodePicker?) {
         if (previous == null || previous.contentId != contentId) return
         shownIds.addAll(previous.shownIds)

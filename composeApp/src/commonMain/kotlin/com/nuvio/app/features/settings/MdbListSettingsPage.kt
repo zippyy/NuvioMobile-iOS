@@ -10,6 +10,12 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.CancellationException
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -47,6 +53,11 @@ internal fun LazyListScope.mdbListSettingsContent(
     settings: MdbListSettings,
 ) {
     val providerControlsEnabled = settings.enabled && settings.hasApiKey
+    item {
+        val error by MdbListMetadataService.error.collectAsState()
+        error?.let { MdbListInfoRow(isTablet, it) }
+    }
+    item { MdbListBrowser(isTablet, settings.hasApiKey) }
 
     item {
         SettingsSection(
@@ -99,6 +110,35 @@ internal fun LazyListScope.mdbListSettingsContent(
                     settings = settings,
                     controlsEnabled = providerControlsEnabled,
                 )
+            }
+        }
+    }
+}
+
+@Composable
+private fun MdbListBrowser(isTablet: Boolean, hasApiKey: Boolean) {
+    var listId by rememberSaveable { mutableStateOf("") }
+    var titles by remember { mutableStateOf<List<String>>(emptyList()) }
+    var loading by remember { mutableStateOf(false) }
+    var error by remember { mutableStateOf<String?>(null) }
+    val scope = rememberCoroutineScope()
+    SettingsSection(title = "MDBList Lists", isTablet = isTablet) {
+        SettingsGroup(isTablet = isTablet) {
+            Column(Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                OutlinedTextField(value = listId, onValueChange = { listId = it }, label = { Text("List ID") }, singleLine = true)
+                Button(enabled = hasApiKey && listId.toLongOrNull()?.let { it > 0 } == true && !loading, onClick = {
+                    scope.launch {
+                        loading = true
+                        error = null
+                        titles = emptyList()
+                        try { titles = MdbListMetadataService.loadList(listId.toLong()).map { "${it.title} (${it.type})" } }
+                        catch (cancelled: CancellationException) { throw cancelled }
+                        catch (failure: Exception) { error = failure.message }
+                        finally { loading = false }
+                    }
+                }) { Text(if (loading) "Loading…" else "Load list") }
+                error?.let { Text(it, color = MaterialTheme.colorScheme.error) }
+                titles.forEach { Text(it, style = MaterialTheme.typography.bodyMedium) }
             }
         }
     }

@@ -154,6 +154,7 @@ internal fun LazyListScope.posterCustomizationSettingsContent(
             }
         }
     }
+    item { com.nuvio.app.features.artwork.ArtworkTemplateSettings() }
     item {
         CardDepthStyleRepository.ensureLoaded()
         val cardDepthState by CardDepthStyleRepository.uiState.collectAsState()

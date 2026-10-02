@@ -42,12 +42,13 @@ enum class LiveTvSourceType { M3u, Stalker, Xtream }
 }
 @Immutable data class LiveTvSource(
     val id:String,val type:LiveTvSourceType,val url:String="",
+    val headers:Map<String,String> = emptyMap(), val epgUrl:String="", val playlist:String="",
     val stalker:LiveTvStalkerSettings=LiveTvStalkerSettings(),
     val xtream:LiveTvXtreamSettings=LiveTvXtreamSettings(),
 ) {
     val label:String get()=url.substringAfter("://",url).substringBefore('/').substringBefore('?').substringAfterLast('@').ifBlank{url}
     val identity:String get()=when(type){
-        LiveTvSourceType.M3u->"m3u|"+url.lowercase()
+        LiveTvSourceType.M3u->if(playlist.isNotBlank()) "local|$id" else "m3u|"+url.lowercase()
         LiveTvSourceType.Xtream->"xtream|"+xtream.serverUrl.lowercase()+"|"+xtream.username
         LiveTvSourceType.Stalker->"stalker|"+stalker.portalUrl.lowercase()+"|"+stalker.macAddress
     }

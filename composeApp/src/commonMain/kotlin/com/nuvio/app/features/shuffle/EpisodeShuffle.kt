@@ -5,7 +5,7 @@ import com.nuvio.app.features.watchprogress.WatchProgressEntry
 import kotlinx.atomicfu.locks.SynchronizedObject
 import kotlinx.atomicfu.locks.synchronized
 
-class EpisodeShuffle {
+class EpisodeShuffle(private val store: EpisodeShuffleStore? = null) {
     private data class Key(
         val profileId: Int,
         val contentId: String,
@@ -43,14 +43,20 @@ class EpisodeShuffle {
         }
         val picker = RandomEpisodePicker(contentId, videos, watched, progress)
         picker.inheritHistoryFrom(session.picker)
+        val history = store?.history(contentId, profileId).orEmpty()
+        if (session.picker == null) picker.restorePlayedHistory(history)
+        val lastPlayedId = history.lastOrNull()
+        val effectiveCurrent = current ?: videos.firstOrNull { it.id == lastPlayedId }?.let { video ->
+            video.season?.let { season -> video.episode?.let { season to it } }
+        }
         if (current != null && (session.picker == null || session.current != current)) picker.recordPlayed(current)
         session.picker = picker
         if (session.current != current || session.visit != visit) session.selected = null
         session.current = current
         session.visit = visit
-        session.selected = session.selected?.let { picker.find(it.id, includeWatched, current) }
-            ?: preferredVideoId?.let { picker.find(it, includeWatched, current) }
-            ?: picker.pick(includeWatched, current, consumeSelection = surface != ShuffleSurface.PLAYBACK || current == null)
+        session.selected = session.selected?.let { picker.find(it.id, includeWatched, effectiveCurrent) }
+            ?: preferredVideoId?.let { picker.find(it, includeWatched, effectiveCurrent) }
+            ?: picker.pick(includeWatched, effectiveCurrent, consumeSelection = surface != ShuffleSurface.PLAYBACK || current == null)
         session.selected
     }
 

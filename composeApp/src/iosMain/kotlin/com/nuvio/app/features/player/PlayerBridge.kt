@@ -42,6 +42,14 @@ interface NuvioPlayerBridge {
         gamma: Int,
     )
     fun configureAudioOutput(audioOutput: String)
+    fun configurePlayback(live: Boolean)
+    fun getCacheSpeedBytesPerSecond(): Long
+    fun getIsCacheFetching(): Boolean
+    fun setAudioDelayMs(delayMs: Int)
+    fun getAudioDelayMs(): Int
+    fun seekToLiveEdge()
+    fun requestSeekPreview(positionMs: Long)
+    fun cancelSeekPreview()
     fun setPlaybackSpeed(speed: Float)
     fun setMuted(muted: Boolean)
     fun setVolumeBoostPercent(percent: Int)

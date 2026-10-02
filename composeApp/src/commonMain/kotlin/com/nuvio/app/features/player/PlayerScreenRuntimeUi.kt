@@ -445,6 +445,9 @@ private fun PlayerScreenRuntime.RenderPlayerModals(displayedPositionMs: Long) {
             }
         },
         onAudioModalDismissed = { showAudioModal = false },
+        audioDelaySupported = playerController?.supportsAudioDelay() == true,
+        readAudioDelayMs = { playerController?.getAudioDelayMs() ?: 0 },
+        onAudioDelayChanged = { playerController?.setAudioDelayMs(it) },
         showSubtitleModal = showSubtitleModal,
         subtitleTracks = subtitleTracks,
         selectedSubtitleIndex = selectedSubtitleIndex,

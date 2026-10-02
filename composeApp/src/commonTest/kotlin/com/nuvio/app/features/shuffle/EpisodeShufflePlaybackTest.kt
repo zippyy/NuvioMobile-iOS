@@ -9,7 +9,7 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
 class EpisodeShufflePlaybackTest {
-    private val store = EpisodeShuffleStore()
+    private val store = EpisodeShuffleStore(TestShuffleStorage(), { 1 })
     private val shuffle = EpisodeShuffle()
     private val playback = EpisodeShufflePlayback(store, shuffle)
     private val episodes = (1..5).map { episode(it) }

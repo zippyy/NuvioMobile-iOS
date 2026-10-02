@@ -23,6 +23,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.material3.TextButton
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -43,7 +48,11 @@ fun AudioTrackModal(
     onTrackSelected: (Int) -> Unit,
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
+    audioDelaySupported: Boolean = false,
+    readAudioDelayMs: () -> Int = { 0 },
+    onAudioDelayChanged: (Int) -> Unit = {},
 ) {
+    var delayMs by remember(visible) { mutableStateOf(readAudioDelayMs()) }
     PlayerOverlayScaffold(
         visible = visible,
         onDismiss = onDismiss,
@@ -67,6 +76,21 @@ fun AudioTrackModal(
                     style = MaterialTheme.typography.headlineMedium,
                     modifier = Modifier.padding(bottom = 8.dp),
                 )
+
+                if (audioDelaySupported) {
+                    Text("Audio delay: ${delayMs} ms", color = Color.White)
+                    Row {
+                        TextButton(onClick = {
+                            delayMs = (delayMs - 50).coerceAtLeast(-60_000)
+                            onAudioDelayChanged(delayMs)
+                        }) { Text("−50 ms") }
+                        TextButton(onClick = { delayMs = 0; onAudioDelayChanged(0) }) { Text("Reset") }
+                        TextButton(onClick = {
+                            delayMs = (delayMs + 50).coerceAtMost(60_000)
+                            onAudioDelayChanged(delayMs)
+                        }) { Text("+50 ms") }
+                    }
+                }
 
                 if (audioTracks.isEmpty()) {
                     Text(

@@ -9,7 +9,7 @@ import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class EpisodeShuffleStoreTest {
-    private val store = EpisodeShuffleStore()
+    private val store = EpisodeShuffleStore(TestShuffleStorage(), { 1 })
 
     @Test
     fun `settings for series content type respects enabled flag`() {

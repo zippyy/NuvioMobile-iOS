@@ -75,6 +75,8 @@ open class MainActivity : AppCompatActivity() {
                 scrim = 0xFF020404.toInt(),
             ),
         )
+        com.nuvio.app.features.shuffle.PlatformEpisodeShuffleStorage.initialize(applicationContext)
+        com.nuvio.app.features.artwork.PlatformArtworkStorage.initialize(applicationContext)
         ThemeSettingsStorage.initialize(applicationContext)
         AppIconPlatform.initialize(applicationContext)
         SentrySettingsStorage.initialize(applicationContext)
@@ -106,6 +108,7 @@ open class MainActivity : AppCompatActivity() {
         DebridSettingsStorage.initialize(applicationContext)
         TmdbSettingsStorage.initialize(applicationContext)
         MdbListSettingsStorage.initialize(applicationContext)
+        com.nuvio.app.features.torrent.TorrServerSettingsStorage.initialize(applicationContext)
         TraktAuthStorage.initialize(applicationContext)
         TraktCommentsStorage.initialize(applicationContext)
         TraktLibraryStorage.initialize(applicationContext)

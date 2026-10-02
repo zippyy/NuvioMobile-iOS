@@ -23,7 +23,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
+import com.nuvio.app.features.artwork.ArtworkAsyncImage as AsyncImage
+import com.nuvio.app.features.artwork.withArtwork
+import com.nuvio.app.features.artwork.rememberArtworkRevision
 import com.nuvio.app.core.format.formatReleaseDateForDisplay
 import com.nuvio.app.core.ui.NuvioCardDepthSurface
 import com.nuvio.app.core.ui.NuvioPosterWatchedOverlay
@@ -52,6 +54,7 @@ internal fun PosterGridRow(
     fullyWatchedSeriesKeys: Set<String> = emptySet(),
     onPosterClick: ((MetaPreview) -> Unit)? = null,
     onPosterLongClick: ((MetaPreview) -> Unit)? = null,
+    artworkScreen: com.nuvio.app.features.artwork.ArtworkScreen = com.nuvio.app.features.artwork.ArtworkScreen.HOME,
 ) {
     val posterCardStyle = rememberPosterCardStyleUiState()
 
@@ -61,8 +64,10 @@ internal fun PosterGridRow(
         verticalAlignment = Alignment.Top,
     ) {
         items.forEach { item ->
+            val artworkRevision = rememberArtworkRevision()
+            val artwork = androidx.compose.runtime.remember(item, artworkRevision, artworkScreen) { item.withArtwork(artworkScreen) }
             PosterGridTile(
-                item = item,
+                item = artwork,
                 cornerRadiusDp = posterCardStyle.cornerRadiusDp,
                 hideLabels = posterCardStyle.hideLabelsEnabled,
                 modifier = Modifier.weight(1f),

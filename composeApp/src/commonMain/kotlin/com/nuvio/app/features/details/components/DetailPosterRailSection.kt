@@ -47,6 +47,7 @@ fun DetailPosterRailSection(
             key = { item -> item.stableKey() },
         ) { item ->
             HomePosterCard(
+                artworkScreen = com.nuvio.app.features.artwork.ArtworkScreen.DETAIL,
                 item = item,
                 isWatched = WatchingState.isPosterWatched(
                     watchedKeys = watchedKeys,

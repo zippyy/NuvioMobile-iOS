@@ -24,7 +24,7 @@ fun parseM3uPlaylist(lines:Sequence<String>):ParsedM3uPlaylist {
         else->{val url=line.substringBefore('|').trim();val m=meta;meta=null;val headers=pending+parseUrlHeaders(line);pending=emptyMap()
             if(url.isEmpty()||!seen.add(url))continue
             val name=m?.name?.takeIf(String::isNotBlank)?:"Channel "+(channels.size+1);if(isLikelyCategoryHeading(name))continue
-            channels+=LiveTvChannel(id="m"+channels.size,name=name,streamUrl=url,tvgId=m?.tvgId,logoUrl=m?.logoUrl,group=internGroup(m?.group.orEmpty()),headers=internHeaders(defaultStreamHeaders(url)+headers))
+            channels+=LiveTvChannel(id="m"+channels.size,name=name,streamUrl=url,tvgId=m?.tvgId,logoUrl=m?.logoUrl,group=internGroup(m?.group.orEmpty()),headers=internHeaders(safeLiveTvHeaders(defaultStreamHeaders(url), headers)))
         }
     }}
     return ParsedM3uPlaylist(channels,epg.toList())
@@ -34,47 +34,19 @@ fun parseM3uPlaylist(lines:Sequence<String>):ParsedM3uPlaylist {
  * Parses EXTHTTP JSON-like header format: {'key':'val','key2':'val2'}
  * TVHeadend and some IPTV providers use this format for per-channel HTTP headers.
  */
-private fun parseExthttpHeaders(json: String): Map<String, String> {
-    val trimmed = json.trim().removePrefix("{").removeSuffix("}").trim()
-    if (trimmed.isEmpty()) return emptyMap()
-    val result = LinkedHashMap<String, String>()
-    var i = 0
-    while (i < trimmed.length) {
-        // Skip whitespace and commas
-        if (trimmed[i].isWhitespace() || trimmed[i] == ',') { i++; continue }
-        // Expect single-quoted key
-        if (trimmed[i] != '\'') { i++; continue }
-        i++ // skip opening quote
-        val keyStart = i
-        while (i < trimmed.length && trimmed[i] != '\'') i++
-        if (i >= trimmed.length) break
-        val key = trimmed.substring(keyStart, i)
-        i++ // skip closing quote
-        // Expect ':'
-        while (i < trimmed.length && trimmed[i].isWhitespace()) i++
-        if (i >= trimmed.length || trimmed[i] != ':') continue
-        i++ // skip colon
-        while (i < trimmed.length && trimmed[i].isWhitespace()) i++
-        // Expect single-quoted value
-        if (i >= trimmed.length || trimmed[i] != '\'') continue
-        i++ // skip opening quote
-        val valStart = i
-        while (i < trimmed.length && trimmed[i] != '\'') i++
-        if (i >= trimmed.length) break
-        val value = trimmed.substring(valStart, i)
-        i++ // skip closing quote
-        if (key.isNotBlank() && value.isNotBlank()) {
-            result[key] = value
-        }
+private fun parseExthttpHeaders(json: String): Map<String, String> = runCatching {
+    kotlinx.serialization.json.Json.parseToJsonElement(json.replace('\'', '"')).let { element ->
+        (element as? kotlinx.serialization.json.JsonObject)?.mapNotNull { (key, value) ->
+            (value as? kotlinx.serialization.json.JsonPrimitive)?.content?.let { key to it }
+        }?.toMap().orEmpty()
     }
-    return result
-}
+}.getOrDefault(emptyMap())
 
 private data class M3uMetadata(val name:String,val tvgId:String?,val logoUrl:String?,val group:String)
 private val attr=Regex("""([\w-]+)="([^"]*)"""")
 private fun parseM3uAttributes(line:String)=attr.findAll(line).associate{it.groupValues[1].lowercase() to it.groupValues[2].trim()}
 private fun parseExtInf(line:String):M3uMetadata{val comma=firstUnquotedComma(line);val a=parseM3uAttributes(if(comma>=0)line.substring(0,comma) else line);val n=(if(comma>=0)line.substring(comma+1)else"").trim().ifBlank{a["tvg-name"].orEmpty()};return M3uMetadata(n,a["tvg-id"]?.takeIf(String::isNotBlank),a["tvg-logo"]?.takeIf(String::isNotBlank),a["group-title"].orEmpty())}
-private fun parseUrlHeaders(line:String):Map<String,String>{val o=line.substringAfter('|',"");if(o.isEmpty())return emptyMap();return o.split('&').mapNotNull{val k=it.substringBefore('=').trim();val v=it.substringAfter('=',"").trim();if(k.isBlank()||v.isBlank())null else k to v}.toMap()}
+private fun parseUrlHeaders(line:String):Map<String,String>{val o=line.substringAfter('|',"");if(o.isEmpty())return emptyMap();return o.split('&').mapNotNull{val k=it.substringBefore('=').trim();val v=it.substringAfter('=',"").trim();if(k.isBlank()||v.isBlank())null else decodeLiveTvComponent(k) to decodeLiveTvComponent(v)}.toMap()}
 fun String.isHttpUrl()=startsWith("http://",true)||startsWith("https://",true)
 private val heading=Regex("""^\s*#+\s*.+\s*#+\s*$""")
 fun isLikelyCategoryHeading(name:String)=name.trim().let{it.length>=3&&it.startsWith('#')&&it.endsWith('#')&&heading.matches(it)}
