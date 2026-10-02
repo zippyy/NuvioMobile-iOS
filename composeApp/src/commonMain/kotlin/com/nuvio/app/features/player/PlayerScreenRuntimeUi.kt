@@ -445,6 +445,9 @@ private fun PlayerScreenRuntime.RenderPlayerModals(displayedPositionMs: Long) {
             }
         },
         onAudioModalDismissed = { showAudioModal = false },
+        volumeBoostSupported = playerController?.supportsVolumeBoost() == true,
+        readVolumeBoostPercent = { playerController?.getVolumeBoostPercent() ?: 100 },
+        onVolumeBoostChanged = { playerController?.setVolumeBoostPercent(it) },
         audioDelaySupported = playerController?.supportsAudioDelay() == true,
         readAudioDelayMs = { playerController?.getAudioDelayMs() ?: 0 },
         onAudioDelayChanged = { playerController?.setAudioDelayMs(it) },

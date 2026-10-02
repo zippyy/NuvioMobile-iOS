@@ -12,6 +12,8 @@ interface PlayerEngineController {
     fun setPlaybackSpeed(speed: Float)
     fun setMuted(muted: Boolean) {}
     fun setVolumeBoostPercent(percent: Int) {}
+    fun getVolumeBoostPercent(): Int = 100
+    fun supportsVolumeBoost(): Boolean = false
     fun setAudioDelayMs(delayMs: Int) {}
     fun getAudioDelayMs(): Int = 0
     fun supportsAudioDelay(): Boolean = false

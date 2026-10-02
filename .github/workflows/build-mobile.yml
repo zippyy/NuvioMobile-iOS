@@ -158,7 +158,9 @@ jobs:
             --tests 'com.nuvio.app.features.torrent.*' \
             --tests 'com.nuvio.app.features.trailer.YouTubeStreamResolverTest*' \
             --tests 'com.nuvio.app.features.player.Subtitle*' \
-            --tests 'com.nuvio.app.features.player.ConnectionFit*' \
+            --tests 'com.nuvio.app.features.streams.*Connection*' \
+            --tests 'com.nuvio.app.features.player.SeekPreviewCueTest*' \
+            --tests 'com.nuvio.app.features.player.VolumeBoostTest*' \
             --tests 'com.nuvio.app.core.sync.Reshaped*'
 
       - name: Upload parity test results

@@ -115,8 +115,14 @@ actual fun PlatformPlayerSurface(
             override fun requestSeekPreview(positionMs: Long) = bridge.requestSeekPreview(positionMs)
             override fun cancelSeekPreview() = bridge.cancelSeekPreview()
 
+            override fun supportsVolumeBoost(): Boolean = true
+            override fun getVolumeBoostPercent(): Int = savedIosVolumeBoostPercent()
             override fun setVolumeBoostPercent(percent: Int) {
-                bridge.setVolumeBoostPercent(percent.coerceIn(0, 200))
+                val value = percent.coerceIn(0, 200)
+                platform.Foundation.NSUserDefaults.standardUserDefaults.setInteger(
+                    value.toLong(), forKey = com.nuvio.app.core.storage.ProfileScopedKey.of("volume_boost_percent"),
+                )
+                bridge.setVolumeBoostPercent(value)
             }
 
             override fun updateNowPlayingMetadata(info: PlayerNowPlayingInfo) {
@@ -305,6 +311,7 @@ actual fun PlatformPlayerSurface(
             headersJson = encodePlaybackHeadersForBridge(sourceHeaders),
             subtitlesJson = encodeExternalSubtitlesForBridge(externalSubtitles),
         )
+        bridge.setVolumeBoostPercent(savedIosVolumeBoostPercent())
         if (playWhenReady) {
             bridge.play()
         } else {
@@ -483,4 +490,10 @@ private fun encodePlaybackHeadersForBridge(headers: Map<String, String>): String
     return runCatching {
         Json.encodeToString(sanitized)
     }.getOrNull()
+}
+
+private fun savedIosVolumeBoostPercent(): Int {
+    val defaults = platform.Foundation.NSUserDefaults.standardUserDefaults
+    val key = com.nuvio.app.core.storage.ProfileScopedKey.of("volume_boost_percent")
+    return if (defaults.objectForKey(key) == null) 100 else defaults.integerForKey(key).toInt().coerceIn(0, 200)
 }
