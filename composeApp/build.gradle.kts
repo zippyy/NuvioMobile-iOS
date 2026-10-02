@@ -7,6 +7,7 @@ import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
+import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 import java.util.Properties
@@ -372,6 +373,12 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
             isStatic = true
+            if (buildType == NativeBuildType.RELEASE) {
+                // Kotlin 2.3 whole-program devirtualization exhausts the CI heap on this app.
+                // Retain Release/LLVM optimization while skipping the coupled IR LTO passes.
+                // Track upstream KT-84412; re-enable after a compiler fix and size/perf validation.
+                freeCompilerArgs += "-Xdisable-phases=DevirtualizationAnalysis,Devirtualization,DCEPhase,RemoveRedundantCallsToStaticInitializersPhase"
+            }
             freeCompilerArgs += listOf("-Xbinary=bundleId=$iosFrameworkBundleId")
             if (iosDistribution == "full") {
                 linkerOpts(
