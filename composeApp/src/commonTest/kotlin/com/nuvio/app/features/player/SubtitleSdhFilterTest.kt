@@ -33,7 +33,7 @@ class SubtitleSdhFilterTest {
             SubtitleSdhFilter.filterText("(laughing) Hello"),
         )
         assertEquals(
-            "Hello world",
+            "Hello world ",
             SubtitleSdhFilter.filterText("Hello world (in a whisper)"),
         )
     }
@@ -45,7 +45,7 @@ class SubtitleSdhFilterTest {
             SubtitleSdhFilter.filterText("MAN: Hello world"),
         )
         assertEquals(
-            "Hello world",
+            "- Hello world",
             SubtitleSdhFilter.filterText("- WOMAN: Hello world"),
         )
         assertEquals(

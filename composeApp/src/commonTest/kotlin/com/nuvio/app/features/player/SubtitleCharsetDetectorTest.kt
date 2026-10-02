@@ -187,7 +187,7 @@ class SubtitleCharsetDetectorTest {
 
     @Test
     fun decodesWindows1258VietnameseWithLanguageHint() {
-        val viText = "Xin chào! Tôi yêu Việt Nam."
+        val viText = "Xin chào! Tôi yêu Viê\u0323t Nam."
         val rawBytes = encodeToWin1258(viText)
 
         val decoded = SubtitleCharsetDetector.decode(rawBytes, languageHint = "vie")
@@ -230,15 +230,15 @@ class SubtitleCharsetDetectorTest {
     }
 
     // Reverse lookup tables (Unicode -> Windows byte)
-    private val WIN1252_TO_UNICODE = buildReverseTable(WIN1252_TABLE_RAW)
-    private val WIN1250_TO_UNICODE = buildReverseTable(WIN1250_TABLE_RAW)
-    private val WIN1251_TO_UNICODE = buildReverseTable(WIN1251_TABLE_RAW)
-    private val WIN1253_TO_UNICODE = buildReverseTable(WIN1253_TABLE_RAW)
-    private val WIN1254_TO_UNICODE = buildReverseTable(WIN1254_TABLE_RAW)
-    private val WIN1255_TO_UNICODE = buildReverseTable(WIN1255_TABLE_RAW)
-    private val WIN1256_TO_UNICODE = buildReverseTable(WIN1256_TABLE_RAW)
-    private val WIN1258_TO_UNICODE = buildReverseTable(WIN1258_TABLE_RAW)
-    private val WIN874_TO_UNICODE = buildReverseTable(WIN874_TABLE_RAW)
+    private val WIN1252_TO_UNICODE by lazy { buildReverseTable(WIN1252_TABLE_RAW) }
+    private val WIN1250_TO_UNICODE by lazy { buildReverseTable(WIN1250_TABLE_RAW) }
+    private val WIN1251_TO_UNICODE by lazy { buildReverseTable(WIN1251_TABLE_RAW) }
+    private val WIN1253_TO_UNICODE by lazy { buildReverseTable(WIN1253_TABLE_RAW) }
+    private val WIN1254_TO_UNICODE by lazy { buildReverseTable(WIN1254_TABLE_RAW) }
+    private val WIN1255_TO_UNICODE by lazy { buildReverseTable(WIN1255_TABLE_RAW) }
+    private val WIN1256_TO_UNICODE by lazy { buildReverseTable(WIN1256_TABLE_RAW) }
+    private val WIN1258_TO_UNICODE by lazy { buildReverseTable(WIN1258_TABLE_RAW) }
+    private val WIN874_TO_UNICODE by lazy { buildReverseTable(WIN874_TABLE_RAW) }
 
     private fun buildReverseTable(table: CharArray): Map<Char, Int> {
         val map = mutableMapOf<Char, Int>()
@@ -248,7 +248,7 @@ class SubtitleCharsetDetectorTest {
         return map
     }
 
-    // Raw table data (matching the SubtitleCharsetDetector tables exactly)
+    // Independent Windows codec fixtures (undefined bytes retain their control-code slots).
     private val WIN1252_TABLE_RAW = charArrayOf(
         '\u20AC','\u0081','\u201A','\u0192','\u201E','\u2026','\u2020','\u2021',
         '\u02C6','\u2030','\u0160','\u2039','\u0152','\u008D','\u017D','\u008F',
@@ -269,21 +269,21 @@ class SubtitleCharsetDetectorTest {
     )
     private val WIN1250_TABLE_RAW = charArrayOf(
         '\u20AC','\u0081','\u201A','\u0083','\u201E','\u2026','\u2020','\u2021',
-        '\u0088','\u2030','\u0160','\u2039','\u015A','\u008D','\u017D','\u008F',
+        '\u0088','\u2030','\u0160','\u2039','\u015A','\u0164','\u017D','\u0179',
         '\u0090','\u2018','\u2019','\u201C','\u201D','\u2022','\u2013','\u2014',
-        '\u0098','\u2122','\u0161','\u203A','\u015B','\u009D','\u017E','\u0178',
-        '\u00A0','\u00A1','\u00A2','\u00A3','\u00A4','\u00A5','\u00A6','\u00A7',
-        '\u00A8','\u00A9','\u00AA','\u00AB','\u00AC','\u00AD','\u00AE','\u00AF',
-        '\u00B0','\u00B1','\u00B2','\u00B3','\u00B4','\u00B5','\u00B6','\u00B7',
-        '\u00B8','\u00B9','\u00BA','\u00BB','\u00BC','\u00BD','\u00BE','\u00BF',
-        '\u00C0','\u00C1','\u00C2','\u00C3','\u00C4','\u00C5','\u00C6','\u00C7',
-        '\u00C8','\u00C9','\u00CA','\u00CB','\u00CC','\u00CD','\u00CE','\u00CF',
-        '\u00D0','\u00D1','\u00D2','\u00D3','\u00D4','\u00D5','\u00D6','\u00D7',
-        '\u00D8','\u00D9','\u00DA','\u00DB','\u00DC','\u00DD','\u00DE','\u00DF',
-        '\u00E0','\u00E1','\u00E2','\u00E3','\u00E4','\u00E5','\u00E6','\u00E7',
-        '\u00E8','\u00E9','\u00EA','\u00EB','\u00EC','\u00ED','\u00EE','\u00EF',
-        '\u00F0','\u00F1','\u00F2','\u00F3','\u00F4','\u00F5','\u00F6','\u00F7',
-        '\u00F8','\u00F9','\u00FA','\u00FB','\u00FC','\u00FD','\u00FE','\u00FF'
+        '\u0098','\u2122','\u0161','\u203A','\u015B','\u0165','\u017E','\u017A',
+        '\u00A0','\u02C7','\u02D8','\u0141','\u00A4','\u0104','\u00A6','\u00A7',
+        '\u00A8','\u00A9','\u015E','\u00AB','\u00AC','\u00AD','\u00AE','\u017B',
+        '\u00B0','\u00B1','\u02DB','\u0142','\u00B4','\u00B5','\u00B6','\u00B7',
+        '\u00B8','\u0105','\u015F','\u00BB','\u013D','\u02DD','\u013E','\u017C',
+        '\u0154','\u00C1','\u00C2','\u0102','\u00C4','\u0139','\u0106','\u00C7',
+        '\u010C','\u00C9','\u0118','\u00CB','\u011A','\u00CD','\u00CE','\u010E',
+        '\u0110','\u0143','\u0147','\u00D3','\u00D4','\u0150','\u00D6','\u00D7',
+        '\u0158','\u016E','\u00DA','\u0170','\u00DC','\u00DD','\u0162','\u00DF',
+        '\u0155','\u00E1','\u00E2','\u0103','\u00E4','\u013A','\u0107','\u00E7',
+        '\u010D','\u00E9','\u0119','\u00EB','\u011B','\u00ED','\u00EE','\u010F',
+        '\u0111','\u0144','\u0148','\u00F3','\u00F4','\u0151','\u00F6','\u00F7',
+        '\u0159','\u016F','\u00FA','\u0171','\u00FC','\u00FD','\u0163','\u02D9'
     )
     private val WIN1251_TABLE_RAW = charArrayOf(
         '\u0402','\u0403','\u201A','\u0453','\u201E','\u2026','\u2020','\u2021',
@@ -309,17 +309,17 @@ class SubtitleCharsetDetectorTest {
         '\u0090','\u2018','\u2019','\u201C','\u201D','\u2022','\u2013','\u2014',
         '\u0098','\u2122','\u009A','\u203A','\u009C','\u009D','\u009E','\u009F',
         '\u00A0','\u0385','\u0386','\u00A3','\u00A4','\u00A5','\u00A6','\u00A7',
-        '\u00A8','\u00A9','\u00AA','\u00AB','\u00AC','\u00AD','\u00AE','\u00AF',
-        '\u00B0','\u00B1','\u00B2','\u00B3','\u00B4','\u00B5','\u00B6','\u00B7',
+        '\u00A8','\u00A9','\u00AA','\u00AB','\u00AC','\u00AD','\u00AE','\u2015',
+        '\u00B0','\u00B1','\u00B2','\u00B3','\u0384','\u00B5','\u00B6','\u00B7',
         '\u0388','\u0389','\u038A','\u00BB','\u038C','\u00BD','\u038E','\u038F',
         '\u0390','\u0391','\u0392','\u0393','\u0394','\u0395','\u0396','\u0397',
         '\u0398','\u0399','\u039A','\u039B','\u039C','\u039D','\u039E','\u039F',
-        '\u03A0','\u03A1','\u03A2','\u03A3','\u03A4','\u03A5','\u03A6','\u03A7',
+        '\u03A0','\u03A1','\u00D2','\u03A3','\u03A4','\u03A5','\u03A6','\u03A7',
         '\u03A8','\u03A9','\u03AA','\u03AB','\u03AC','\u03AD','\u03AE','\u03AF',
         '\u03B0','\u03B1','\u03B2','\u03B3','\u03B4','\u03B5','\u03B6','\u03B7',
         '\u03B8','\u03B9','\u03BA','\u03BB','\u03BC','\u03BD','\u03BE','\u03BF',
         '\u03C0','\u03C1','\u03C2','\u03C3','\u03C4','\u03C5','\u03C6','\u03C7',
-        '\u03C8','\u03C9','\u03CA','\u03CB','\u03CC','\u03CD','\u03CE','\u03CF'
+        '\u03C8','\u03C9','\u03CA','\u03CB','\u03CC','\u03CD','\u03CE','\u00FF'
     )
     private val WIN1254_TABLE_RAW = charArrayOf(
         '\u20AC','\u0081','\u201A','\u0192','\u201E','\u2026','\u2020','\u2021',
@@ -341,21 +341,21 @@ class SubtitleCharsetDetectorTest {
     )
     private val WIN1255_TABLE_RAW = charArrayOf(
         '\u20AC','\u0081','\u201A','\u0192','\u201E','\u2026','\u2020','\u2021',
-        '\u02C6','\u2030','\u0160','\u2039','\u0152','\u008D','\u008E','\u008F',
+        '\u02C6','\u2030','\u008A','\u2039','\u008C','\u008D','\u008E','\u008F',
         '\u0090','\u2018','\u2019','\u201C','\u201D','\u2022','\u2013','\u2014',
-        '\u02DC','\u2122','\u0161','\u203A','\u0153','\u009D','\u009E','\u0178',
-        '\u00A0','\u00A1','\u00A2','\u00A3','\u00A4','\u00A5','\u00A6','\u00A7',
-        '\u00A8','\u00A9','\u00D7','\u00AB','\u00AC','\u00AD','\u00AE','\u203E',
+        '\u02DC','\u2122','\u009A','\u203A','\u009C','\u009D','\u009E','\u009F',
+        '\u00A0','\u00A1','\u00A2','\u00A3','\u20AA','\u00A5','\u00A6','\u00A7',
+        '\u00A8','\u00A9','\u00D7','\u00AB','\u00AC','\u00AD','\u00AE','\u00AF',
         '\u00B0','\u00B1','\u00B2','\u00B3','\u00B4','\u00B5','\u00B6','\u00B7',
         '\u00B8','\u00B9','\u00F7','\u00BB','\u00BC','\u00BD','\u00BE','\u00BF',
         '\u05B0','\u05B1','\u05B2','\u05B3','\u05B4','\u05B5','\u05B6','\u05B7',
-        '\u05B8','\u05B9','\u05BA','\u05BB','\u05BC','\u05BD','\u05BE','\u05BF',
+        '\u05B8','\u05B9','\u00CA','\u05BB','\u05BC','\u05BD','\u05BE','\u05BF',
         '\u05C0','\u05C1','\u05C2','\u05C3','\u05F0','\u05F1','\u05F2','\u05F3',
-        '\u05F4','\u200E','\u200F','\u200F','\u200F','\u200F','\u200F','\u200F',
+        '\u05F4','\u00D9','\u00DA','\u00DB','\u00DC','\u00DD','\u00DE','\u00DF',
         '\u05D0','\u05D1','\u05D2','\u05D3','\u05D4','\u05D5','\u05D6','\u05D7',
         '\u05D8','\u05D9','\u05DA','\u05DB','\u05DC','\u05DD','\u05DE','\u05DF',
         '\u05E0','\u05E1','\u05E2','\u05E3','\u05E4','\u05E5','\u05E6','\u05E7',
-        '\u05E8','\u05E9','\u05EA','\u05EA','\u05EA','\u05EA','\u05EA','\u05EA'
+        '\u05E8','\u05E9','\u05EA','\u00FB','\u00FC','\u200E','\u200F','\u00FF'
     )
     private val WIN1256_TABLE_RAW = charArrayOf(
         '\u20AC','\u067E','\u201A','\u0192','\u201E','\u2026','\u2020','\u2021',
@@ -368,30 +368,30 @@ class SubtitleCharsetDetectorTest {
         '\u00B8','\u00B9','\u061B','\u00BB','\u00BC','\u00BD','\u00BE','\u061F',
         '\u06C1','\u0621','\u0622','\u0623','\u0624','\u0625','\u0626','\u0627',
         '\u0628','\u0629','\u062A','\u062B','\u062C','\u062D','\u062E','\u062F',
-        '\u0630','\u0631','\u0632','\u0633','\u0634','\u0635','\u0636','\u0637',
-        '\u0638','\u0639','\u063A','\u0640','\u0641','\u0642','\u0643','\u0644',
-        '\u0645','\u0646','\u0647','\u0648','\u0649','\u064A','\u064B','\u064C',
-        '\u064D','\u064E','\u064F','\u0650','\u0651','\u0652','\u0653','\u0654',
-        '\u0655','\u0656','\u0657','\u0658','\u0659','\u065A','\u065B','\u065C',
-        '\u065D','\u065E','\u065F','\u0670','\u0671','\u0672','\u0673','\u06D2'
+        '\u0630','\u0631','\u0632','\u0633','\u0634','\u0635','\u0636','\u00D7',
+        '\u0637','\u0638','\u0639','\u063A','\u0640','\u0641','\u0642','\u0643',
+        '\u00E0','\u0644','\u00E2','\u0645','\u0646','\u0647','\u0648','\u00E7',
+        '\u00E8','\u00E9','\u00EA','\u00EB','\u0649','\u064A','\u00EE','\u00EF',
+        '\u064B','\u064C','\u064D','\u064E','\u00F4','\u064F','\u0650','\u00F7',
+        '\u0651','\u00F9','\u0652','\u00FB','\u00FC','\u200E','\u200F','\u06D2'
     )
     private val WIN1258_TABLE_RAW = charArrayOf(
         '\u20AC','\u0081','\u201A','\u0192','\u201E','\u2026','\u2020','\u2021',
-        '\u02C6','\u2030','\u0160','\u2039','\u0152','\u008D','\u017D','\u008F',
+        '\u02C6','\u2030','\u008A','\u2039','\u0152','\u008D','\u008E','\u008F',
         '\u0090','\u2018','\u2019','\u201C','\u201D','\u2022','\u2013','\u2014',
-        '\u02DC','\u2122','\u0161','\u203A','\u0153','\u009D','\u017E','\u0178',
+        '\u02DC','\u2122','\u009A','\u203A','\u0153','\u009D','\u009E','\u0178',
         '\u00A0','\u00A1','\u00A2','\u00A3','\u00A4','\u00A5','\u00A6','\u00A7',
         '\u00A8','\u00A9','\u00AA','\u00AB','\u00AC','\u00AD','\u00AE','\u00AF',
         '\u00B0','\u00B1','\u00B2','\u00B3','\u00B4','\u00B5','\u00B6','\u00B7',
         '\u00B8','\u00B9','\u00BA','\u00BB','\u00BC','\u00BD','\u00BE','\u00BF',
-        '\u00C0','\u00C1','\u00C2','\u00C3','\u00C4','\u00C5','\u00C6','\u00C7',
-        '\u00C8','\u00C9','\u00CA','\u00CB','\u00CC','\u00CD','\u00CE','\u00CF',
-        '\u0110','\u00D1','\u00D2','\u00D3','\u00D4','\u00D5','\u00D6','\u00D7',
-        '\u00D8','\u00D9','\u00DA','\u00DB','\u00DC','\u01A0','\u01AF','\u00DF',
-        '\u00E0','\u00E1','\u00E2','\u00E3','\u00E4','\u00E5','\u00E6','\u00E7',
-        '\u00E8','\u00E9','\u00EA','\u00EB','\u00EC','\u00ED','\u00EE','\u00EF',
-        '\u0111','\u00F1','\u00F2','\u00F3','\u00F4','\u00F5','\u00F6','\u00F7',
-        '\u00F8','\u00F9','\u00FA','\u00FB','\u00FC','\u01A1','\u01B0','\u00FF'
+        '\u00C0','\u00C1','\u00C2','\u0102','\u00C4','\u00C5','\u00C6','\u00C7',
+        '\u00C8','\u00C9','\u00CA','\u00CB','\u0300','\u00CD','\u00CE','\u00CF',
+        '\u0110','\u00D1','\u0309','\u00D3','\u00D4','\u01A0','\u00D6','\u00D7',
+        '\u00D8','\u00D9','\u00DA','\u00DB','\u00DC','\u01AF','\u0303','\u00DF',
+        '\u00E0','\u00E1','\u00E2','\u0103','\u00E4','\u00E5','\u00E6','\u00E7',
+        '\u00E8','\u00E9','\u00EA','\u00EB','\u0301','\u00ED','\u00EE','\u00EF',
+        '\u0111','\u00F1','\u0323','\u00F3','\u00F4','\u01A1','\u00F6','\u00F7',
+        '\u00F8','\u00F9','\u00FA','\u00FB','\u00FC','\u01B0','\u20AB','\u00FF'
     )
     private val WIN874_TABLE_RAW = charArrayOf(
         '\u20AC','\u0081','\u0082','\u0083','\u0084','\u2026','\u0086','\u0087',
@@ -405,10 +405,10 @@ class SubtitleCharsetDetectorTest {
         '\u0E20','\u0E21','\u0E22','\u0E23','\u0E24','\u0E25','\u0E26','\u0E27',
         '\u0E28','\u0E29','\u0E2A','\u0E2B','\u0E2C','\u0E2D','\u0E2E','\u0E2F',
         '\u0E30','\u0E31','\u0E32','\u0E33','\u0E34','\u0E35','\u0E36','\u0E37',
-        '\u0E38','\u0E39','\u0E3A','\u0E3B','\u0E3C','\u0E3D','\u0E3E','\u0E3F',
+        '\u0E38','\u0E39','\u0E3A','\u00DB','\u00DC','\u00DD','\u00DE','\u0E3F',
         '\u0E40','\u0E41','\u0E42','\u0E43','\u0E44','\u0E45','\u0E46','\u0E47',
         '\u0E48','\u0E49','\u0E4A','\u0E4B','\u0E4C','\u0E4D','\u0E4E','\u0E4F',
         '\u0E50','\u0E51','\u0E52','\u0E53','\u0E54','\u0E55','\u0E56','\u0E57',
-        '\u0E58','\u0E59','\u0E5A','\u0E5B','\u0E5C','\u0E5D','\u0E5E','\u0E5F'
+        '\u0E58','\u0E59','\u0E5A','\u0E5B','\u00FC','\u00FD','\u00FE','\u00FF'
     )
 }

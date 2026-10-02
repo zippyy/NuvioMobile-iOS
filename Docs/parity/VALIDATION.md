@@ -4,7 +4,7 @@
 
 The aggregate commit `6bf2b8e567d5f4010ad94e3ae403ad35e63fee7a` failed its Full iOS build: [run 37021150898](https://github.com/zippyy/NuvioMobile-iOS/actions/runs/37021150898). IPA packaging was skipped. Failures included common Kotlin `toSortedMap`, invalid `ProfileRepository.uiState` access, missing image alignment argument, and iOS NSDate/zlib interop errors. Takeover commit `7775fbe30afc93a109d6841cd1332c85f1c249ad` repairs those reported errors.
 
-CI now runs the actual `iosSimulatorArm64Test` target after the Release device build and before IPA packaging. It selects Live TV (including iOS gzip interop), connection estimators, connection-fit selection, shuffle, artwork, MDBList, TorrServer, YouTube resolver, subtitle transport/policy/encoding/fonts, seek-preview, volume policy and portable sync tests. XML reports are uploaded as `iOS-parity-test-results`. Existing component harness reports are not represented as a native application test pass.
+CI now runs the actual `iosSimulatorArm64Test` target before the Release device build and IPA packaging. It selects Live TV (including iOS gzip interop), connection estimators, connection-fit selection, shuffle, artwork, MDBList, TorrServer, YouTube resolver, subtitle transport/policy/encoding/fonts, seek-preview, volume policy and portable sync tests. XML reports are uploaded as `iOS-parity-test-results`. Existing component harness reports are not represented as a native application test pass.
 
 Final commit/run/test-count/artifact evidence belongs in [PR #1](https://github.com/zippyy/NuvioMobile-iOS/pull/1) after the workflow finishes. A pending or failed workflow does not establish validation. An unsigned IPA is suitable for subsequent signing/sideload tooling; it is not an App Store submission or a signed install/device test.
 
@@ -38,3 +38,17 @@ The committed iOS observer uses `platform.Network` / NWPathMonitor. The earlier 
 ## Remaining parity
 
 See [PARITY_MATRIX.md](PARITY_MATRIX.md), [current-status.json](current-status.json), [second-audit.md](second-audit.md), and [implementation-sync.md](implementation-sync.md). Full parity is not asserted: automatic reference/speech subtitle synchronization, font import/application, MDBList OAuth/tracking, Drive sync, full backup, TV-preview/zapping adaptations, manual network diagnostics, and the independent semantic/resource backlog remain open.
+
+## Takeover portable component execution
+
+| Executed suite | Result | Scope |
+|---|---|---|
+| `scripts/test-sync-parity.py` | 7 passed | Actual pure sync/backup/PIN/migration policy code with adapted assertion runner. |
+| Shuffle/artwork harness | 39 passed | Existing harness with Linux Java path; production policies/storage with declared platform/model adapters. |
+| `scripts/test-metadata-streams.py` | 12 passed | Actual MDBList, TorrServer and YouTube resolver code. |
+| Live TV common harness | 5 JUnit tests passed | Actual parser/provider/guide/persistence/transport-policy code; Compose Immutable annotation adapter only. One test contains seven multi-step provider/repository scenarios. |
+| Connection/subtitle/player harness | 92 JUnit tests passed | Actual estimators/sampler/subtitle transport/policy/code-page/font/SDH/preview/volume code; storage/network-kind/charset platform adapters. |
+
+Total: **155 portable component tests passed**. These tests use the Kotlin 2.3.0 compiler from Gradle 9.4.1. They do not prove native interop or live HTTP/provider/device behavior. Native simulator execution is still required by CI.
+
+The test run revealed stale time API usage, clock/warmup/decimal-byte mistakes, and uninitialized/inaccurate charset fixtures. SDH expectations now match the pinned reference (dialogue dash and trailing whitespace preserved). Independent fixed-byte fixtures exposed real incorrect Windows code-page tables; production mappings and the Hebrew-before-CJK heuristic were repaired. Assertions were retained for actual encoding and sampler behavior rather than bypassed.

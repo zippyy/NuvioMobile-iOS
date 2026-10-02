@@ -370,6 +370,13 @@ kotlin {
             }
         }
 
+        // Full engine dependencies also apply to the native test executable.
+        iosTarget.binaries.all {
+            if (iosDistribution == "full") {
+                linkerOpts("-lc++", "-framework", "Security", "-framework", "SystemConfiguration", "-framework", "CoreFoundation")
+            }
+        }
+
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
             isStatic = true
@@ -380,14 +387,6 @@ kotlin {
                 freeCompilerArgs += "-Xdisable-phases=DevirtualizationAnalysis,Devirtualization,DCEPhase,RemoveRedundantCallsToStaticInitializersPhase"
             }
             freeCompilerArgs += listOf("-Xbinary=bundleId=$iosFrameworkBundleId")
-            if (iosDistribution == "full") {
-                linkerOpts(
-                    "-lc++",
-                    "-framework", "Security",
-                    "-framework", "SystemConfiguration",
-                    "-framework", "CoreFoundation",
-                )
-            }
         }
     }
     

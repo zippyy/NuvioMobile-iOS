@@ -6,6 +6,7 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.TimeMark
 import kotlin.time.TimeSource
 
@@ -93,9 +94,8 @@ class PlaybackThroughputSamplerTest {
             networkGeneration = { gen.last() },
             onSample = { network, mbps -> samples.add(network to mbps) },
         )
-        // Warmup: 2 ticks × 500ms = 1000ms (WARMUP_MS)
-        sampler.onBytesTick(bytes = 1024 * 1024, isFetching = true)
-        sampler.onBytesTick(bytes = 1024 * 1024, isFetching = true)
+        // First tick establishes a mark; two more warm up 1000 ms.
+        repeat(3) { sampler.onBytesTick(bytes = 1024 * 1024, isFetching = true) }
         // Active: 6 ticks × 500ms = 3000ms (MIN_WINDOW_MS)
         // 6 × 2MB = 12MB over 3000ms → 12×1024×1024 × 8 / 3000 / 1000 ≈ 33.55 Mbps
         sampler.onBytesTick(bytes = 2L * 1024 * 1024, isFetching = true)
@@ -124,8 +124,7 @@ class PlaybackThroughputSamplerTest {
             networkGeneration = { gen.last() },
             onSample = { network, mbps -> samples.add(network to mbps) },
         )
-        sampler.onBytesTick(bytes = 1024 * 1024, isFetching = true)
-        sampler.onBytesTick(bytes = 1024 * 1024, isFetching = true)
+        repeat(3) { sampler.onBytesTick(bytes = 1024 * 1024, isFetching = true) }
         sampler.onBytesTick(bytes = 2L * 1024 * 1024, isFetching = true)
         sampler.onBytesTick(bytes = 2L * 1024 * 1024, isFetching = true)
         sampler.onBytesTick(bytes = 2L * 1024 * 1024, isFetching = true)
@@ -150,22 +149,19 @@ class PlaybackThroughputSamplerTest {
             networkGeneration = { gen.last() },
             onSample = { network, mbps -> samples.add(network to mbps) },
         )
-        // Warmup: 2 ticks × 500ms
-        sampler.onRateTick(bytesPerSecond = 2_000_000, isFetching = true)
-        sampler.onRateTick(bytesPerSecond = 2_000_000, isFetching = true)
+        // First tick establishes a mark; two more warm up 1000 ms.
+        repeat(3) { sampler.onRateTick(bytesPerSecond = 4_000_000, isFetching = true) }
         // Active: 6 ticks × 500ms = 3000ms
-        // Each tick: bytesFor(500ms) = 2_000_000 × 500 / 1000 = 1_000_000 bytes
-        // Total: 6 × 1MB = 6MB over 3000ms
-        // Mbps = 6 × 1024 × 1024 × 8 / 3000 / 1000 ≈ 16.78
-        sampler.onRateTick(bytesPerSecond = 2_000_000, isFetching = true)
-        sampler.onRateTick(bytesPerSecond = 2_000_000, isFetching = true)
-        sampler.onRateTick(bytesPerSecond = 2_000_000, isFetching = true)
-        sampler.onRateTick(bytesPerSecond = 2_000_000, isFetching = true)
-        sampler.onRateTick(bytesPerSecond = 2_000_000, isFetching = true)
-        sampler.onRateTick(bytesPerSecond = 2_000_000, isFetching = true)
+        // Six 500ms intervals at 4,000,000 bytes/s yield 12,000,000 bytes (32 Mbps).
+        sampler.onRateTick(bytesPerSecond = 4_000_000, isFetching = true)
+        sampler.onRateTick(bytesPerSecond = 4_000_000, isFetching = true)
+        sampler.onRateTick(bytesPerSecond = 4_000_000, isFetching = true)
+        sampler.onRateTick(bytesPerSecond = 4_000_000, isFetching = true)
+        sampler.onRateTick(bytesPerSecond = 4_000_000, isFetching = true)
+        sampler.onRateTick(bytesPerSecond = 4_000_000, isFetching = true)
         sampler.finish()
         assertEquals(1, samples.size)
-        val expectedMbps = 6.0 * 1024.0 * 1024.0 * 8.0 / 3000.0 / 1000.0
+        val expectedMbps = 4_000_000.0 * 8 / 1_000_000.0
         assertEquals(expectedMbps, samples[0].second, 0.01)
     }
 
@@ -177,7 +173,7 @@ class PlaybackThroughputSamplerTest {
         val samples = mutableListOf<Pair<NetworkKind, Double>>()
         val sampler = PlaybackThroughputSampler(
             sourceUrl = "https://example.com/video.mp4",
-            timeSource = ControlledTimeSource(gapMs = 2_500L),
+            timeSource = ControlledTimeSource(tickMs = 2_500L),
             networkKind = { kind.last() },
             networkGeneration = { gen.last() },
             onSample = { network, mbps -> samples.add(network to mbps) },
@@ -216,21 +212,14 @@ class PlaybackThroughputSamplerTest {
  */
 private class ControlledTimeSource(
     private val tickMs: Long = 500L,
-) : TimeSource() {
+) : TimeSource {
     private var nowMs = 0L
 
     override fun markNow(): TimeMark {
-        val markAt = nowMs
         nowMs += tickMs
-        return ControlledTimeMark(markAt, nowMs)
+        val markMs = nowMs
+        return object : TimeMark {
+            override fun elapsedNow(): Duration = (nowMs - markMs).milliseconds
+        }
     }
-}
-
-private class ControlledTimeMark(
-    private val markMs: Long,
-    private val currentMs: Long,
-) : TimeMark() {
-    override fun elapsedNow(): Duration = Duration.milliseconds(currentMs - markMs)
-
-    override fun hasPassedNow(): Boolean = currentMs >= markMs
 }

@@ -131,21 +131,6 @@ jobs:
           path.write_text("\n".join(rewritten) + "\n", encoding="utf-8")
           PY
 
-      - name: Build iOS App via Xcode
-        run: |
-          cd iosApp
-          xcodebuild \
-            -project iosApp.xcodeproj \
-            -scheme iosApp \
-            -configuration Release \
-            -sdk iphoneos \
-            -destination "generic/platform=iOS" \
-            -derivedDataPath build \
-            CODE_SIGNING_ALLOWED=NO \
-            CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGN_IDENTITY="" \
-            build
-
       - name: Run iOS parity regression tests
         run: |
           ./gradlew :composeApp:iosSimulatorArm64Test \
@@ -172,6 +157,21 @@ jobs:
           path: |
             composeApp/build/test-results/
             composeApp/build/reports/tests/
+
+      - name: Build iOS App via Xcode
+        run: |
+          cd iosApp
+          xcodebuild \
+            -project iosApp.xcodeproj \
+            -scheme iosApp \
+            -configuration Release \
+            -sdk iphoneos \
+            -destination "generic/platform=iOS" \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            build
 
       - name: Package App into .ipa
         run: |
