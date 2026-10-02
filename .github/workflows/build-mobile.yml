@@ -13,10 +13,10 @@ permissions:
 jobs:
   build-ios-full:
     name: Build iOS Full Version
-    runs-on: macos-latest
+    runs-on: macos-15
     steps:
       - name: Checkout Repository & Submodules
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Fetch iOS Specific Submodule
         run: git submodule update --init --recursive MPVKit
@@ -24,7 +24,7 @@ jobs:
       - name: Select Latest Stable Xcode
         uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: latest-stable
+          xcode-version: '16.4'
 
       - name: Make gradlew executable
         run: chmod +x ./gradlew
@@ -34,6 +34,42 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+
+      - name: Cache Kotlin & Gradle
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            ~/.konan
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts', '**/gradle-wrapper.properties', '**/gradle.properties', '**/libs.versions.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Download Nuvio Engine Apple XCFramework
+        env:
+          NUVIO_ENGINE_VERSION: 0.1.1
+        run: |
+          set -euo pipefail
+          ENGINE_ROOT="../nuvio-engine/platform/apple"
+          ENGINE_DEST="${ENGINE_ROOT}/NuvioEngine.xcframework"
+          ARCHIVE="${RUNNER_TEMP}/nuvio-engine-apple-${NUVIO_ENGINE_VERSION}.zip"
+          EXTRACT_DIR="${RUNNER_TEMP}/nuvio-engine-apple-${NUVIO_ENGINE_VERSION}"
+          rm -rf "${ENGINE_ROOT}" "${EXTRACT_DIR}" "${ARCHIVE}"
+          mkdir -p "${ENGINE_ROOT}" "${EXTRACT_DIR}"
+          curl --fail --location --retry 5 --retry-all-errors \
+            "https://github.com/NuvioMedia/nuvio-engine/releases/download/v${NUVIO_ENGINE_VERSION}/nuvio-engine-apple-${NUVIO_ENGINE_VERSION}.zip" \
+            --output "${ARCHIVE}"
+          ditto -x -k "${ARCHIVE}" "${EXTRACT_DIR}"
+          XCFRAMEWORK="$(find "${EXTRACT_DIR}" -type d -name NuvioEngine.xcframework -print -quit)"
+          if [[ -z "${XCFRAMEWORK}" ]]; then echo "::error::NuvioEngine.xcframework not found"; exit 1; fi
+          ditto "${XCFRAMEWORK}" "${ENGINE_DEST}"
+          for SLICE in ios-arm64 ios-arm64_x86_64-simulator; do
+            SLICE_DIR="${ENGINE_DEST}/${SLICE}"
+            test -f "${SLICE_DIR}/libCNuvioEngine.a" || { echo "::error::Missing ${SLICE_DIR}/libCNuvioEngine.a"; exit 1; }
+            test -f "${SLICE_DIR}/Headers/nuvio_engine/nuvio_engine.h" || { echo "::error::Missing ${SLICE_DIR}/Headers/nuvio_engine/nuvio_engine.h"; exit 1; }
+          done
+          echo "Nuvio Engine Apple XCFramework installed"
 
       - name: Generate local.properties
         run: |
@@ -61,6 +97,7 @@ jobs:
           updates = {
               "kotlin.daemon.jvmargs": "-Xmx6144M",
               "kotlin.native.jvmArgs": "-Xmx10240M",
+              "kotlin.native.cacheEnrichment": "none",
               "org.gradle.jvmargs": "-Xmx10240M -Dfile.encoding=UTF-8 -XX:MaxMetaspaceSize=1536m",
               "org.gradle.workers.max": "2",
           }
