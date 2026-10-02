@@ -91,17 +91,16 @@ jobs:
           from urllib.parse import urlsplit
 
           required = ('NUVIO_SUPABASE_URL', 'NUVIO_SUPABASE_ANON_KEY')
-          missing = [name for name in required if not os.environ.get(name, '').strip()]
-          if missing:
-              raise SystemExit('::error::Missing Nuvio account configuration: ' + ', '.join(missing) + '. Configure the matching repository Actions secrets (legacy SUPABASE_URL / SUPABASE_ANON_KEY are also accepted).')
-          url = urlsplit(os.environ['NUVIO_SUPABASE_URL'].strip())
-          if url.scheme != 'https' or not url.hostname:
-              raise SystemExit('::error::NUVIO_SUPABASE_URL must be a valid HTTPS account-service URL')
           values = {name: os.environ.get(name, '').strip() for name in required + ('NUVIO_SUPABASE_FALLBACK_URL',)}
+          if bool(values[required[0]]) != bool(values[required[1]]):
+              raise SystemExit('::error::An account-service override must provide both NUVIO_SUPABASE_URL and NUVIO_SUPABASE_ANON_KEY')
+          url = urlsplit(values[required[0]])
+          if values[required[0]] and (url.scheme != 'https' or not url.hostname):
+              raise SystemExit('::error::NUVIO_SUPABASE_URL must be a valid HTTPS account-service URL')
           if any('\n' in value or '\r' in value for value in values.values()):
               raise SystemExit('::error::Nuvio account configuration must be single-line values')
           Path('local.properties').write_text(''.join(f'{name}={value}\n' for name, value in values.items()))
-          print('Nuvio account configuration is present; values are not logged.')
+          print('Using explicit account configuration.' if values[required[0]] else 'Using the built-in public Nuvio client configuration.')
           PY
           cat << 'EOF' >> local.properties
           TRAKT_CLIENT_ID=${{ secrets.TRAKT_CLIENT_ID }}
@@ -155,6 +154,17 @@ jobs:
       - name: Run iOS parity regression tests
         run: |
           python3 scripts/test_prepare_ios_ipa.py
+          ./gradlew :composeApp:generateRuntimeConfigs \
+            --console=plain --no-configuration-cache --max-workers=1
+          python3 - <<'PY'
+          import re
+          from pathlib import Path
+          config = Path('composeApp/build/generated/runtime-config/kotlin/com/nuvio/app/core/network/SupabaseConfig.kt').read_text()
+          values = dict(re.findall(r'const val (URL|ANON_KEY) = "([^\"]*)"', config))
+          if not values.get('URL', '').startswith('https://') or not values.get('ANON_KEY'):
+              raise SystemExit('::error::Generated Nuvio account configuration is missing or invalid')
+          print('Generated Nuvio account configuration verified; key is not logged.')
+          PY
           ./gradlew :composeApp:iosSimulatorArm64Test \
             --console=plain --no-configuration-cache --max-workers=1 \
             --tests 'com.nuvio.app.features.livetv.*' \

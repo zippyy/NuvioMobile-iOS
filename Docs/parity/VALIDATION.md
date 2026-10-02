@@ -2,6 +2,8 @@
 
 ## Account sign-in configuration correction
 
+The subsequent source review found public client defaults in [yesnt10/NuvioMobile-Enhanced, commit 894499115fb1a69cd4bb34d6969a74832f0e5636](https://github.com/yesnt10/NuvioMobile-Enhanced/blob/894499115fb1a69cd4bb34d6969a74832f0e5636/composeApp/build.gradle.kts): `https://api.nuvio.tv` and an `sb_publishable_` key. These are client configuration, not private server secrets. The official `/auth/v1/settings` endpoint returned HTTP 200 with this key (with and without the SDK-style Bearer header), and reports email auth enabled. The port now uses those public defaults when no override is configured, and accepts prefixed and legacy explicit property names. CI permits public-default builds but rejects partial URL/key overrides. This supersedes the earlier missing-secret blocker; real account sign-in still requires device acceptance testing.
+
 After the repaired IPA installed, the owner reported Nuvio account sign-in failing. The workflow generated `SUPABASE_URL` / `SUPABASE_ANON_KEY`, while `generateRuntimeConfigs` consumes `NUVIO_SUPABASE_URL` / `NUVIO_SUPABASE_ANON_KEY`. Those legacy property names therefore produced empty runtime auth constants even if matching Actions secrets existed. CI now writes the exact consumed names, accepting either prefixed or legacy repository secret names, and refuses to build when the required account-service configuration is absent or the URL is not HTTPS. Values are not logged. Configuration-generation and missing-config failure paths are checked with noncredential fixtures. Actual sign-in must be tested with the rebuilt IPA and the existing Nuvio account-service configuration; compilation is not an auth acceptance test.
 
 ## Sideload packaging correction
