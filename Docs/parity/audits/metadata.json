@@ -1,0 +1,568 @@
+{
+  "domain": "metadata/tracking",
+  "source_sha": "b9408cd5729fd99e9afe56cc334973fe0725bc7d",
+  "source_branch": "subtitle-autosync",
+  "target_start_sha": "6ad6c72c4ebf5cf1d9edf5d5d5eb110fc457cf92",
+  "target_branch": "port/nuvio-reshaped-ios",
+  "audited_files": [
+    "Source MDBList (38 files under app/src/main/java/com/nuvio/tv/data/mdblist/)",
+    "Source tracking infra (12 files under app/src/main/java/com/nuvio/tv/core/tracking/)",
+    "Source domain models (WatchProgress, WatchedItem, LibraryModels, LibrarySourceMode)",
+    "Source data local (WatchProgressSource, TraktSettingsDataStore)",
+    "Source Trakt DTOs (app/src/main/java/com/nuvio/tv/data/remote/dto/trakt/)",
+    "Source Simkl (16 files under app/src/main/java/com/nuvio/tv/data/simkl/)",
+    "Source TMDB (TmdbMetadataService, TmdbService, TmdbCollectionSourceResolver)",
+    "Source mappers (MetaMapper, CatalogMapper, MetadataFieldMappers)",
+    "Source MDBList DTOs (app/src/main/java/com/nuvio/tv/data/remote/dto/mdblist/)",
+    "Source MDBList repository (app/src/main/java/com/nuvio/tv/data/repository/MDBListRepository.kt)",
+    "Source MDBList settings UI (MdbListTrackerViewModel, MDBListSettingsScreen, MdbListAccountDialog)",
+    "Source HomeViewModelMdbListBatchPrefetch",
+    "Source tests (55+ test files across mdblist, simkl, trakt, tracking, tmdb, local)",
+    "",
+    "Target MDBList (6 files under composeApp/src/features/mdblist/)",
+    "Target tracking infra (9 files under composeApp/src/features/tracking/)",
+    "Target watched (8 files under composeApp/src/features/watched/)",
+    "Target watchprogress (18 files under composeApp/src/features/watchprogress/)",
+    "Target profiles (14 files under composeApp/src/features/profiles/)",
+    "Target trakt (25 files under composeApp/src/features/trakt/)",
+    "Target simkl (27 files under composeApp/src/features/simkl/)",
+    "Target tmdb (5 files under composeApp/src/features/tmdb/)",
+    "Target library (features/library/LibraryModels.kt, LibraryRepository.kt, LibraryDisplaySettings.kt, etc.)",
+    "Target details (MetaDetailsModels.kt, MetaDetailsParser.kt, MetaDetailsRepository.kt)"
+  ],
+  "capabilities": [
+    {
+      "id": "mdblist-authentication",
+      "capability": "MDBList Device OAuth Authentication",
+      "source_files": [
+        "data/mdblist/MdbListAuthModels.kt",
+        "data/mdblist/MdbListAuthRepository.kt",
+        "data/mdblist/MdbListAuthStore.kt",
+        "data/mdblist/AndroidMdbListAuthPersistence.kt",
+        "core/di/MdbListModule.kt"
+      ],
+      "source_behavior": "Full device OAuth flow: startDeviceAuthorization returns user_code + verification URI, pollDeviceAuthorization polls for token, automatic token refresh with 401 retry, disconnect/revoke, profile-scoped credentials via ProtectedProfilePreferences, scope-based generation tracking for stale auth detection.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "NOT IMPLEMENTED. Target MDBList only has API-key-based ratings (no OAuth, no token management, no auth persistence, no scope tracking).",
+      "gaps": [
+        "No MdbListAuthModels (device session, tokens, user, auth state)",
+        "No MdbListAuthRepository (device OAuth start, poll, refresh, disconnect)",
+        "No MdbListAuthStore (profile-scoped credential store with generation tracking)",
+        "No AndroidMdbListAuthPersistence / iOS equivalent",
+        "No MDBLIST client ID configuration in target"
+      ],
+      "port_required": true,
+      "ios_implementation_plan": "Port MdbListAuthModels to commonMain, implement MdbListAuthStore with KMP expect/actual for iOS Keychain persistence, port MdbListAuthRepository using target's existing HTTP infrastructure (AddonHttpClient or similar). Register as TrackingAuthProvider.",
+      "tests": [
+        "Source: MdbListAuthRepositoryTest.kt, MdbListAuthStoreTest.kt, MdbListLiveAccountTest.kt, MdbListAccountDialogTest.kt"
+      ],
+      "status": "missing",
+      "platform_limitations": [
+        "iOS Keychain APIs differ from Android ProtectedProfilePreferences"
+      ]
+    },
+    {
+      "id": "mdblist-http-client",
+      "capability": "MDBList HTTP Client with Rate Limiting & Retry",
+      "source_files": [
+        "data/mdblist/MdbListHttpClient.kt",
+        "data/mdblist/MdbListHttpModels.kt",
+        "data/mdblist/OkHttpMdbListEngine.kt"
+      ],
+      "source_behavior": "Custom HTTP client with per-key rate limiting (429 handling, X-RateLimit-Remaining/Reset), retry-once on 401 (token refresh), exponential backoff for 5xx, configurable retry-safe for GET requests, scope-based checkScope injection for cancellation. OkHttp engine with redirect disabled, size-limited response body, suspendCancellableCoroutine.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "NOT IMPLEMENTED. Target MDBList uses generic httpPostJson utility for ratings API calls (no rate limiting, no retry, no auth integration).",
+      "gaps": [
+        "No MdbListHttpModels (Configuration, request/response types, ApiException)",
+        "No MdbListHttpClient (rate limit tracking, retry logic)",
+        "No MdbListHttpEngine interface",
+        "No platform-specific HTTP engine (OkHttp engine is Android-specific)",
+        "Target's existing AddonHttpClient/Ktor client could be reused"
+      ],
+      "port_required": true,
+      "ios_implementation_plan": "Port MdbListHttpModels to commonMain. Implement MdbListHttpEngine using Ktor (KMP). Port MdbListHttpClient (rate limiting, retry) as commonMain. Reuse target's existing network stack.",
+      "tests": [
+        "Source: MdbListHttpClientTest.kt, OkHttpMdbListEngineTest.kt"
+      ],
+      "status": "missing",
+      "platform_limitations": [
+        "Ktor engine needed for iOS; OkHttp is Android-only"
+      ]
+    },
+    {
+      "id": "mdblist-api-client",
+      "capability": "MDBList Authenticated API Client",
+      "source_files": [
+        "data/mdblist/MdbListApiClient.kt"
+      ],
+      "source_behavior": "Auth-wrapping API client: automatically attaches Bearer token, retries once on 401 with token refresh, provides get/post/put/delete convenience methods, refreshes user info on demand, associates rate limit keys with user IDs after auth.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "NOT IMPLEMENTED. Target MDBList only calls ratings API directly with API key query parameter.",
+      "gaps": [
+        "No MdbListApiClient",
+        "No automatic auth token injection",
+        "No 401 refresh-retry",
+        "No user info refresh on demand"
+      ],
+      "port_required": true,
+      "ios_implementation_plan": "Port MdbListApiClient to commonMain using MdbListHttpClient and MdbListAuthRepository.",
+      "tests": [
+        "Source: MdbListApiClientTest.kt"
+      ],
+      "status": "missing",
+      "platform_limitations": []
+    },
+    {
+      "id": "mdblist-sync-engine",
+      "capability": "MDBList Incremental Sync Engine (watched/progress/dropped)",
+      "source_files": [
+        "data/mdblist/MdbListSyncEngine.kt",
+        "data/mdblist/MdbListSyncModels.kt",
+        "data/mdblist/MdbListSyncRemote.kt",
+        "data/mdblist/MdbListSyncRepository.kt",
+        "data/mdblist/MdbListSyncState.kt",
+        "data/mdblist/MdbListSyncStorage.kt",
+        "data/mdblist/MdbListSyncDecoders.kt",
+        "data/mdblist/MdbListMediaIndex.kt"
+      ],
+      "source_behavior": "Full incremental sync engine: watermark-based change detection via MdbListActivities, journal-based delta sync (30-day retention), full sync fallback when journal expired, paginated fetching of watched/playback/dropped lists, snapshot normalization via MdbListMediaIndex, profile-scoped storage with DataStore, async refresh with rate-limited gate, error state management with retry timing.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "NOT IMPLEMENTED. Target has no MDBList sync repository, no snapshot, no remote interface, no storage.",
+      "gaps": [
+        "No MdbListSyncEngine (journal-based delta sync)",
+        "No MdbListSyncModels (snapshot, watched record, playback, dropped, activities)",
+        "No MdbListSyncRemote interface + implementation",
+        "No MdbListSyncRepository (refresh gate, profile scoping, error handling)",
+        "No MdbListSyncStorage (profile-scoped persistence)",
+        "No MdbListSyncDecoders (JSON response parsing for sync endpoints)",
+        "No MdbListMediaIndex (cross-reference resolution)",
+        "No MdbListSyncState model"
+      ],
+      "port_required": true,
+      "ios_implementation_plan": "Port sync models and decoders to commonMain. Implement sync engine using Ktor. Storage via expect/actual (NSUserDefaults/Settings for iOS). Register as TrackingProfileStore. Follow SimklSyncRepository pattern (27 files in target).",
+      "tests": [
+        "Source: MdbListSyncEngineTest.kt, MdbListSyncRemoteTest.kt, MdbListSyncRepositoryTest.kt, MdbListSyncDecoderTest.kt, MdbListLiveLibraryTest.kt, MdbListLiveScrobbleTest.kt"
+      ],
+      "status": "missing",
+      "platform_limitations": []
+    },
+    {
+      "id": "mdblist-library-management",
+      "capability": "MDBList Library (List Management: Create/Update/Delete Lists, Add/Remove Items)",
+      "source_files": [
+        "data/mdblist/MdbListLibraryService.kt",
+        "data/mdblist/MdbListLibraryWriter.kt",
+        "data/mdblist/MdbListLibraryModels.kt",
+        "data/mdblist/MdbListLibraryProjection.kt",
+        "data/mdblist/MdbListLibrarySorter.kt",
+        "data/mdblist/MdbListLibraryDecoder.kt",
+        "data/mdblist/MdbListLibraryRemote.kt",
+        "data/mdblist/MdbListLibraryMutation.kt"
+      ],
+      "source_behavior": "Full library (list) management: create/update/delete personal lists with privacy settings, add/remove items to/from lists and watchlist, membership observation per item, library projection into LibraryEntry domain model with deduplication across lists, remote synchronization with ETag-style update tracking, paginated item fetching, custom list ordering via server-side rank, tabs generation for UI.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "NOT IMPLEMENTED. Target MDBList has no library management. Target's TraktLibraryRepository and SimklLibraryAdapter provide reference implementations of list management for those providers.",
+      "gaps": [
+        "No MdbListLibraryService",
+        "No MdbListLibraryWriter (list CRUD, membership changes)",
+        "No MdbListLibraryModels (list, item, snapshot, watchlist key constants)",
+        "No MdbListLibraryProjection (LibraryEntry domain model projection)",
+        "No MdbListLibrarySorter (server-side added order tracking)",
+        "No MdbListLibraryDecoder (response parsing for library endpoints)",
+        "No MdbListLibraryRemote (pagination, synchronization)",
+        "No MdbListLibraryMutation (item body construction, ID parsing)"
+      ],
+      "port_required": true,
+      "ios_implementation_plan": "Port library models and service to commonMain. Implement TrackingLibraryProvider (MdbListTrackingLibraryProvider exists in source). Follow TraktTrackingLibraryProvider / SimklLibraryAdapter pattern in target.",
+      "tests": [
+        "Source: MdbListLibraryServiceTest.kt, MdbListLibraryDecoderTest.kt, MdbListLibraryWriterTest.kt, MdbListLibrarySorterTest.kt, MdbListLibraryTestFixtures.kt"
+      ],
+      "status": "missing",
+      "platform_limitations": []
+    },
+    {
+      "id": "mdblist-progress-tracking",
+      "capability": "MDBList Progress (Watched & Playback Projection)",
+      "source_files": [
+        "data/mdblist/MdbListProgressProjection.kt",
+        "data/mdblist/MdbListWatchedDecoder.kt",
+        "data/mdblist/MdbListTrackingProgressProvider.kt"
+      ],
+      "source_behavior": "Projects MDBList sync data into WatchProgress and WatchedItem domain models. Handles: watched movie IDs, watched show episodes, playback progress (with 80% completion threshold), dropped/hidden content filtering, next-up seed generation from completed episodes, sibling ID resolution across multiple ID schemes (IMDB, TMDB, TVDB, Trakt). Provides Flow-based reactive observation via TrackingProgressProvider interface.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "NOT IMPLEMENTED. Target has no MDBList progress provider. Target's TraktTrackingProgressProvider and SimklTrackingProgressProvider (in SimklApplicationAdapters.kt) provide reference implementations for those providers.",
+      "gaps": [
+        "No MdbListProgressProjection (progress/watched projection logic)",
+        "No MdbListWatchedDecoder (watched response parsing)",
+        "No MdbListTrackingProgressProvider (TrackingProgressProvider implementation)"
+      ],
+      "port_required": true,
+      "ios_implementation_plan": "Port progress projection and watched decoder to commonMain. Implement MdbListTrackingProgressProvider following target's TrackingProgressProvider interface. Integrate with WatchProgressRepository's existing provider architecture.",
+      "tests": [
+        "Source: MdbListProgressProjectionTest.kt, MdbListTrackingProgressProviderTest.kt"
+      ],
+      "status": "missing",
+      "platform_limitations": []
+    },
+    {
+      "id": "mdblist-scrobble",
+      "capability": "MDBList Scrobble (Start/Pause/Stop + Clear)",
+      "source_files": [
+        "data/mdblist/MdbListScrobbleService.kt",
+        "data/mdblist/MdbListScrobbleReceipt.kt"
+      ],
+      "source_behavior": "Scrobbles playback actions (start/pause/stop) to MDBList API. Validates progress percent, resolves media via snapshot mutation target, posts to /scrobble/{action} endpoint, parses receipt response, applies scrobble to snapshot (updates watched + playback buckets). Clear endpoint removes playback sessions via POST /scrobble/clear with 404 tolerance.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "NOT IMPLEMENTED. Target MDBList has no scrobble service. Target's TraktScrobbleRepository and SimklScrobbleReconciliation provide reference implementations.",
+      "gaps": [
+        "No MdbListScrobbleService",
+        "No MdbListScrobbleReceipt",
+        "No scrobble integration with TrackingScrobbleCoordinator"
+      ],
+      "port_required": true,
+      "ios_implementation_plan": "Port scrobble service and receipt to commonMain. Register as TrackingScrobbler in TrackingProviderRegistry. Integrate with target's existing TrackingScrobbleCoordinator.",
+      "tests": [
+        "Source: MdbListScrobbleServiceTest.kt, MdbListLiveScrobbleTest.kt"
+      ],
+      "status": "missing",
+      "platform_limitations": []
+    },
+    {
+      "id": "mdblist-history",
+      "capability": "MDBList History (Add/Remove Watched Items)",
+      "source_files": [
+        "data/mdblist/MdbListHistoryService.kt",
+        "data/mdblist/MdbListHistoryPayload.kt"
+      ],
+      "source_behavior": "Adds/removes watched items to/from MDBList history via /sync/watched and /sync/watched/remove endpoints. Batches in chunks of 100, resolves media via snapshot mutation targets, handles receipts with notFound tracking, updates snapshot accordingly. Integrates with sync engine's write reconciliation for invalidated bucket handling.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "NOT IMPLEMENTED. Target MDBList has no history service. Target's Trakt scrobble/history and SimklMutationRepository provide reference implementations.",
+      "gaps": [
+        "No MdbListHistoryService",
+        "No MdbListHistoryPayload",
+        "No history integration with WatchedRepository's push mechanism"
+      ],
+      "port_required": true,
+      "ios_implementation_plan": "Port history service and payload to commonMain. Implement TrackingHistoryWriter. Integrate with target's WatchedRepository push mechanism.",
+      "tests": [
+        "Source: MdbListHistoryServiceTest.kt"
+      ],
+      "status": "missing",
+      "platform_limitations": []
+    },
+    {
+      "id": "mdblist-tracking-provider",
+      "capability": "MDBList Tracking Provider Registration",
+      "source_files": [
+        "data/mdblist/MdbListTrackingProvider.kt",
+        "data/mdblist/MdbListTrackingLibraryProvider.kt",
+        "data/mdblist/MdbListWriteReconciliation.kt",
+        "data/mdblist/MdbListMutationTarget.kt",
+        "core/tracking/TrackingSources.kt",
+        "data/local/TraktSettingsDataStore.kt",
+        "domain/model/LibraryModels.kt",
+        "core/tracking/TrackingProvider.kt"
+      ],
+      "source_behavior": "Registers MDBLIST as a full TrackingProvider with all capabilities: AUTHENTICATION, LIBRARY_READ/WRITE, WATCHED_READ/WRITE, PROGRESS_READ/WRITE, SCROBBLE. Provides MdbListTrackingScrobbler, MdbListTrackingHistoryWriter. WatchProgressSource enum includes MDBLIST. LibrarySourceMode enum includes MDBLIST. TrackingProviderId includes MDBLIST. Source selection functions (effectiveWatchProgressSource, availableWatchProgressSources, availableLibrarySourceModes) all include MDBLIST.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "NOT IMPLEMENTED. Target TrackingProviderId only has TRAKT, SIMKL. Target WatchProgressSource only has TRAKT, SIMKL, NUVIO_SYNC. Target LibrarySourceMode only has LOCAL, TRAKT, SIMKL. Target tracking source selection functions have no MDBLIST branch. No MdbListTrackingProvider class exists.",
+      "gaps": [
+        "TrackingProviderId.MDBLIST missing from enum",
+        "WatchProgressSource.MDBLIST missing from enum",
+        "LibrarySourceMode.MDBLIST missing from enum",
+        "No MdbListTrackingProvider class",
+        "No MdbListTrackingScrobbler / TrackingHistoryWriter",
+        "No source selection for MDBLIST (effectiveWatchProgressSource, availableWatchProgressSources, etc.)",
+        "No MdbListWriteReconciliation (write-failure invalidation)",
+        "No MdbListMutationTarget (scrobble/history body construction)"
+      ],
+      "port_required": true,
+      "ios_implementation_plan": "Add MDBLIST to TrackingProviderId, WatchProgressSource, LibrarySourceMode enums. Create MdbListTrackingProvider following Trakt/Simkl pattern. Register all provider interfaces. Add MDBLIST branches to all source selection functions. Port MdbListWriteReconciliation and MdbListMutationTarget.",
+      "tests": [
+        "Source: MdbListMutationTargetTest.kt, TrackingSourcesTest.kt, TrackingLibraryMembershipTest.kt, TrackingProviderRegistryTest.kt"
+      ],
+      "status": "missing",
+      "platform_limitations": []
+    },
+    {
+      "id": "mdblist-ratings",
+      "capability": "MDBList Ratings Metadata Service",
+      "source_files": [
+        "data/mdblist/MdbListRatingsClient.kt",
+        "data/mdblist/MdbListRatingsLoader.kt",
+        "data/remote/dto/mdblist/MDBListRatingDtos.kt",
+        "data/remote/api/MDBListApi.kt",
+        "data/repository/MDBListRepository.kt"
+      ],
+      "source_behavior": "Dual-mode ratings: API key (unauthenticated) OR authenticated account-based. Supports single and batch media queries. Batches up to 200 IDs with 50ms debounce window. 30-minute cache TTL. Returns MDBListRatings domain model with IMDB, TMDB, Rotten Tomatoes, Metacritic, Trakt, Letterboxd, Audience, MAL ratings. Also includes MDBListRepository for settings-integrated access.",
+      "existing_ios_equivalent": [
+        "features/mdblist/MdbListMetadataService.kt",
+        "features/mdblist/MdbListSettingsRepository.kt",
+        "features/mdblist/MdbListSettingsStorage.kt",
+        "features/mdblist/MdbListSettings.kt",
+        "features/mdblist/MdbListSettingsStorage.ios.kt",
+        "features/mdblist/MdbListSettingsStorage.android.kt"
+      ],
+      "target_behavior": "EXISTS but limited: Only API-key-based ratings (no authenticated account fallback). No batch rating support. Simple per-request cache (not batched/debounced). Ratings returned as MetaExternalRating list (not MDBListRatings domain model). Settings have per-provider toggles and sync support. Platform-specific storage via expect/actual (NSUserDefaults for iOS, SharedPreferences for Android).",
+      "gaps": [
+        "No authenticated account-based ratings (only API key)",
+        "No batch rating requests (200-item batches with debounce)",
+        "Simpler cache (per-key, no 30-min TTL tracking)",
+        "Returns MetaExternalRating list instead of MDBListRatings domain model",
+        "No MDBListRepository layer for unified settings+ratings access"
+      ],
+      "port_required": false,
+      "ios_implementation_plan": "Enhance existing MdbListMetadataService to support authenticated account fallback for ratings. Add batch rating support. Consider upgrading cache strategy.",
+      "tests": [
+        "Source: MdbListRatingsClientTest.kt, MdbListRatingsLoaderTest.kt, MDBListRepositoryTest.kt"
+      ],
+      "status": "partial",
+      "platform_limitations": []
+    },
+    {
+      "id": "mdblist-settings-ui",
+      "capability": "MDBList Settings UI",
+      "source_files": [
+        "ui/screens/settings/MdbListTrackerViewModel.kt",
+        "ui/screens/settings/MDBListSettingsScreen.kt",
+        "ui/screens/settings/MDBListSettingsViewModel.kt",
+        "ui/screens/settings/MdbListAccountDialog.kt",
+        "domain/model/MDBListSettings.kt",
+        "domain/model/MDBListRatings.kt",
+        "data/local/MDBListSettingsDataStore.kt",
+        "ui/components/MDBListRatingsRow.kt",
+        "ui/screens/home/HomeViewModelMdbListBatchPrefetch.kt"
+      ],
+      "source_behavior": "Settings screen with API key management, account login/logout via device OAuth dialog, per-provider rating toggles. Ratings row component for detail screens. Batch prefetch for home screen ratings. MDBListSettings domain model with enabled/disabled, API key, per-provider toggles.",
+      "existing_ios_equivalent": [
+        "features/settings/MdbListSettingsPage.kt (partial)",
+        "features/settings/IntegrationsSettingsPage.kt",
+        "features/settings/TrackingSettingsPage.kt"
+      ],
+      "target_behavior": "Settings page exists for MDBList API key and provider toggles. Integrations/Tracking settings pages exist for general provider management. BUT: no account login dialog, no OAuth flow, no ratings row component, no batch prefetch for home screen.",
+      "gaps": [
+        "No MDBList account login/logout UI (device OAuth dialog)",
+        "No ratings row component for detail screens",
+        "No home screen batch prefetch for MDBList ratings",
+        "No MDBListSettings domain model in target (uses data class directly)",
+        "No MDBListSettingsDataStore (uses expect/actual storage)"
+      ],
+      "port_required": true,
+      "ios_implementation_plan": "Port account dialog for device OAuth. Create ratings row component for iOS detail screens. Add batch prefetch for home screen. Target already has MdbListSettingsPage - enhance with auth UI.",
+      "tests": [
+        "Source: MDBListSettingsViewModelTest.kt, MdbListAccountDialogTest.kt"
+      ],
+      "status": "partial",
+      "platform_limitations": []
+    },
+    {
+      "id": "tmdb-metadata",
+      "capability": "TMDB Metadata Service",
+      "source_files": [
+        "core/tmdb/TmdbMetadataService.kt",
+        "core/tmdb/TmdbService.kt",
+        "core/tmdb/TmdbCollectionSourceResolver.kt",
+        "data/remote/dto/MetaResponseDto.kt",
+        "data/mapper/MetaMapper.kt",
+        "data/mapper/CatalogMapper.kt",
+        "data/mapper/MetadataFieldMappers.kt"
+      ],
+      "source_behavior": "TMDB metadata service: enriches meta with external IDs, trailers, cast, crew, ratings, release dates, collection info. Handles ISO date parsing with fallback, non-coalescing caches for different response shapes. Separate collection source resolver for TMDB collection browsing.",
+      "existing_ios_equivalent": [
+        "features/tmdb/TmdbMetadataService.kt",
+        "features/tmdb/TmdbService.kt",
+        "features/tmdb/TmdbSettings.kt",
+        "features/tmdb/TmdbSettingsRepository.kt",
+        "features/tmdb/TmdbSettingsStorage.kt"
+      ],
+      "target_behavior": "EXISTS. TmdbMetadataService provides meta enrichment (trailers, cast, ratings, external IDs). TmdbService handles API calls. TmdbSettings manages API key. Superior in some areas: KMP commonMain, per-platform storage expect/actual. Target's MetaDetailsParser handles response parsing from addon manifest format (not TMDB API directly).",
+      "gaps": [
+        "Target TmdbMetadataService may not handle all TMDB response shapes source does (non-coalescing caches)",
+        "Source has TmdbCollectionSourceResolver for collection browsing - target may use different approach",
+        "Source has richer MetaMapper with appExtras handling (directors, writers, cast members with roles/photos)",
+        "Source parses release dates per country - target MetaDetailsParser doesn't"
+      ],
+      "port_required": false,
+      "ios_implementation_plan": "Minor: enhance TmdbMetadataService with non-coalescing cache strategy and richer appExtras parsing if needed. Collection browsing already handled differently in target.",
+      "tests": [
+        "Source: TmdbMetadataServiceTest.kt, TmdbCollectionSourceResolverTest.kt, MetaMapperTest.kt"
+      ],
+      "status": "equivalent",
+      "platform_limitations": [
+        "Target uses addon manifest format for MetaDetails, not direct TMDB API responses"
+      ]
+    },
+    {
+      "id": "trakt-integration",
+      "capability": "Trakt Integration (Auth/Sync/Library/Progress/Scrobble/History)",
+      "source_files": [
+        "data/remote/dto/trakt/*.kt (6 DTO files)",
+        "core/trakt/TraktImageUtils.kt",
+        "core/trakt/TraktPublicListSourceResolver.kt",
+        "core/tracking/TrackingProvider.kt (Trakt provider references)",
+        "core/tracking/TrackingSources.kt (Trakt in source selection)"
+      ],
+      "source_behavior": "Trakt integration as reference: DTOs for auth, comments, lists, media, scrobble, sync. Image utilities, public list source resolution. TrackingProviderId includes TRAKT with full capabilities.",
+      "existing_ios_equivalent": [
+        "features/trakt/*.kt (25 files)"
+      ],
+      "target_behavior": "FULLY IMPLEMENTED. Target has comprehensive Trakt integration: OAuth auth, sync engine, library repository, progress repository, scrobble repository, watched show snapshot, settings with sync support, comments, related repository, public list resolver, image utils, episode mapping, per-platform storage. Target's implementation is more evolved (KMP commonMain with expect/actual for iOS).",
+      "gaps": [
+        "Target Trakt implementation is more complete than source - no gaps"
+      ],
+      "port_required": false,
+      "ios_implementation_plan": "N/A - Already implemented in target. Source parity target.",
+      "tests": [
+        "Source: TraktImageUtilsTest.kt, TraktPublicListSourceResolverTest.kt"
+      ],
+      "status": "equivalent",
+      "platform_limitations": []
+    },
+    {
+      "id": "simkl-integration",
+      "capability": "Simkl Integration (Auth/Sync/Library/Progress/Scrobble/History)",
+      "source_files": [
+        "data/simkl/*.kt (16 files)",
+        "data/local/SimklSettingsDataStore.kt (in TraktSettingsDataStore.kt)"
+      ],
+      "source_behavior": "Simkl integration: OAuth PKCE auth, sync engine with activity-based delta detection, playback merge for write-after-read consistency, library projection, mutation service, scrobble reconciliation, anime ID preference support, related content service.",
+      "existing_ios_equivalent": [
+        "features/simkl/*.kt (27 files)"
+      ],
+      "target_behavior": "FULLY IMPLEMENTED. Target has more complete Simkl integration (27 files vs 16): additional components like AnimeWatchedFallback, AuthParsing, BrandPainter, LibraryAdapter, MutationRepository, PKCE, Platform, PlaybackReconciliation, Projections, RefreshPolicy, WatchDiagnostics. Target's implementation is more evolved with KMP commonMain.",
+      "gaps": [
+        "Target Simkl implementation is more complete than source - no gaps"
+      ],
+      "port_required": false,
+      "ios_implementation_plan": "N/A - Already implemented in target. Source parity target.",
+      "tests": [
+        "Source: 12+ Simkl test files"
+      ],
+      "status": "equivalent",
+      "platform_limitations": []
+    },
+    {
+      "id": "watched-progress-system",
+      "capability": "Watched & Progress System (Local + Remote)",
+      "source_files": [
+        "data/local/WatchProgressPreferences.kt",
+        "data/local/WatchedItemsPreferences.kt",
+        "data/local/WatchedSeriesStateHolder.kt",
+        "data/local/WatchProgressBuckets.kt",
+        "core/sync/WatchProgressSyncService.kt",
+        "core/sync/WatchStateMutationStore.kt",
+        "core/sync/WatchedItemsSyncService.kt",
+        "domain/model/WatchProgress.kt",
+        "domain/model/WatchedItem.kt",
+        "domain/repository/WatchProgressRepository.kt",
+        "data/repository/WatchProgressRepositoryImpl.kt",
+        "ui/components/WatchedMarker.kt"
+      ],
+      "source_behavior": "Local + remote watch progress system: WatchProgress domain model with position/duration/completion tracking, WatchedItem model for history. Preferences for progress/watched persistence. Sync services for remote synchronization. Mutation store for offline-then-sync.",
+      "existing_ios_equivalent": [
+        "features/watched/*.kt (8 files)",
+        "features/watchprogress/*.kt (18 files)",
+        "features/tracking/TrackingReads.kt"
+      ],
+      "target_behavior": "FULLY IMPLEMENTED and SUPERIOR. Target has more evolved system: WatchProgressRepository with source coordination (WatchProgressSourceCoordinator), metadata projection overlay, per-source enrichment caching, Continue Watching with next-up detection and release alerts, resume prompt management, air date utilities, multi-source projection merging, per-profile storage. Superior in many aspects.",
+      "gaps": [
+        "Target's watch progress system is superior - preserve as-is"
+      ],
+      "port_required": false,
+      "ios_implementation_plan": "N/A - Already implemented in target and is superior. Ensure MDBList progress provider integrates with this system (not the other way around).",
+      "tests": [
+        "Source: WatchProgressBucketsTest.kt, WatchProgressPreferencesStorageTest.kt, WatchedItemsPreferencesSyncTest.kt, WatchedItemsPullPreservationTest.kt, WatchProgressTest.kt, WatchProgressRepositoryProfileIsolationTest.kt, WatchStateMutationStoreTest.kt, WatchStateSyncServiceTest.kt"
+      ],
+      "status": "equivalent",
+      "platform_limitations": []
+    },
+    {
+      "id": "model-mapping",
+      "capability": "Model Mapping (DTOs \u2194 Domain Models \u2194 UI Models)",
+      "source_files": [
+        "data/mapper/AddonMapper.kt",
+        "data/mapper/StreamMapper.kt",
+        "data/mapper/MetaMapper.kt",
+        "data/mapper/CatalogMapper.kt",
+        "data/mapper/MetadataFieldMappers.kt"
+      ],
+      "source_behavior": "Mappers for addon manifests, streams, meta details, catalog previews, metadata fields. Handles complex parsing: person names from multiple formats (string, array, object with role/photo), trailer extraction from trailer streams, release date parsing per country, runtime format parsing (1h30m \u2192 90min).",
+      "existing_ios_equivalent": [
+        "features/details/MetaDetailsParser.kt",
+        "features/details/MetaDetailsModels.kt",
+        "features/addons/AddonManifestParser.kt",
+        "features/addons/AddonHttpClient.kt",
+        "features/streams/StreamParser.kt",
+        "features/home/HomeCatalogParser.kt"
+      ],
+      "target_behavior": "FULLY IMPLEMENTED and SUPERIOR. Target uses addon-manifest format parsing (MetaDetailsParser) instead of direct TMDB DTO mapping. More evolved: handles embedded streams in meta, proxy headers, behavior hints, multi-format trailers (YouTube, etc.), release alert state calculation, next-up with season/episode detection. Target's approach is addon-native rather than TMDB-DTO-native.",
+      "gaps": [
+        "Target model mapping is more evolved for addon-native content - preserve as-is"
+      ],
+      "port_required": false,
+      "ios_implementation_plan": "N/A - Already implemented in target. Ensure MDBList library items map correctly to target's LibraryItem domain model.",
+      "tests": [
+        "Source: MetaMapperTest.kt"
+      ],
+      "status": "equivalent",
+      "platform_limitations": []
+    },
+    {
+      "id": "profiles-system",
+      "capability": "Profiles System (Multi-Profile with Cloud Sync)",
+      "source_files": [
+        "core/profile/ProfileManager.kt",
+        "core/profile/ProfileScopedCredentialStore.kt"
+      ],
+      "source_behavior": "Profile manager with active profile tracking, profile-scoped credential store interface. Used by auth stores to scope credentials per profile.",
+      "existing_ios_equivalent": [
+        "features/profiles/*.kt (14 files)"
+      ],
+      "target_behavior": "FULLY IMPLEMENTED and SUPERIOR. Target has comprehensive profile system: Supabase-backed cloud sync for profiles, PIN protection with hashing, avatar management, per-profile settings isolation, profile switching with state restoration. Multiple profiles with different tracking provider configurations. Profile-scoped credential stores for each provider.",
+      "gaps": [
+        "Target profiles system is superior - preserve as-is"
+      ],
+      "port_required": false,
+      "ios_implementation_plan": "N/A - Already implemented and superior. Ensure MDBList auth store integrates with profile-scoped credential pattern.",
+      "tests": [],
+      "status": "equivalent",
+      "platform_limitations": []
+    }
+  ],
+  "additional_files_inspected": [
+    "Source: docs/architecture/mdblist-library.md",
+    "Source: data/remote/dto/mdblist/MDBListRatingDtos.kt",
+    "Source: data/remote/dto/trakt/*.kt",
+    "Source: ui/screens/settings/MdbListTrackerViewModel.kt",
+    "Source: ui/screens/settings/MDBListSettingsScreen.kt",
+    "Source: ui/screens/settings/MdbListAccountDialog.kt",
+    "Source: ui/components/MDBListRatingsRow.kt",
+    "Source: ui/screens/home/HomeViewModelMdbListBatchPrefetch.kt",
+    "Source: domain/model/MDBListSettings.kt",
+    "Source: domain/model/MDBListRatings.kt",
+    "Source: data/local/MDBListSettingsDataStore.kt",
+    "Target: features/library/LibraryRepository.kt",
+    "Target: features/library/LibraryModels.kt",
+    "Target: features/library/LibraryDisplaySettings.kt",
+    "Target: features/library/LibrarySyncReconciler.kt",
+    "Target: features/details/MetaDetailsRepository.kt",
+    "Target: features/details/SeriesPlaybackResolver.kt",
+    "Target: features/settings/IntegrationsSettingsPage.kt",
+    "Target: features/settings/TrackingSettingsPage.kt",
+    "Target: features/settings/MdbListSettingsPage.kt",
+    "Target: core/sync/ProviderCredentialModels.kt",
+    "Target: core/sync/ProfileSettingsCredentialPolicy.kt",
+    "Target: features/collection/TmdbCollectionSourceResolver.kt"
+  ],
+  "risks": [
+    "MDBList API rate limits (reference handles with per-key rate limiting, retry-after, exponential backoff) - target must implement similar in MdbListHttpClient",
+    "MDBList OAuth scope invalidation on profile change (reference uses scope generation tracking with CancellationException for stale operations) - critical for multi-profile correctness",
+    "MDBList sync journal has 30-day retention - after that a full sync is required; target must implement the same watermark/expiry logic",
+    "MDBList API returns IDs in multiple schemes (IMDB, TMDB, TVDB, Trakt, MDBList) - cross-referencing via MdbListMediaIndex is essential for correct projection",
+    "Write-after-read consistency for scrobble (reference implements mergeFetchedPlayback to prefer local writes over stale server state) - must be ported",
+    "Target's Continue Watching enrichment cache is per-source (WatchProgressSource-scoped) - MDBLIST must be added as a new source scope",
+    "Target's Trakt and Simkl integrations serve as the pattern for MDBList parity - not re-inventing the architecture is critical",
+    "MDBList client ID is sensitive - must be in config/BuildConfig, not hardcoded",
+    "iOS Keychain vs Android ProtectedProfilePreferences - expect/actual pattern already established for Trakt and Simkl auth storage"
+  ]
+}

@@ -1,0 +1,614 @@
+{
+  "domain": "player",
+  "source_sha": "b9408cd5729fd99e9afe56cc334973fe0725bc7d",
+  "target_start_sha": "6ad6c72c4ebf5cf1d9edf5d5d5eb110fc457cf92",
+  "audited_files": [
+    "app/src/main/java/com/nuvio/tv/core/player/FrameRateUtils.kt",
+    "app/src/main/java/com/nuvio/tv/core/player/MatroskaAfrProbe.kt",
+    "app/src/main/java/com/nuvio/tv/core/player/BitrateAwareLoadControl.kt",
+    "app/src/main/java/com/nuvio/tv/core/player/DisplayCapabilities.kt",
+    "app/src/main/java/com/nuvio/tv/core/player/FrameRateUtils.kt",
+    "app/src/main/java/com/nuvio/tv/core/network/BackendRateLimit.kt",
+    "app/src/main/java/com/nuvio/tv/core/network/StreamSpeedTester.kt",
+    "app/src/main/java/com/nuvio/tv/core/player/DoviBridge.kt",
+    "app/src/main/java/com/nuvio/tv/core/player/DolbyVisionMatroskaTransformer.kt",
+    "app/src/main/java/com/nuvio/tv/core/player/HevcDvRpuStripper.kt",
+    "app/src/main/java/com/nuvio/tv/core/player/HevcHdr10PlusStripper.kt",
+    "app/src/main/java/com/nuvio/tv/core/player/DolbyVisionExtractorsFactory.kt",
+    "app/src/main/java/com/nuvio/tv/core/player/DolbyVisionCodecFallback.kt",
+    "app/src/main/java/com/nuvio/tv/core/player/DolbyVisionBaseLayerPolicy.kt",
+    "app/src/main/java/com/nuvio/tv/data/local/PlayerSettingsDataStore.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/GainAudioProcessor.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerMediaSourceFactory.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/NuvioExoPlayerPerformanceHelper.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/NuvioMpvSurfaceView.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/ParallelRangeDataSource.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/PlaybackSpeedAwareAudioRenderer.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/PlaybackSpeedAwareAudioSink.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerAspectScaleUtils.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerFrameRateHeuristics.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerFirstFrameWatchdogPolicy.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerFirstFrameCodecRecoveryPolicy.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerStallWatchdogPolicy.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerPlaybackNetworking.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerRuntimeController.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerRuntimeControllerAfrPreflight.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerRuntimeControllerAudioDelayRoutes.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerRuntimeControllerEngineFailover.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerRuntimeControllerErrorRecovery.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerRuntimeControllerInitialization.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerRuntimeControllerLifecycle.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerRuntimeControllerMetadata.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerRuntimeControllerMpv.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerRuntimeControllerStreams.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerRuntimeControllerTracks.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerRuntimeControllerTrackSelection.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerUiState.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerScreen.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/VodCacheWriteSink.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/seekbuffer/SeekBufferSettings.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/seekbuffer/SeekReadAhead.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/seekpreview/BoundedSeekrTrack.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/seekpreview/SeekPreviewCueGrid.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/seekpreview/SeekPreviewPlayerHooks.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/seekpreview/SeekPreviewState.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/seekpreview/SeekPreviewSyncConfig.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/seekpreview/SeekPreviewSyncOverlay.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/seekpreview/SeekPreviewThumbnailHost.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/seekpreview/SeekPreviewTrack.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/seekpreview/SeekrContentMapping.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/seekpreview/SeekrKeyPreferences.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/seekpreview/local/KeyframeThumbnailDecoder.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/seekpreview/local/LocalPreviewSources.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/seekpreview/local/LocalPreviewTrack.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/seekpreview/local/LocalSeekPreviewSettings.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/seekpreview/local/VideoKeyframeTap.kt",
+    "app/src/main/java/com/nuvio/tv/ui/reshaped/livetv/LiveTvFrameRate.kt",
+    "app/src/main/java/com/nuvio/tv/ui/reshaped/volumeboost/VolumeBoostBar.kt",
+    "app/src/main/java/com/nuvio/tv/ui/reshaped/volumeboost/VolumeBoostSoftClip.kt"
+  ],
+  "capabilities": [
+    {
+      "id": "afr-preflight-3-stage",
+      "capability": "Frame Rate Matching: 3-stage probe (OkHttp → NextLib → Extractor timestamp sampling)",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/core/player/FrameRateUtils.kt",
+        "app/src/main/java/com/nuvio/tv/core/player/MatroskaAfrProbe.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerRuntimeControllerAfrPreflight.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerFrameRateHeuristics.kt",
+        "app/src/main/java/com/nuvio/tv/core/player/DisplayCapabilities.kt"
+      ],
+      "source_behavior": "On startup, if AFR is not OFF, runs up-to-18s parallel preflight: (1) OkHttp CDN warmup (256KB Range) then 4MB head+tail sparse probe checking EBML/MP4 atoms for declared FPS; (2) NextLib MediaInfo for MKV/HTTP/file sources (skipped with auth headers); (3) MediaExtractor frame timestamp sampling (350 frames). Results cached in LRU(64) by URL+headers. Match: selects display mode by frame rate → resolution groups → cadence weight. Two AFR modes: START (switch on start, never restore) and START_STOP (restore original on stop). Live TV skips preflight and measures from rendered frames via VideoFrameMetadataListener (48-sample median gap).",
+      "existing_ios_equivalent": [
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerSettingsRepository.kt",
+        "iosApp/iosApp/Info.plist"
+      ],
+      "target_behavior": "iOS has NO frame-rate/refresh-rate switching. Info.plist sets CADisableMinimumFrameDurationOnPhone=true (allows VRR — opposite of AFR). PlayerSettingsUiState has no frameRateMatchingMode field. No probe, no display-mode selection, no afrProbeRunning state. iOS display system (AVDisplayManager) is tvOS-only, not available on iPhone/iPad. Frame rate utils (snapToStandardRate, NTSC_FILM_FPS=24000/1001 etc.) exist in shared Kotlin but are dead code — never called.",
+      "gaps": [
+        "No display mode switching (iOS has no Display.setPreferredDisplayModeId equivalent)",
+        "No frame-rate probe infrastructure",
+        "No frame rate cache",
+        "No LiveTvFrameRate measurement (iOS has no LiveTvPlaybackRegistry)",
+        "CADisableMinimumFrameDurationOnPhone conflicts with AFR philosophy",
+        "FrameRateSource.PROBE, .TRACK enums not plumbed into iOS PlayerPlaybackSnapshot or uiState"
+      ],
+      "port_required": false,
+      "ios_implementation_plan": "NOT PORTABLE: iOS lacks Android Display API. If iOS gains VRR awareness in future, implement via AVDisplayManager (tvOS) or DisplayMotionRate on iPhone; otherwise skip entire AFR system. CADisableMinimumFrameDurationOnPhone should remain.",
+      "tests": [
+        "app/src/test/java/com/nuvio/tv/core/player/FrameRateUtilsAfrTest.kt",
+        "app/src/test/java/com/nuvio/tv/core/player/FrameRateModeSelectionTest.kt",
+        "app/src/test/java/com/nuvio/tv/core/player/FrameRateUtilsAfrCancellationTest.kt",
+        "app/src/test/java/com/nuvio/tv/ui/screens/player/AfrPreflightPolicyTest.kt"
+      ],
+      "status": "missing",
+      "platform_limitations": [
+        "iOS/MacOS has no public display-mode API for app-level refresh rate switching",
+        "AVDisplayManager is tvOS (Apple TV) only, absent on iPhone/iPad",
+        "Variable refresh rate on iOS is system-managed, not application-managed"
+      ]
+    },
+    {
+      "id": "volume-boost-soft-clip",
+      "capability": "Volume Boost with soft-clip limiting (0-200%, tanh knee curve)",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/ui/reshaped/volumeboost/VolumeBoostSoftClip.kt",
+        "app/src/main/java/com/nuvio/tv/ui/reshaped/volumeboost/VolumeBoostBar.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/GainAudioProcessor.kt"
+      ],
+      "source_behavior": "Volume boost 0-200% via GainAudioProcessor in the ExoPlayer audio pipeline. Samples passing through the pipeline are soft-clipped: linear below 0.8 fraction, then tanh-bent above (tanh((magnitude-0.8)/0.2)) so boosted peaks bend instead of hard-clipping. UI shows a percentage bar. Applied per-stream.",
+      "existing_ios_equivalent": [
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/VolumeBoost.kt",
+        "iosApp/iosApp/Player/MPVPlayerBridge.swift (line 794-798)",
+        "composeApp/src/iosMain/kotlin/com/nuvio/app/features/player/PlayerEngine.ios.kt (line 105-107)"
+      ],
+      "target_behavior": "VolumeBoost.kt in shared Kotlin has both the softClipBoostedSample() function and volumeBoostPercentToMpv() mapping — but these are ONLY used by the iOS bridge. The iOS controller clamps percent to [0,200] then calls bridge.setVolumeBoostPercent(percent), which maps directly to mpv's native volume property (range 0-200). mpv is configured with volume-max=400 so the scaled volume covers 0-200% naturally. THE SOFT-CLIP FUNCTION IS DEAD CODE on iOS: the Kotlin softClipBoostedSample() is never wired into any audio pipeline (iOS has no GainAudioProcessor equivalent). VolumeBoostTest.kt tests exist and pass, but test only the pure function — not pipeline integration.",
+      "gaps": [
+        "softClipBoostedSample() in Kotlin is dead code — bypassed by direct mpv volume mapping",
+        "No GainAudioProcessor or equivalent audio processing stage on iOS",
+        "iOS can only adjust volume via mpv's internal volume (softvol=yes, volume-max=400)",
+        "Mpv's volume control applies linear gain without soft-clipping — boosted samples can hard-clip"
+      ],
+      "port_required": true,
+      "ios_implementation_plan": "When the iOS player pipeline supports audio processing, wire softClipBoostedSample via mpv's audio-filter or implement via Swift DSP. Short-term: acceptable as-is since mpv's softvol provides basic limiting. Medium-term: add mpv --audio-filter=lavc:... or implement post-processing in Swift using the shared Kotlin softClipBoostedSample via FFI/Kotlin interop.",
+      "tests": [
+        "composeApp/src/commonTest/kotlin/com/nuvio/app/features/player/VolumeBoostTest.kt"
+      ],
+      "status": "partial",
+      "platform_limitations": [
+        "iOS mpv bridge cannot insert Kotlin audio processing between source and mpv",
+        "No ExoPlayer pipeline on iOS — mpv owns the entire audio path"
+      ]
+    },
+    {
+      "id": "seek-preview-thumbnails",
+      "capability": "Seek Preview with thumbnail grid, local keyframe extraction, and server-side Seekr tracks",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/seekpreview/SeekPreviewTrack.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/seekpreview/SeekPreviewCueGrid.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/seekpreview/SeekPreviewState.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/seekpreview/SeekPreviewPlayerHooks.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/seekpreview/SeekPreviewThumbnailHost.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/seekpreview/SeekPreviewSyncConfig.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/seekpreview/SeekPreviewSyncOverlay.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/seekpreview/BoundedSeekrTrack.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/seekpreview/SeekrContentMapping.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/seekpreview/SeekrKeyPreferences.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/seekpreview/local/LocalPreviewSources.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/seekpreview/local/LocalPreviewTrack.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/seekpreview/local/VideoKeyframeTap.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/seekpreview/local/KeyframeThumbnailDecoder.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/seekpreview/local/LocalSeekPreviewSettings.kt"
+      ],
+      "source_behavior": "Full seek preview system: Server-side Seekr tracks (BoundedSeekrTrack) provide cue-based preview positions; local preview sources (VideoKeyframeTap → KeyframeThumbnailDecoder) extract keyframes from local file and decode to thumbnails; SeekPreviewThumbnailHost renders as a grid overlay on timeline scrub. SeekPreviewState manages preview lifecycle. Supports multiple sources: Seekr API, local keyframes, sync overlay for A/V sync markers.",
+      "existing_ios_equivalent": [
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/SeekPreviewCue.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerScreenRuntimeGestureActions.kt (lines 101-123)"
+      ],
+      "target_behavior": "iOS has SeekPreviewCue.kt (shared utility with SeekPreviewCueStepper for cue-aligned stepping, offset constants). PlayerScreenRuntimeGestureActions.showHorizontalSeekPreview() shows a TEXT-based time/delta indicator during swipe gestures — it displays the target time string and delta, NOT thumbnail images. The SeekPreviewCueTicks widget may show cue markers on the timeline (drawn via SeekPreviewCueStepper). No local keyframe extraction, no Seekr integration, no thumbnail grid. The cancel/timeout constants exist (SEEK_PREVIEW_OFFSET_MIN_MS=-240000, SEEK_PREVIEW_OFFSET_STEP_MS=250, coarse after 3 repeats = 2000ms step).",
+      "gaps": [
+        "No thumbnail rendering (SeekPreviewThumbnailHost missing on iOS)",
+        "No local keyframe extraction (no mpv keyframe tap → decoder pipeline)",
+        "No Seekr API integration (BoundedSeekrTrack, SeekrContentMapping absent)",
+        "No SeekPreviewPlayerHooks to pause playback during preview generation",
+        "SeekPreviewCueStepper utility exists but no UI wiring for cue grid",
+        "No SeekPreviewState lifecycle management",
+        "Text-only preview indicator during horizontal swipe gestures"
+      ],
+      "port_required": true,
+      "ios_implementation_plan": "Port SeekPreviewCueGrid and SeekPreviewCueStepper + add thumbnail support. For local keyframes, use mpv's screenshot command or encode thumbnail via ffmpeg/Libav. For Seekr API, implement as HTTP client in Swift. Render thumbnails in the timeline scrub overlay. PreviewPlayerHooks will need Swift-level mpv event callback for pause/resume during preview.",
+      "tests": [
+        "app/src/test/java/com/nuvio/tv/ui/screens/player/seekpreview/SeekPreviewCueStepperTest.kt",
+        "app/src/test/java/com/nuvio/tv/ui/screens/player/seekpreview/SeekrContentMappingTest.kt",
+        "composeApp/src/commonTest/kotlin/com/nuvio/app/features/player/SeekPreviewCueTest.kt"
+      ],
+      "status": "missing",
+      "platform_limitations": [
+        "iOS cannot use Android's MediaExtractor for keyframe extraction",
+        "Requires Swift-native or mpv-command-based keyframe capture"
+      ]
+    },
+    {
+      "id": "custom-buffer-load-control",
+      "capability": "Custom load control with bitrate-aware buffering, parallel range sources, and VOD cache",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/core/player/BitrateAwareLoadControl.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/NuvioExoPlayerPerformanceHelper.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerMediaSourceFactory.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/ParallelRangeDataSource.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/ParallelRangeRetryAfter.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/VodCacheWriteSink.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/seekbuffer/SeekReadAhead.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerPlaybackNetworking.kt",
+        "app/src/main/java/com/nuvio/tv/core/network/BackendRateLimit.kt",
+        "app/src/main/java/com/nuvio/tv/core/network/StreamSpeedTester.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/seekbuffer/SeekBufferSettings.kt"
+      ],
+      "source_behavior": "Three-tier buffer system: (1) Stock DefaultLoadControl (1.5s back buffer, no VOD cache) when master toggle off; (2) NuvioExoPlayerPerformanceHelper.buildLoadControl() with custom min/max buffer, budget (managed by device memory or user slider, up to 2048MB), allocator, bitrate-aware sizing; (3) Parallel chunk sources via ParallelRangeDataSource for range-request splitting across multiple HTTP connections. BitrateAwareLoadControl adjusts buffer size in-flight based on measured throughput. VOD cache (VodCacheWriteSink) paired with SeekReadAhead for local cached reads. HTTP/2 support. Backend rate limiting per-host. StreamSpeedTester measures endpoint throughput.",
+      "existing_ios_equivalent": [
+        "iosApp/iosApp/Player/MPVPlayerBridge.swift (lines 459-503, 681-682)"
+      ],
+      "target_behavior": "iOS uses mpv's built-in demuxer cache exclusively. setupMpv() sets demuxer-max-bytes and demuxer-max-back-bytes from SeekBufferSettings (values computed per-device in shared Kotlin). No custom LoadControl. No parallel range fetching. No VOD cache. No bitrate-aware buffer sizing. No speed tester. HTTP headers are forwarded via mpv's http-header-fields property. The only buffer parameters are the two demuxer cache byte limits.",
+      "gaps": [
+        "No BitrateAwareLoadControl or equivalent adaptive buffering",
+        "No parallel HTTP range fetching",
+        "No VOD cache write/read pipeline",
+        "No BackendRateLimit / StreamSpeedTester integration",
+        "mpv demuxer cache is a single fixed-size FIFO — cannot dynamically adjust",
+        "No HTTP/2 configuration forwarded to mpv's HTTP stack"
+      ],
+      "port_required": false,
+      "ios_implementation_plan": "Partially portable. mpv on iOS can accept cache options (demuxer-max-bytes, cache, etc.). Port SeekBufferSettings values to mpv options. For parallel fetching: not applicable — mpv handles its own HTTP. For bitrate-aware adaptive buffering: mpv has no plugin API for this; consider custom Lua script or wait for libmpv client API to expose internal bandwidth estimates. Priority: LOW — mpv's built-in cache is sufficient for most iOS streams.",
+      "tests": [
+        "app/src/test/java/com/nuvio/tv/ui/screens/player/NuvioExoPlayerPerformanceHelperTest.kt",
+        "app/src/test/java/com/nuvio/tv/ui/screens/player/ParallelRangeDataSourceTest.kt"
+      ],
+      "status": "platform-adaptation",
+      "platform_limitations": [
+        "iOS uses libmpv's HTTP stack, not Kotlin/ExoPlayer data sources",
+        "Parallel range requests require mpv-level HTTP client modification",
+        "No ExoPlayer pipeline means no Android Media3 LoadControl integration"
+      ]
+    },
+    {
+      "id": "error-recovery-engine-failover",
+      "capability": "Playback error recovery: retry classification, engine failover, PCM/DV7 fallback",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerRuntimeControllerErrorRecovery.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerRuntimeControllerEngineFailover.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerRuntimeControllerInitialization.kt"
+      ],
+      "source_behavior": "Startup recovery (3 retries with delay) for transient IO errors. Auto-retry (2 attempts) with position save. First attempt is light (re-prepare), second is full teardown. Error classification: source/IO errors (2xxx range) retryable; bad HTTP 400/401/403/404/410 are NOT retried; decoder errors retryable (often transient after pause/resume); IllegalStateException/NPE retryable. Engine failover: if startup fails with current engine, automatically switch to the other (ExoPlayer ↔ MPV). PCM fallback: on audio track init failure (5001), set speed to 1.00001× to force software PCM decode. DV7-to-HEVC fallback: on decoder init failure (4003), map DV7 to HEVC base layer. Startup loading policy watchdog (first frame timeout).",
+      "existing_ios_equivalent": [
+        "iosApp/iosApp/Player/MPVPlayerBridge.swift (lines 637-648, 1123-1171)"
+      ],
+      "target_behavior": "iOS retry() → retryPlayback() which re-issues loadfile with current path + 500ms-delayed seek to previous position. No error classification logic — retry is unconditional. No engine failover (iOS only has MPV). No PCM fallback for audio track init failure. No DV7-to-HEVC fallback (iOS lacks Dolby Vision bridge). Error reporting via mpv log messages (warn/error/fatal level, last 4 messages kept) + end-file reason. Kotlin polls getErrorMessage() every 250ms. No retry count limit visible in Swift, but the Kotlin bridge has no retry-state tracking.",
+      "gaps": [
+        "No error classification (retries unconditional regardless of error type)",
+        "No engine failover — iOS only has MPV, no ExoPlayer fallback",
+        "No PCM fallback for audio track init failure",
+        "No DV7-to-HEVC fallback",
+        "No startup retry count limit — could loop indefinitely on persistent errors",
+        "No first-frame watchdog timeout",
+        "No retry-delay between attempts (Swift retry fires immediately)",
+        "No position-saving re-init — retryPlayback just re-loads and seeks 500ms later"
+      ],
+      "port_required": true,
+      "ios_implementation_plan": "Port error classification from isRetryablePlaybackError to Swift (or use shared Kotlin enum). Add retry count limit (3 startup + 2 auto) in Swift. Add retry delay (1-2s) before re-load. Keep position across retries using pending-seek pattern from Reshaped. For PCM fallback: when mpv reports audio track init failure, re-init with audio-channels=stereo or forced PCM output. Engine failover is N/A (no ExoPlayer on iOS).",
+      "tests": [],
+      "status": "missing",
+      "platform_limitations": [
+        "No engine alternatives on iOS to fail over to",
+        "Swift/libmpv error API requires C-level mpv error code parsing"
+      ]
+    },
+    {
+      "id": "hdr-dolby-vision-bridge",
+      "capability": "Dolby Vision profile 7→8.1 conversion and advanced HDR handling",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/core/player/DoviBridge.kt",
+        "app/src/main/java/com/nuvio/tv/core/player/DolbyVisionMatroskaTransformer.kt",
+        "app/src/main/java/com/nuvio/tv/core/player/DolbyVisionExtractorsFactory.kt",
+        "app/src/main/java/com/nuvio/tv/core/player/DolbyVisionCodecFallback.kt",
+        "app/src/main/java/com/nuvio/tv/core/player/DolbyVisionBaseLayerPolicy.kt",
+        "app/src/main/java/com/nuvio/tv/core/player/HevcDvRpuStripper.kt",
+        "app/src/main/java/com/nuvio/tv/core/player/HevcHdr10PlusStripper.kt"
+      ],
+      "source_behavior": "DoviBridge wraps native C library for realtime DV7→DV8.1 conversion. Probe tests conversion support per-stream before enabling. DolbyVisionMatroskaTransformer restructures MKV for the bridge. Multiple DV7 handling modes: AUTO (decide per display), DV81_LIBDOVI (convert to DV8.1), HDR10_BASE_LAYER (strip to HDR10), STRIP_DV (remove DV entirely). DV5→DV8.1 conversion support. Codec fallback if DV7 fails. HDR10+ SEI stripping. Auto-fallback from DV81 to HDR10 on probe failure.",
+      "existing_ios_equivalent": [
+        "iosApp/iosApp/Player/MPVPlayerBridge.swift (lines 650-680, 486-488)",
+        "iosApp/iosApp/Player/MetalLayer.swift"
+      ],
+      "target_behavior": "iOS mpv bridge sets tone-mapping=auto, hdr-compute-peak=yes, target-colorspace-hint=yes, MetalLayer with wantsExtendedDynamicRangeContent=true. User can configure via IosVideoSettingsModal: tone-mapping mode, target primaries/transfer, peak detection, colorspace hint, deband, interpolation, brightness/contrast/saturation/gamma. No DoviBridge — iOS relies entirely on mpv's built-in DV handling via moltenvk. No DV7→DV8.1 conversion. No DV profile stripping. No HDR10+ SEI stripping. DV7 profile 7 on iOS will fall back to HDR10 base layer via mpv's internal handling (if at all). IOS_HARDWARE_DECODER_MODE options: VideoToolbox (hwdec=videotoolbox) — no mediacodec-copy fallback like Android.",
+      "gaps": [
+        "No DoviBridge native library for DV7→DV8.1 conversion on iOS",
+        "No DV MatroskaTransformer for restructuring MKV with multiple DV layers",
+        "No DV codec fallback selection (DV7→HDR10 fallback must come from mpv itself)",
+        "No DV profile stripping (DV5→DV8.1, HDR10+ SEI removal)",
+        "iOS cannot force DV7→HEVC base layer decode",
+        "No advanced tone-mapping target primaries/transfer user config surfaced",
+        "No hwdec-codecs whitelist set in iOS bridge (unlike Android which explicitly lists h264,hevc,mpeg4,etc.)"
+      ],
+      "port_required": false,
+      "ios_implementation_plan": "DV bridge is native C library compiled for ARM — can potentially be cross-compiled for iOS. MatroskaTransformer is Kotlin/Java (MKV parsing) — could be ported to Swift. DV API/settings not surfaced in iOS PlayerSettingsUiState (iosVideoOutputPreset replaces it with coarse presets). Priority: LOW — most iOS DV content is profile 5/8, not 7. Profile 7 is rare outside UHD Blu-ray remuxes.",
+      "tests": [
+        "app/src/test/java/com/nuvio/tv/core/player/DolbyVisionBaseLayerPolicyTest.kt"
+      ],
+      "status": "platform-adaptation",
+      "platform_limitations": [
+        "iOS mpv uses moltenvk GPU backend — DV handling depends on GPU pipeline",
+        "No Android native MKV extractor hooks on iOS",
+        "Apple's VToolBox decoder may handle DV5 natively"
+      ]
+    },
+    {
+      "id": "playback-speed-audio-pipeline",
+      "capability": "Speed-aware audio renderer and sink with PCM fallback",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/PlaybackSpeedAwareAudioRenderer.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/PlaybackSpeedAwareAudioSink.kt"
+      ],
+      "source_behavior": "PlaybackSpeedAwareAudioRenderer wraps MediaCodecAudioRenderer to feed speed to a PlaybackSpeedAwareAudioSink that adjusts audio output timing and forces PCM decode when speed≠1 (prevents passthrough from breaking). AudioSink wrapper applies speed-aware buffering so audio stays in sync with video at non-1x speeds.",
+      "existing_ios_equivalent": [
+        "iosApp/iosApp/Player/MPVPlayerBridge.swift (lines 693-697)"
+      ],
+      "target_behavior": "iOS uses mpv's native speed property (mpv_set_property 'speed'). mpv internally handles audio pitch/speed adjustment. No custom audio renderer or sink. Speed is set directly via bridge.setPlaybackSpeed(speed). iOS Kotlin controller calls bridge.setPlaybackSpeed(speed) without any PCM-forcing logic (no tryAudioTrackPcmFallback equivalent).",
+      "gaps": [
+        "No PCM-forcing fallback when switching speed with passthrough audio",
+        "No PlaybackSpeedAwareAudioSink wrapper for audio timing sync"
+      ],
+      "port_required": true,
+      "ios_implementation_plan": "For PCM fallback: when changing speed, if audio is in passthrough mode, switch to PCM output via mpv audio-channels or ao property before setting speed. Simpler than Android's renderer wrapper since mpv handles its own audio speed. The PCM fallback is the only gap — implement in Swift setSpeed() by checking current audio output format first.",
+      "tests": [],
+      "status": "partial",
+      "platform_limitations": [
+        "iOS mpv's speed handling is opaque — pitch correction quality depends on mpv build"
+      ]
+    },
+    {
+      "id": "background-and-nowplaying",
+      "capability": "Background playback, NowPlaying metadata, remote control, and audio session management",
+      "source_files": [],
+      "source_behavior": "Android TV has no lock-screen media integration. Background behavior handled by Android windowing system. Remote control via hardware keys and activity-agnostic input handling.",
+      "existing_ios_equivalent": [
+        "iosApp/iosApp/Player/NowPlayingController.swift",
+        "iosApp/iosApp/Info.plist",
+        "iosApp/iosApp/Player/MPVPlayerBridge.swift (lines 506-523, 851-970)",
+        "composeApp/src/iosMain/kotlin/com/nuvio/app/features/player/PlayerPlatformEffects.ios.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerScreenRuntimeEffects.kt (lines 175-190)"
+      ],
+      "target_behavior": "iOS has full NowPlaying integration via MPNowPlayingInfoCenter: title, subtitle, artwork (downloaded+cached), duration, position, playback rate, live indicator. Remote command center handles play/pause/toggle/skip(10s)/seek. UIBackgroundModes=enabled allows background audio. enterBackground/enterForeground hooks pause+disable video / re-enable+play. AVAudioSession set to playback+moviePlayback category. Screen brightness control via IOSPlayerGestureController. Idle timer disabled during playback (EnterImmersivePlayerMode). Remote control events enabled (beginReceivingRemoteControlEvents). PiP is NO-OP on iOS (ManagePlayerPictureInPicture = Unit).",
+      "gaps": [
+        "Background + NowPlaying is iOS-only feature — Android TV cannot do this. NOT a gap but a platform strength.",
+        "PiP (Picture-in-Picture) is explicitly no-op on iOS — PlayerPlatformEffects.ios.kt returns Unit/False. Consider implementing via mpv's native PiP (iOS 12+ PiP API) if needed.",
+        "Artwork cache is unbounded (NSCache without size limit) — could grow memory. Reshaped equivalent may limit to single item.",
+        "Remote control only registers shared() center — multiple simultaneous player instances would conflict."
+      ],
+      "port_required": false,
+      "ios_implementation_plan": "N/A — iOS-native feature, already implemented. Consider adding PiP support via Apple's AVPictureInPicture API in a future iteration.",
+      "tests": [],
+      "status": "equivalent",
+      "platform_limitations": [
+        "PiP explicitly no-op — Apple PiP API would need addition",
+        "Artwork cache has no eviction policy — add size cap or LRU"
+      ]
+    },
+    {
+      "id": "separate-audio-url",
+      "capability": "Separate audio track loading (audio URL alongside video URL)",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerMediaSourceFactory.kt"
+      ],
+      "source_behavior": "Audio URL passed as sourceAudioUrl parameter to PlatformPlayerSurface. MediaSourceFactory creates dual-track playback with separate video and audio sources. Used for DVB audio replacement, director's commentary, etc.",
+      "existing_ios_equivalent": [
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerEngine.kt (line 61)",
+        "composeApp/src/iosMain/kotlin/com/nuvio/app/features/player/PlayerEngine.ios.kt (lines 286-293)",
+        "iosApp/iosApp/Player/MPVPlayerBridge.swift (lines 25-32, 575-578)"
+      ],
+      "target_behavior": "iOS passes sourceAudioUrl through Kotlin bridge → Swift loadFileWithAudio(). After primary loadfile with video URL, Swift schedules a delayed (200ms) audio-add command to add the audio URL as a secondary track. Subtitles are also added with separate 300ms delay. Headers passed via http-header-fields mpv property.",
+      "gaps": [
+        "200ms fixed delay between video load and audio-add may miss initial frames — Reshaped sets both sources simultaneously in ExoPlayer",
+        "audio-add with 'select' flag may not work for all container formats — mpv may fail to find the track if not a recognized format",
+        "No error handling for audio-add failure (checkForErrors: false)",
+        "No audio track selection after add — mpv selects automatically",
+        "Subtitles also use a fixed absolute delay (300ms) — might race with load on slow connections"
+      ],
+      "port_required": true,
+      "ios_implementation_plan": "Consider using mpv's --audio-file option via loadfile append or passing both URLs in a single command. The 200/300ms delays are fragile — investigate if mpv can accept audio-file as a loadfile sub-option for synchronous loading. If not, extend the retry polling for audio-add with a callback rather than fixed delay.",
+      "tests": [],
+      "status": "partial",
+      "platform_limitations": [
+        "libmpv has no built-in 'play two URLs simultaneously' API",
+        "audio-add with 'select' depends on mpv's demuxer support for the audio format"
+      ]
+    },
+    {
+      "id": "aspect-ratio-resize-mode",
+      "capability": "Video resize mode (Fit/Fill/Zoom) with aspect-ratio-aware scaling",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerAspectScaleUtils.kt"
+      ],
+      "source_behavior": "PlayerAspectScaleUtils computes correct scale factors for each resize mode considering video aspect ratio and viewport dimensions. Supports Fit (letterbox), Fill (crop to fill), Zoom (overscan). Aspect mode (Original/FillScreen/Stretch) is a separate axis from resize.",
+      "existing_ios_equivalent": [
+        "iosApp/iosApp/Player/MPVPlayerBridge.swift (lines 704-717)",
+        "composeApp/src/iosMain/kotlin/com/nuvio/app/features/player/PlayerEngine.ios.kt (lines 306-315)",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerScreenRuntimeGestureActions.kt (lines 211-224)"
+      ],
+      "target_behavior": "iOS maps resize mode via Kotlin enum→Int (0=Fit, 1=Fill, 2=Zoom) to mpv's panscan and video-unscaled properties. Fit→panscan=0.0, Fill→panscan=1.0, Zoom→panscan=1.0. video-unscaled=no for all modes. Surface layout is synced with deferred passes (4 retries at 0, 50ms, 150ms, 350ms) to catch viewport changes during transitions. AspectMode (original/fill/stretch) is handled separately via NuvioMpvSurfaceView's applyAspectMode which reads video-out-params/aspect and computes scaleX/scaleY.",
+      "gaps": [
+        "iOS sets same panscan=1.0 for both Fill AND Zoom — they should differ (Zoom = panscan=-1? or video-zoom property)",
+        "No video-unscaled=down for Zoom mode (keeps full resolution)",
+        "No separate aspect mode UI (iOS only has resize mode tri-state; Android also has AspectMode enum)",
+        "Deferred layout passes (4 async retries) are iOS-specific workaround — not present in Reshaped (which uses ExoPlayer surface synchronization)"
+      ],
+      "port_required": true,
+      "ios_implementation_plan": "Fix Fill vs Zoom distinction: Fill should use panscan + video-zoom, Zoom should use video-zoom property. Add video-unscaled=down for Zoom. Consider adding AspectMode cycling (original→fill→stretch) separate from resize mode.",
+      "tests": [
+        "app/src/test/java/com/nuvio/tv/ui/screens/player/TunneledSurfaceResizeModeTest.kt"
+      ],
+      "status": "partial",
+      "platform_limitations": [
+        "iOS viewport changes trigger layout events not present in Android TV ExoPlayer pipeline"
+      ]
+    },
+    {
+      "id": "audio-output-route-detection",
+      "capability": "Per-route audio output policy (Bluetooth PCM, optical passthrough, HDMI eARC)",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/AudioOutputRouteDetector.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerRuntimeControllerAudioDelayRoutes.kt"
+      ],
+      "source_behavior": "AudioOutputRouteDetector detects current audio output route (HDMI, optical, Bluetooth, internal speakers). Per-route policies: Bluetooth forces stereo PCM (cannot carry encoded passthrough), optical enables passthrough with SPDIF. Audio delay remembered per device route. Route change callback re-applies PCM/passthrough settings mid-session. Bluetooth A2DP/LE detection.",
+      "existing_ios_equivalent": [
+        "iosApp/iosApp/Player/MPVPlayerBridge.swift (line 682-691)"
+      ],
+      "target_behavior": "iOS has no route detection. configureAudioOutput simply remaps 'avfoundation' to 'audiounit' and sets 'ao' property. No Bluetooth vs HDMI vs internal speaker differentiation. No per-route audio delay. No on-route-change callback.",
+      "gaps": [
+        "No Bluetooth PCM passthrough override (iOS may try to passthrough encode to Bluetooth speakers — will fail silently)",
+        "No per-route audio delay storage",
+        "No route change monitoring (mid-session Bluetooth connect/disconnect not handled)",
+        "configureAudioOutput only checks for 'avfoundation' substring — fragile"
+      ],
+      "port_required": true,
+      "ios_implementation_plan": "Add AVAudioSession route monitoring (routeChangeNotification). On Bluetooth connect: force PCM via audio-channels=stereo, clear audio-spdif. On HDMI/headphone: restore user's preferred output mode. Route detection not available via public iOS API — use Bluetooth audio APIs to detect A2DP profile.",
+      "tests": [
+        "app/src/test/java/com/nuvio/tv/ui/screens/player/BluetoothAudioRoutePolicyTest.kt"
+      ],
+      "status": "missing",
+      "platform_limitations": [
+        "iOS does not expose audio route change as an app-visible event — requires polling or event bus integration",
+        "Bluetooth audio detection on iOS requires MediaPlayer/AVAudioSession introspection"
+      ]
+    },
+    {
+      "id": "subtitle-appearance-style",
+      "capability": "Subtitle appearance override (color, size, position, outline, bold)",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerLibassCompat.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerLibassExtensions.kt"
+      ],
+      "source_behavior": "Subtitle style via libass-compatible rendering with ASS override. Text color, background color, outline color/size, bold, font size, position. SdhFilteringTextOutput for clean-text rendering from SDH subtitles. CueNormalizingTextOutput for position normalization.",
+      "existing_ios_equivalent": [
+        "iosApp/iosApp/Player/MPVPlayerBridge.swift (lines 806-832)",
+        "composeApp/src/iosMain/kotlin/com/nuvio/app/features/player/PlayerEngine.ios.kt (lines 267-277)"
+      ],
+      "target_behavior": "iOS has full subtitle style pipeline: sub-ass-override=no, sub-color, sub-back-color, sub-outline-color, sub-border-style (opaque-box vs outline-and-shadow), sub-bold, sub-outline-size, sub-font-size, sub-pos. Colors converted via Kotlin Color→#AARRGGBB hex string. Font size mapped 3× fontSp with clamp [18,96]. Position mapped (100-bottomOffset/2) clamped [0,150]. External subtitles via sub-add with header merging. Subtitle-offset renderer for delay.",
+      "gaps": [
+        "No SDH filtering equivalent on iOS (SdhFilteringTextOutput is ExoPlayer-specific)",
+        "No cue position normalization (CueNormalizingTextOutput is ExoPlayer-specific)",
+        "iOS sub-ass-override=no means ASS scripts embedded in file play as-authored — cannot override if file specifies styles",
+        "No font family selection in iOS bridge (sub-font property not set)"
+      ],
+      "port_required": true,
+      "ios_implementation_plan": "SDH filtering and cue normalization would need Swift implementation. mpv's sub-ass-override can be set to 'force' to override ASS styles (trade-off: breaks authored subs). Add sub-font property for font selection. Prioritize: LOW — current implementation handles most cases.",
+      "tests": [],
+      "status": "partial",
+      "platform_limitations": [
+        "iOS mpv renders subs via libass (like Android) — same limitations apply",
+        "SDH filtering must be implemented in Swift or use mpv's built-in sub-filter"
+      ]
+    },
+    {
+      "id": "mpv-hardware-decoder-and-hi10p-fallback",
+      "capability": "Hardware decoder mode selection with Hi10P GNext software fallback",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/MpvHi10pFallback.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/NuvioMpvSurfaceView.kt (lines 288-310)"
+      ],
+      "source_behavior": "MpvHardwareDecodeMode enum: AUTO_SAFE, LEGACY_DIRECT_COPY, LEGACY_DIRECT_COPY_CROP, etc. Apply with hwdec property. Hi10P (10-bit H.264) fallback: when hardware decoder fails on Hi10P content, switch vo from gpu to gpu-next and disable hwdec entirely. This works around Android GPU driver bugs with 10-bit H.264 in hardware decode.",
+      "existing_ios_equivalent": [
+        "iosApp/iosApp/Player/MPVPlayerBridge.swift (lines 668, 473)",
+        "composeApp/src/iosMain/kotlin/com/nuvio/app/features/player/PlayerEngine.ios.kt (lines 408-424)"
+      ],
+      "target_behavior": "iOS sets hwdec=videotoolbox (Apple Silicon hardware decoder). User can select iosHardwareDecoderMode (only VideoToolbox available as value). No Hi10P GNext software fallback — iOS relies on Apple's VAAPI/VToolBox supporting 10-bit H.264 natively. No hwdec-codecs filter — mpv will try HW decode for all codecs. configureVideoOutput applies hwdec, target-colorspace-hint, tone-mapping, hdr-compute-peak, target-prim, target-trc, deband, interpolation, and video eq.",
+      "gaps": [
+        "No Hi10P software fallback if Apple Silicon decoder fails on specific H.264 10-bit profile",
+        "No hwdec-codecs whitelist — iOS may try HW decode for unsupported profiles",
+        "Only one hardware decoder option (VideoToolbox) — no fallback to mediacodec-copy like Android",
+        "No automatic HW→SW decoder downgrade on decode failure"
+      ],
+      "port_required": true,
+      "ios_implementation_plan": "Add monitoring of mpv's hwdec-active property to detect HW decoder failure. On failure, switch to hwdec=no and optionally apply vo gpu-next fallback. Add hwdec-codecs whitelist matching Apple Silicon capabilities.",
+      "tests": [],
+      "status": "partial",
+      "platform_limitations": [
+        "Apple Silicon VToolBox capabilities are opaque — no public API for supported HW decode formats"
+      ]
+    },
+    {
+      "id": "stall-and-first-frame-watchdogs",
+      "capability": "Playback stall watchdog, first-frame timeout watchdog, first-frame codec recovery",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerStallWatchdogPolicy.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerFirstFrameWatchdogPolicy.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerFirstFrameCodecRecoveryPolicy.kt"
+      ],
+      "source_behavior": "Stall watchdog: monitors player position for stalls — if position doesn't advance for N seconds while isPlaying, triggers error recovery. First-frame watchdog: if first frame not rendered within timeout, trigger recovery. First-frame codec recovery: on first-frame failure, try codec-specific recovery (Hi10P fallback, DV7→HDR10) before full retry.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "iOS has NO stall, first-frame watchdog, or codec recovery policies. The Kotlin polling loop reads mpv state every 250ms but does no stall detection. The only recovery is manual retry (user or Kotlin-invoked) which triggers retryPlayback().",
+      "gaps": [
+        "No stall watchdog — iOS player can get stuck in 'playing but not advancing' state indefinitely",
+        "No first-frame timeout — iOS shows loading until mpv reports file-loaded or error",
+        "No first-frame codec-specific recovery logic"
+      ],
+      "port_required": true,
+      "ios_implementation_plan": "Add stall detection in Kotlin polling loop (Swift→Kotlin): track positionMs across polling intervals, if isPlaying && position unchanged for 5+ seconds, trigger retry. Add first-frame watchdog: after loadfile set a 15s timer, if no file-loaded event received, trigger retry. Codec recovery needs Swift-level mpv property inspection + retry with different codec parameters.",
+      "tests": [
+        "app/src/test/java/com/nuvio/tv/ui/screens/player/PlayerFirstFrameCodecRecoveryPolicyTest.kt"
+      ],
+      "status": "missing",
+      "platform_limitations": []
+    },
+    {
+      "id": "player-engine-selection-and-failover",
+      "capability": "Internal player engine selection (ExoPlayer vs MPV) with startup failover",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerRuntimeControllerEngineFailover.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerRuntimeControllerInitialization.kt"
+      ],
+      "source_behavior": "Auto-select between ExoPlayer (Android Media3) and MPV (libmpv) per-stream. AUTO mode resolves based on stream type and platform capabilities. Startup failover: if first engine fails during init, switch to the other. Manual override via settings (internalPlayerEngine preference: AUTO, EXOPLAYER, MVP_PLAYER). Engine switch preserves position, audio/subtitle track preferences.",
+      "existing_ios_equivalent": [
+        "composeApp/src/iosMain/kotlin/com/nuvio/app/features/player/PlayerEngine.ios.kt"
+      ],
+      "target_behavior": "iOS only has MPV. No engine selection. No failover. The PlatformPlayerSurface implementation creates an NuvioPlayerBridge (MPV-only). If bridge creation fails (NuvioPlayerBridgeFactory.create() returns null), shows error and returns. No ExoPlayer code exists in iosMain.",
+      "gaps": [
+        "No engine selection — iOS is MPV-only (no ExoPlayer equivalent on iOS)",
+        "No failover — if MPV fails to init, player errors out permanently",
+        "bridgeFactory.create() returning null is the only 'failover' — and it's a fatal error, not a switch"
+      ],
+      "port_required": false,
+      "ios_implementation_plan": "N/A — iOS has no Android Media3 ExoPlayer. If Apple releases a declarative video player API (like Apple's MediaPlayer framework), it could serve as an alternative. For now, single-engine is acceptable.",
+      "tests": [],
+      "status": "platform-adaptation",
+      "platform_limitations": [
+        "iOS has no ExoPlayer equivalent from Android Media3 library",
+        "Cross-platform player engine would require custom implementation using Apple's AVFoundation"
+      ]
+    },
+    {
+      "id": "autoplay-and-next-episode",
+      "capability": "Stream auto-play, next episode auto-play, binge group handling",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/core/player/StreamAutoPlayPolicy.kt",
+        "app/src/main/java/com/nuvio/tv/core/player/StreamAutoPlaySelector.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerAutoplaySessionRules.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerNextEpisodeRules.kt"
+      ],
+      "source_behavior": "Stream auto-play: resolves which source/stream to auto-select on playback start based on preference (last used, specific addon, regex). Auto-play session rules limit frequent auto-plays. Next episode auto-play with threshold (% or minutes before end), binge group awareness. Post-play recommendations.",
+      "existing_ios_equivalent": [
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerNextEpisodeAutoPlay.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/skip/PlayerNextEpisodeRules.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerAutoplaySessionRules.kt missing from iOS scan"
+      ],
+      "target_behavior": "iOS appears to have shared Kotlin for player next-episode rules and auto-play. PlayerSettingsUiState has streamAutoPlayMode, streamAutoPlaySource, streamAutoPlaySelectedAddons/Plugins, streamAutoPlayRegex, streamAutoPlayTimeoutSeconds, skip intro settings, next episode threshold. These are shared Kotlin, compiled for iOS. NextEpisodeCard and SubmitIntroDialog exist in iOS shared code.",
+      "gaps": [
+        "iOS PlayerAutoplaySessionRules.kt not found in iOS tree — may be missing",
+        "iOS compileIncludes may exclude some shared files",
+        "Auto-play integration depends on stream resolution pipeline — may behave differently with MPV-only engine"
+      ],
+      "port_required": false,
+      "ios_implementation_plan": "Verify all shared autoplay files compile for iOS target. PlayerAutoplaySessionRules controls rate-limiting (how often auto-play can fire) — needed to prevent auto-play loops on iOS. Check iosMain for any platform-specific overrides.",
+      "tests": [
+        "app/src/test/java/com/nuvio/tv/ui/screens/player/AutoplaySessionCountTest.kt",
+        "app/src/test/java/com/nuvio/tv/ui/screens/player/PostPlayModeTest.kt"
+      ],
+      "status": "partial",
+      "platform_limitations": []
+    }
+  ],
+  "additional_files_inspected": [
+    "composeApp/src/iosMain/kotlin/com/nuvio/app/features/player/PlayerEngine.ios.kt",
+    "composeApp/src/iosMain/kotlin/com/nuvio/app/features/player/PlayerBridge.kt",
+    "composeApp/src/iosMain/kotlin/com/nuvio/app/features/player/PlayerPlatformEffects.ios.kt",
+    "composeApp/src/iosMain/kotlin/com/nuvio/app/features/player/PlayerSettingsStorage.ios.kt",
+    "composeApp/src/iosMain/kotlin/com/nuvio/app/features/player/SubtitleCacheProvider.ios.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerSettingsRepository.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerScreen.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerScreenRuntimeState.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerScreenRuntimeEffects.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerScreenRuntimePlaybackActions.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerScreenRuntimeSourceActions.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerScreenRuntimeTrackActions.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerScreenRuntimeGestureActions.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerScreenRuntimeUi.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerControls.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/VolumeBoost.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/SeekPreviewCue.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/IosVideoSettingsModal.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerEngine.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerModels.kt",
+    "iosApp/iosApp/Player/MetalLayer.swift",
+    "iosApp/iosApp/ContentView.swift",
+    "iosApp/iosApp/Info.plist",
+    "MPVKit/Package.swift"
+  ],
+  "risks": [
+    "DEAD CODE: softClipBoostedSample() in VolumeBoost.kt is compiled but never wired into iOS audio pipeline — will cause confusion during maintenance. Either wire it in (via mpv audio-filter or Swift DSP) or delete the function.",
+    "FRAGILE TIMING: loadFileWithAudio uses fixed 200ms delay for audio-add and 300ms for subtitles. On slow connections or when TLS handshake is slow, these may fire before the demuxer is ready, causing silent failure (checkForErrors: false). No retry/fallback.",
+    "FILL vs ZOOM BUG: Both Fill and Zoom modes set panscan=1.0 — they should produce different visible behavior. On Android TV, Fill = pan&scan crop, Zoom = digital zoom. iOS mis-maps both identically.",
+    "AFR GAP: iOS has no display mode switching, but CADisableMinimumFrameDurationOnPhone is set in Info.plist. If iOS gaming mode or VRR support is added in future iOS versions, the frame rate detection utilities exist as dead code and could be revived.",
+    "NO ERROR RETRY LIMIT: Swift retryPlayback() has no retry count — unbounded reconnection attempts could loop infinitely on persistent server errors. Add max-retries from shared PlayerRuntimeControllerErrorRecovery approach.",
+    "IOS PLAYER POLLING: Kotlin polls Swift every 250ms for snapshot (isLoading, isPlaying, position, etc.). This is a tight loop that keeps both runtime bridges active. Consider moving to event-driven (mpv property change events already fire in Swift — forward relevant ones to Kotlin instead of polling).",
+    "REMOTE CONTROL SCOPE: NowPlayingController registers shared() remote command center — if multiple players exist (PiP, trailers), they will conflict on command targets. The Bridge approach means second player instance overwrites first.",
+    "IOS HDR DETECTION: MetalLayer.wantsExtendedDynamicRangeContent=true always requests HDR surface from compositor. No fallback if display doesn't support HDR — content may look washed out on SDR displays with HDR content. Add dynamic HDR detection."
+  ]
+}

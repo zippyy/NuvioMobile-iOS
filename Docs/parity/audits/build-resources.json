@@ -1,0 +1,877 @@
+{
+  "domain": "build-resources",
+  "source_sha": "b9408cd5729fd99e9afe56cc334973fe0725bc7d",
+  "target_start_sha": "6ad6c72c4ebf5cf1d9edf5d5d5eb110fc457cf92",
+  "audited_files": [
+    ".github/ISSUE_TEMPLATE/bug_report.yml",
+    ".github/ISSUE_TEMPLATE/config.yml",
+    ".github/ISSUE_TEMPLATE/feature_request.yml",
+    ".github/PULL_REQUEST_TEMPLATE.md",
+    ".github/autosync-release-notes.md",
+    ".github/scripts/reshaped-tv-apks.sh",
+    ".github/workflows/android-release.yml",
+    ".github/workflows/autosync-debug.yml",
+    ".github/workflows/autosync-mark-latest.yml",
+    ".github/workflows/autosync-stable-deduplicate.yml",
+    ".github/workflows/autosync-stable-release.yml",
+    ".github/workflows/close-stale-issues.yml",
+    ".github/workflows/close-unlabeled-issues.yml",
+    ".github/workflows/discontinue-legacy-main.yml",
+    ".github/workflows/mirror-nuviotv-release.yml",
+    ".github/workflows/pr-full-debug-build-comment.yml",
+    ".github/workflows/pr-full-debug-build.yml",
+    ".github/workflows/pr-template-check.yml",
+    ".github/workflows/stale-needs-info.yml",
+    ".github/workflows/triage-needs-info.yml",
+    ".github/workflows/trigger-autosync-stable-release.yml",
+    ".github/workflows/update-altstore.yml",
+    ".gitignore",
+    "CONTRIBUTING.md",
+    "DV7/libdovi/android-arm64/lib/libdovi.a",
+    "LICENSE",
+    "PRIVACY.md",
+    "README.md",
+    "app/build.gradle.kts",
+    "app/libs/lib-common-release.aar",
+    "app/libs/lib-datasource-okhttp-release.aar",
+    "app/libs/lib-datasource-release.aar",
+    "app/libs/lib-decoder-av1-release.aar",
+    "app/libs/lib-decoder-ffmpeg-release.aar",
+    "app/libs/lib-decoder-iamf-release.aar",
+    "app/libs/lib-decoder-mpegh-release.aar",
+    "app/libs/lib-exoplayer-hls-release.aar",
+    "app/libs/lib-exoplayer-release.aar",
+    "app/libs/lib-extractor-release.aar",
+    "app/libs/lib-nuvio-engine-android-0.1.2.aar",
+    "app/libs/lib-ui-release.aar",
+    "app/libs/nextlib-mediainfo-local.aar",
+    "app/libs/quickjs-kt-android-1.0.5-nuvio.aar",
+    "app/proguard-rules.pro",
+    "app/reshaped-proguard-rules.pro",
+    "app/reshaped.gradle",
+    "app/src/full/java/com/nuvio/tv/core/build/AppFeaturePolicy.kt",
+    "app/src/full/java/com/nuvio/tv/core/runtime/PluginRuntimeHooks.kt",
+    "app/src/full/res/values/nuvio_rs_strings.xml",
+    "app/src/main/baseline-prof.txt",
+    "app/src/main/cpp/CMakeLists.txt",
+    "app/src/main/cpp/dovi_bridge.cpp",
+    "app/src/main/generated/baselineProfiles/baseline-prof.txt",
+    "app/src/main/generated/baselineProfiles/startup-prof.txt",
+    "app/src/main/java/com/nuvio/tv/MainActivity.kt",
+    "app/src/main/java/com/nuvio/tv/NuvioApplication.kt",
+    "app/src/main/java/com/nuvio/tv/core/build/TrailerPlaybackMode.kt",
+    "app/src/main/java/com/nuvio/tv/core/di/LibrarySyncModule.kt",
+    "app/src/main/java/com/nuvio/tv/core/di/NetworkModule.kt",
+    "app/src/main/java/com/nuvio/tv/core/di/ProfileModule.kt",
+    "app/src/main/java/com/nuvio/tv/core/di/RepositoryModule.kt",
+    "app/src/main/java/com/nuvio/tv/core/di/SupabaseModule.kt",
+    "app/src/main/java/com/nuvio/tv/core/di/TrackingModule.kt",
+    "app/src/main/java/com/nuvio/tv/core/logging/LogDiagnostics.kt",
+    "app/src/main/java/com/nuvio/tv/core/qr/QrCodeGenerator.kt",
+    "app/src/main/java/com/nuvio/tv/core/runtime/AppRestarter.kt",
+    "app/src/main/java/com/nuvio/tv/core/util/AppLocaleContext.kt",
+    "app/src/main/java/com/nuvio/tv/core/util/EpisodeReleaseDateParser.kt",
+    "app/src/main/java/com/nuvio/tv/core/util/ReleaseInfoUtils.kt",
+    "app/src/main/java/com/nuvio/tv/core/util/RuntimeParser.kt",
+    "app/src/main/java/com/nuvio/tv/data/remote/ServerDiscovery.kt",
+    "app/src/main/res/drawable/app_logo_mark.png",
+    "app/src/main/res/drawable/app_logo_wordmark.png",
+    "app/src/main/res/font/dm_sans_variable.ttf",
+    "app/src/main/res/font/inter_variable.ttf",
+    "app/src/main/res/font/opensans_variable.ttf",
+    "app/src/main/res/layout/exo_player_view.xml",
+    "app/src/main/res/layout/trailer_player_view.xml",
+    "app/src/main/res/raw/isrg_root_x2.pem",
+    "app/src/main/res/raw/isrgrootx1.pem",
+    "app/src/main/res/raw/silero_vad_v5_16k.bin",
+    "app/src/main/res/values-ar/strings.xml",
+    "app/src/main/res/values-bg/strings.xml",
+    "app/src/main/res/values-bs/strings.xml",
+    "app/src/main/res/values-cs/strings.xml",
+    "app/src/main/res/values-da/strings.xml",
+    "app/src/main/res/values-de/strings.xml",
+    "app/src/main/res/values-el/strings.xml",
+    "app/src/main/res/values-es/strings.xml",
+    "app/src/main/res/values-fr/strings.xml",
+    "app/src/main/res/values-hi/strings.xml",
+    "app/src/main/res/values-hu/strings.xml",
+    "app/src/main/res/values-in/strings.xml",
+    "app/src/main/res/values-it/strings.xml",
+    "app/src/main/res/values-iw/strings.xml",
+    "app/src/main/res/values-ja/strings.xml",
+    "app/src/main/res/values-lt/strings.xml",
+    "app/src/main/res/values-nl/strings.xml",
+    "app/src/main/res/values-no/strings.xml",
+    "app/src/main/res/values-pl/strings.xml",
+    "app/src/main/res/values-pt-rBR/strings.xml",
+    "app/src/main/res/values-pt-rPT/strings.xml",
+    "app/src/main/res/values-ro/strings.xml",
+    "app/src/main/res/values-ru/strings.xml",
+    "app/src/main/res/values-sk/strings.xml",
+    "app/src/main/res/values-sl/strings.xml",
+    "app/src/main/res/values-sq/strings.xml",
+    "app/src/main/res/values-sv/strings.xml",
+    "app/src/main/res/values-ta/strings.xml",
+    "app/src/main/res/values-tr/strings.xml",
+    "app/src/main/res/values-uk/strings.xml",
+    "app/src/main/res/values-vi/strings.xml",
+    "app/src/main/res/values-zh-rCN/strings.xml",
+    "app/src/main/res/values-zh-rTW/strings.xml",
+    "app/src/main/res/values/audio_sync_strings.xml",
+    "app/src/main/res/values/colors.xml",
+    "app/src/main/res/values/pill_nav_strings.xml",
+    "app/src/main/res/values/reshaped_sync_strings.xml",
+    "app/src/main/res/values/seekr_key_strings.xml",
+    "app/src/main/res/values/strings.xml",
+    "app/src/main/res/values/themes.xml",
+    "app/src/main/res/xml/file_paths.xml",
+    "app/src/main/res/xml/locale_config.xml",
+    "app/src/main/res/xml/network_security_config.xml",
+    "app/src/main/startup-prof.txt",
+    "app/src/playstore/java/com/nuvio/tv/core/build/AppFeaturePolicy.kt",
+    "app/src/playstore/java/com/nuvio/tv/core/runtime/PluginRuntimeHooks.kt",
+    "assets/brand/",
+    "baselineprofile/",
+    "branding/generate_tv_icons.py",
+    "build.gradle.kts",
+    "compose_stability_config.conf",
+    "docs/essential-mode.md",
+    "ffmpeg-decoder-downmix/src/main/jni/CMakeLists.txt",
+    "gradle.properties",
+    "gradle/libs.versions.toml",
+    "gradle/wrapper/gradle-wrapper.properties",
+    "libmpv-android",
+    "local.example.properties",
+    "release_test_cases.csv",
+    "scripts/generate-release-notes.sh",
+    "scripts/generate_release_notes.py",
+    "scripts/perf_baseline.sh",
+    "scripts/release-metadata.sh",
+    "scripts/release_beta.py",
+    "scripts/release_notes/compose.py",
+    "scripts/release_notes/consolidate.py",
+    "scripts/release_notes/model.py",
+    "scripts/release_notes/render.py",
+    "scripts/release_notes/rewrites.py",
+    "scripts/release_notes/sources.py",
+    "scripts/release_notes/text.py",
+    "scripts/release_notes/vocabulary.py",
+    "scripts/tests/test_release_channels.py",
+    "scripts/tests/test_release_notes.py",
+    "settings.gradle.kts"
+  ],
+  "capabilities": [
+    {
+      "id": "build-gradle",
+      "capability": "Gradle/Kotlin Android Build (AGP 8.13, Kotlin 2.3, Android SDK 36) -> KMP multi-platform (Android+iOS+Desktop)",
+      "source_files": [
+        "build.gradle.kts",
+        "settings.gradle.kts",
+        "gradle.properties",
+        "gradle/libs.versions.toml",
+        "gradle/wrapper/gradle-wrapper.properties",
+        "app/build.gradle.kts",
+        "app/reshaped.gradle",
+        "local.example.properties",
+        "compose_stability_config.conf"
+      ],
+      "existing_ios_equivalent": [
+        "composeApp/build.gradle.kts",
+        "androidApp/build.gradle.kts",
+        "build.gradle.kts",
+        "settings.gradle.kts",
+        "gradle.properties",
+        "gradle/libs.versions.toml",
+        "iosApp/iosApp.xcodeproj/project.pbxproj",
+        "iosApp/Configuration/Config.xcconfig",
+        "iosApp/Configuration/Version.xcconfig"
+      ],
+      "gaps": [
+        "build-mobile.yml does not download NuvioEngine XCFramework (CI failure 36967269105)",
+        "No compose_stability_config.conf equivalent (Android Compose only)",
+        "No Gradle wrapper on iOS (uses Xcode)",
+        "Version.xcconfig (CURRENT_PROJECT_VERSION=109, MARKETING_VERSION=0.4.5) vs Android versionCode=1066, versionName=1.1.0-beta.3"
+      ],
+      "port_required": true,
+      "status": "platform-adaptation",
+      "priority": "P0",
+      "risk_level": "critical",
+      "risks": [
+        "CRITICAL: NuvioEngine XCFramework missing from build-mobile.yml \u2014 P2P streaming won't build on iOS"
+      ],
+      "limitations": [
+        "Android Gradle vs Swift+Xcode",
+        "Compose stability config Android-only"
+      ],
+      "platform_limitations": [
+        "Gradle wrapper not applicable on iOS"
+      ]
+    },
+    {
+      "id": "feature-policy",
+      "capability": "Build-time feature flags \u2014 AppFeaturePolicy full/playstore/iosFull/iosAppStore flavors",
+      "source_files": [
+        "app/src/full/java/com/nuvio/tv/core/build/AppFeaturePolicy.kt",
+        "app/src/playstore/java/com/nuvio/tv/core/build/AppFeaturePolicy.kt",
+        "app/src/main/java/com/nuvio/tv/core/build/TrailerPlaybackMode.kt"
+      ],
+      "existing_ios_equivalent": [
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/core/build/AppFeaturePolicy.kt",
+        "composeApp/src/iosFull/kotlin/com/nuvio/app/core/build/AppFeaturePolicy.ios.kt",
+        "composeApp/src/iosAppStore/kotlin/com/nuvio/app/core/build/AppFeaturePolicy.ios.kt"
+      ],
+      "gaps": [
+        "inAppUpdaterEnabled=false on both iOS flavors (source full=true)",
+        "externalTrailerPlaybackEnabled has no iOS flag",
+        "externalPlaybackKeepAliveEnabled has no iOS flag",
+        "customServerConnectionsEnabled has no iOS flag",
+        "supportNuvioEnabled has no iOS flag (iOS has supportersContributorsPageEnabled instead)",
+        "iosFull: accountDeletionEnabled=false vs source no such flag"
+      ],
+      "port_required": true,
+      "status": "partial",
+      "priority": "P0",
+      "risk_level": "critical",
+      "risks": [
+        "HIGH: inAppUpdaterEnabled=false on iOS \u2014 no self-update mechanism"
+      ],
+      "limitations": [],
+      "platform_limitations": [
+        "iOS extra flags (p2p, heroTrailer, mediaForegroundService) absent from Android"
+      ]
+    },
+    {
+      "id": "plugin-runtime",
+      "capability": "CloudStream/QuickJS plugin system \u2014 runtime hooks, Conscrypt, JS engine, P2P engine",
+      "source_files": [
+        "app/src/full/java/com/nuvio/tv/core/runtime/PluginRuntimeHooks.kt",
+        "app/src/playstore/java/com/nuvio/tv/core/runtime/PluginRuntimeHooks.kt",
+        "app/libs/quickjs-kt-android-1.0.5-nuvio.aar",
+        "app/libs/lib-nuvio-engine-android-0.1.2.aar",
+        "app/reshaped.gradle"
+      ],
+      "existing_ios_equivalent": [
+        "composeApp/src/fullCommonMain/kotlin/com/nuvio/app/features/plugins/runtime/",
+        "composeApp/src/iosFull/kotlin/com/nuvio/app/features/plugins/",
+        "composeApp/src/iosMain/kotlin/com/nuvio/app/features/player/PlayerBridge.kt"
+      ],
+      "gaps": [
+        "No iOS PluginRuntimeHooks equivalent (Conscrypt/CloudStream lazy init Android-only)",
+        "QuickJS JNI native lib is Android-only (.so vs iOS .dylib)",
+        "iOS plugin crypto uses different bridge (PluginCrypto.ios.kt vs Android Conscrypt)",
+        "sherpa-onnx AAR auto-download in reshaped.gradle is Android-only",
+        "NuvioEngine v0.1.1 on iOS vs v0.1.2 on Android \u2014 version mismatch + CI missing"
+      ],
+      "port_required": true,
+      "status": "partial",
+      "priority": "P1",
+      "risk_level": "high",
+      "risks": [
+        "HIGH: QuickJS JNI cannot run on iOS \u2014 plugin JS execution needs native port",
+        "HIGH: sherpa-onnx AAR Android-only \u2014 audio sync VAD missing on iOS"
+      ],
+      "limitations": [
+        "QuickJS linked against glibc/Android JNI",
+        "sherpa-onnx ~50MB AAR is Android-only"
+      ],
+      "platform_limitations": [
+        "iOS uses different native plugin loading (dynamic library vs AAR)"
+      ]
+    },
+    {
+      "id": "player-pipeline",
+      "capability": "Video player \u2014 ExoPlayer stack (Android) vs MPV (iOS)",
+      "source_files": [
+        "app/libs/lib-exoplayer-release.aar",
+        "app/libs/lib-exoplayer-hls-release.aar",
+        "app/libs/lib-extractor-release.aar",
+        "app/libs/lib-decoder-av1-release.aar",
+        "app/libs/lib-decoder-ffmpeg-release.aar",
+        "app/libs/lib-decoder-iamf-release.aar",
+        "app/libs/lib-decoder-mpegh-release.aar",
+        "app/libs/nextlib-mediainfo-local.aar",
+        "app/src/main/res/layout/exo_player_view.xml",
+        "app/src/main/res/layout/trailer_player_view.xml",
+        "app/src/main/cpp/CMakeLists.txt",
+        "app/src/main/cpp/dovi_bridge.cpp",
+        "libmpv-android"
+      ],
+      "existing_ios_equivalent": [
+        "iosApp/iosApp/Player/MPVPlayerBridge.swift",
+        "iosApp/iosApp/Player/MetalLayer.swift",
+        "iosApp/iosApp/Player/NowPlayingController.swift",
+        "MPVKit",
+        "composeApp/src/iosMain/kotlin/com/nuvio/app/features/player/PlayerEngine.ios.kt"
+      ],
+      "gaps": [
+        "iOS MPV bridge lacks DoviBridge (Dolby Vision Profile 7->8.1 conversion)",
+        "iOS lacks ExoPlayer XML layout views (uses UIKit programmatic layout)",
+        "iOS lacks nextlib-mediainfo-local (MPV provides media info natively)",
+        "libass-android submodule not needed \u2014 MPV has built-in libass"
+      ],
+      "port_required": false,
+      "status": "platform-adaptation",
+      "priority": "P0",
+      "risk_level": "high",
+      "risks": [
+        "MEDIUM: iOS MPV may not support Dolby Vision Profile 7 conversion (DoviBridge Android-only)"
+      ],
+      "limitations": [
+        "Android ExoPlayer and iOS MPV are architecturally different",
+        "ExoPlayer XML layout views have no iOS equivalent"
+      ],
+      "platform_limitations": [
+        "libmpv-android vs MPVKit (Apple Silicon)",
+        "DoviBridge uses Android CMake JNI"
+      ]
+    },
+    {
+      "id": "app-entry-di",
+      "capability": "Application entry, DI wiring, network services, startup hooks",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/NuvioApplication.kt",
+        "app/src/main/java/com/nuvio/tv/MainActivity.kt",
+        "app/src/main/java/com/nuvio/tv/core/di/NetworkModule.kt",
+        "app/src/main/java/com/nuvio/tv/core/di/SupabaseModule.kt",
+        "app/src/main/java/com/nuvio/tv/core/di/RepositoryModule.kt",
+        "app/src/main/java/com/nuvio/tv/core/di/ProfileModule.kt",
+        "app/src/main/java/com/nuvio/tv/core/di/TrackingModule.kt",
+        "app/src/main/java/com/nuvio/tv/core/di/LibrarySyncModule.kt",
+        "app/src/main/java/com/nuvio/tv/core/runtime/AppRestarter.kt",
+        "app/src/main/java/com/nuvio/tv/core/logging/LogDiagnostics.kt",
+        "app/src/main/java/com/nuvio/tv/core/util/AppLocaleContext.kt"
+      ],
+      "existing_ios_equivalent": [
+        "iosApp/iosApp/iOSApp.swift",
+        "composeApp/src/iosMain/kotlin/com/nuvio/app/MainViewController.kt",
+        "iosApp/iosApp/ContentView.swift",
+        "composeApp/src/iosMain/kotlin/"
+      ],
+      "gaps": [
+        "iOS lacks Hilt DI \u2014 no equivalent of NetworkModule (20+ Retrofit APIs), SupabaseModule, RepositoryModule, TrackingModule, ProfileModule, LibrarySyncModule",
+        "iOS lacks AppRestarter (Android process management \u2014 not applicable)",
+        "iOS lacks ReshapedMigration.importIfNeeded hook",
+        "iOS lacks SeekBufferSettings warmup hook",
+        "iOS lacks SubtitleFontStore warmup hook",
+        "iOS lacks ReshapedSync.onAppStart hook",
+        "iOS lacks Coil ImageLoader pipeline (uses native UIKit image loading)",
+        "iOS lacks IPv4FirstDns pattern"
+      ],
+      "port_required": true,
+      "status": "partial",
+      "priority": "P0",
+      "risk_level": "critical",
+      "risks": [
+        "HIGH: Hilt DI has no iOS equivalent \u2014 network service wiring must be reimplemented",
+        "MEDIUM: 20+ Retrofit API endpoints need iOS HTTP client port"
+      ],
+      "limitations": [
+        "Hilt (Dagger) is Android/JVM-specific",
+        "Android AlarmManager/Process restart not applicable"
+      ],
+      "platform_limitations": [
+        "iOS uses manual DI or KMP DI frameworks"
+      ]
+    },
+    {
+      "id": "reshaped-features",
+      "capability": "Reshaped-specific: Google TV OAuth sync, Pill nav, Seekr, Live TV, QR phone entry, audio sync",
+      "source_files": [
+        "app/reshaped.gradle",
+        "app/reshaped-proguard-rules.pro",
+        "app/src/main/res/values/reshaped_sync_strings.xml",
+        "app/src/main/res/values/seekr_key_strings.xml",
+        "app/src/main/res/values/audio_sync_strings.xml",
+        "app/src/main/res/values/pill_nav_strings.xml",
+        "app/src/main/res/raw/silero_vad_v5_16k.bin",
+        "app/src/main/java/com/nuvio/tv/core/qr/QrCodeGenerator.kt",
+        "app/src/main/java/com/nuvio/tv/data/remote/ServerDiscovery.kt"
+      ],
+      "existing_ios_equivalent": [],
+      "gaps": [
+        "Pill navigation not implemented on iOS",
+        "Seekr seek-preview thumbnails not implemented on iOS",
+        "sherpa-onnx audio sync not present (iOS must use Apple SpeechRecognition API)",
+        "Reshaped Google TV OAuth sync not implemented",
+        "Live TV via local HTTP server + QR not implemented",
+        "Custom subtitle font system not implemented",
+        "QR phone entry (ServerDiscovery+QrCodeGenerator) not implemented"
+      ],
+      "port_required": true,
+      "status": "missing",
+      "priority": "P0",
+      "risk_level": "critical",
+      "risks": [
+        "CRITICAL: Reshaped features are the fork's differentiator \u2014 0 of 7 core RS features ported to iOS"
+      ],
+      "limitations": [
+        "Seekr is Android TV Compose lib",
+        "Pill nav is Android TV paradigm",
+        "sherpa-onnx JNI is Android-only"
+      ],
+      "platform_limitations": [
+        "All 7 RS features use Android-only APIs or paradigms"
+      ]
+    },
+    {
+      "id": "ci-workflows",
+      "capability": "GitHub Actions CI/CD \u2014 release builds, auto-sync, testing, triage",
+      "source_files": [
+        ".github/workflows/android-release.yml",
+        ".github/workflows/autosync-debug.yml",
+        ".github/workflows/autosync-stable-release.yml",
+        ".github/workflows/autosync-mark-latest.yml",
+        ".github/workflows/autosync-stable-deduplicate.yml",
+        ".github/workflows/mirror-nuviotv-release.yml",
+        ".github/workflows/pr-full-debug-build.yml",
+        ".github/workflows/pr-full-debug-build-comment.yml",
+        ".github/workflows/pr-template-check.yml",
+        ".github/workflows/triage-needs-info.yml",
+        ".github/workflows/stale-needs-info.yml",
+        ".github/workflows/close-stale-issues.yml",
+        ".github/workflows/close-unlabeled-issues.yml",
+        ".github/workflows/trigger-autosync-stable-release.yml",
+        ".github/scripts/reshaped-tv-apks.sh",
+        ".github/workflows/update-altstore.yml",
+        ".github/workflows/discontinue-legacy-main.yml"
+      ],
+      "existing_ios_equivalent": [
+        ".github/workflows/build-ipa.yml",
+        ".github/workflows/build-mobile.yml",
+        ".github/workflows/build-apk.yml",
+        ".github/workflows/update-altstore.yml"
+      ],
+      "gaps": [
+        "build-mobile.yml omits NuvioEngine XCFramework download (present in build-ipa.yml) \u2014 CI failure 36967269105",
+        "No autosync-stable-release equivalent for iOS",
+        "No mirror-nuviotv-release equivalent for iOS",
+        "Missing issue templates (bug_report.yml, config.yml, feature_request.yml, PR template)",
+        "Missing triage/stale/close automation",
+        "Missing PR full-debug-build workflow for iOS",
+        "Missing reshaped-tv-apks.sh equivalent"
+      ],
+      "port_required": true,
+      "status": "partial",
+      "priority": "P0",
+      "risk_level": "critical",
+      "risks": [
+        "CRITICAL: build-mobile.yml missing NuvioEngine download \u2014 iOS P2P fails to compile"
+      ],
+      "limitations": [
+        "iOS cannot use Android APK signing scripts",
+        "iOS uses Apple certs and AltStore/TestFlight deployment"
+      ],
+      "platform_limitations": [
+        "Autosync workflows are Android TV-specific"
+      ]
+    },
+    {
+      "id": "release-scripts",
+      "capability": "Release engineering \u2014 changelog generation, beta releases, metadata scripts",
+      "source_files": [
+        "scripts/generate-release-notes.sh",
+        "scripts/generate_release_notes.py",
+        "scripts/release_notes/compose.py",
+        "scripts/release_notes/consolidate.py",
+        "scripts/release_notes/model.py",
+        "scripts/release_notes/render.py",
+        "scripts/release_notes/rewrites.py",
+        "scripts/release_notes/sources.py",
+        "scripts/release_notes/text.py",
+        "scripts/release_notes/vocabulary.py",
+        "scripts/tests/test_release_channels.py",
+        "scripts/tests/test_release_notes.py",
+        "scripts/release_beta.py",
+        "scripts/release-metadata.sh",
+        "scripts/perf_baseline.sh",
+        "branding/generate_tv_icons.py",
+        "release_test_cases.csv",
+        "docs/essential-mode.md"
+      ],
+      "existing_ios_equivalent": [
+        "scripts/generate-release-notes.sh",
+        "scripts/release-metadata.sh",
+        "scripts/generate_app_icon_assets.py",
+        "scripts/generate_logo_colorways.py",
+        "scripts/run-mobile.sh",
+        "scripts/debug_logs.sh"
+      ],
+      "gaps": [
+        "Missing Python release notes toolkit (compose.py, model.py, render.py, etc.) \u2014 iOS uses minimal shell script",
+        "Missing release_test_cases.csv \u2014 no iOS release test matrix",
+        "Missing perf_baseline.sh \u2014 iOS performance baselines not set up",
+        "Missing beta release script (release_beta.py) \u2014 iOS uses TestFlight/AltStore"
+      ],
+      "port_required": false,
+      "status": "partial",
+      "priority": "P2",
+      "risk_level": "low",
+      "risks": [],
+      "limitations": [
+        "Android icon generation scripts not applicable",
+        "Beta releases use Apple-specific channels"
+      ],
+      "platform_limitations": [
+        "generate_tv_icons.py is Android TV-specific"
+      ]
+    },
+    {
+      "id": "aar-dependencies",
+      "capability": "Prebuilt AAR artifacts \u2014 decoder/player/engine native code",
+      "source_files": [
+        "app/libs/lib-common-release.aar",
+        "app/libs/lib-datasource-release.aar",
+        "app/libs/lib-datasource-okhttp-release.aar",
+        "app/libs/lib-decoder-av1-release.aar",
+        "app/libs/lib-decoder-ffmpeg-release.aar",
+        "app/libs/lib-decoder-iamf-release.aar",
+        "app/libs/lib-decoder-mpegh-release.aar",
+        "app/libs/lib-exoplayer-release.aar",
+        "app/libs/lib-exoplayer-hls-release.aar",
+        "app/libs/lib-extractor-release.aar",
+        "app/libs/lib-nuvio-engine-android-0.1.2.aar",
+        "app/libs/lib-ui-release.aar",
+        "app/libs/nextlib-mediainfo-local.aar",
+        "app/libs/quickjs-kt-android-1.0.5-nuvio.aar",
+        "libmpv-android",
+        "DV7/libdovi/android-arm64/lib/libdovi.a",
+        "ffmpeg-decoder-downmix/src/main/jni/CMakeLists.txt"
+      ],
+      "existing_ios_equivalent": [
+        "MPVKit",
+        "composeApp/libs/",
+        "vendor/quickjs-kt",
+        "vendor/TorrServer"
+      ],
+      "gaps": [
+        "iOS NuvioEngine v0.1.1 (source has v0.1.2) \u2014 version mismatch",
+        "iOS lacks DV7/libdovi (Dolby Vision Profile 7) \u2014 MPV may not support conversion",
+        "iOS composeApp/libs/ AARs are for Android KMP target, not iOS",
+        "iOS uses MPVKit instead of libmpv-android submodule"
+      ],
+      "port_required": false,
+      "status": "platform-adaptation",
+      "priority": "P0",
+      "risk_level": "high",
+      "risks": [
+        "HIGH: NuvioEngine version mismatch (0.1.1 vs 0.1.2) + missing from CI"
+      ],
+      "limitations": [
+        "Android AARs (.so JNI) not executable on iOS",
+        "iOS uses Swift FFI to native C libs"
+      ],
+      "platform_limitations": [
+        "Decoder AARs are Android-native (.so) \u2014 iOS MPV handles all codecs"
+      ]
+    },
+    {
+      "id": "branding-resources",
+      "capability": "Branding assets \u2014 logos, icons, fonts, certificates, splash screen",
+      "source_files": [
+        "app/src/main/res/drawable/app_logo_mark.png",
+        "app/src/main/res/drawable/app_logo_wordmark.png",
+        "app/src/main/res/font/dm_sans_variable.ttf",
+        "app/src/main/res/font/inter_variable.ttf",
+        "app/src/main/res/font/opensans_variable.ttf",
+        "app/src/main/res/raw/isrg_root_x2.pem",
+        "app/src/main/res/raw/isrgrootx1.pem",
+        "app/src/main/res/xml/network_security_config.xml",
+        "app/src/main/res/xml/locale_config.xml",
+        "app/src/main/res/xml/file_paths.xml",
+        "app/src/main/res/values/themes.xml",
+        "app/src/main/res/values/colors.xml",
+        "assets/brand/"
+      ],
+      "existing_ios_equivalent": [
+        "iosApp/iosApp/Assets.xcassets/",
+        "iosApp/iosApp/Assets.xcassets/AppIcon.appiconset/",
+        "iosApp/iosApp/Assets.xcassets/AccentColor.colorset/",
+        "iosApp/iosApp/Assets.xcassets/NuvioTab*.imageset/"
+      ],
+      "gaps": [
+        "iOS uses system fonts (no bundled variable fonts) \u2014 acceptable divergence",
+        "iOS lacks ISRG root certs (system trust store) \u2014 acceptable",
+        "iOS lacks network_security_config.xml (system trust) \u2014 acceptable",
+        "iOS lacks locale_config.xml (system locale)",
+        "iOS lacks file_paths.xml (Android FileProvider)",
+        "iOS lacks splash_screen_background.xml colorway variants"
+      ],
+      "port_required": false,
+      "status": "platform-adaptation",
+      "priority": "P2",
+      "risk_level": "low",
+      "risks": [],
+      "limitations": [
+        "Android XML resource model vs iOS .stringtable/appicon.appiconset",
+        "Fonts must be platform-native"
+      ],
+      "platform_limitations": [
+        "Android mipmap concept not portable",
+        "iOS uses .xcassets instead of drawable/mipmap"
+      ]
+    },
+    {
+      "id": "translations",
+      "capability": "Multi-language string resources \u2014 24 locale directories x 3 string files each",
+      "source_files": [
+        "app/src/full/res/values/nuvio_rs_strings.xml",
+        "app/src/main/res/values/strings.xml",
+        "app/src/main/res/values-ar/strings.xml",
+        "app/src/main/res/values-bg/strings.xml",
+        "app/src/main/res/values-bs/strings.xml",
+        "app/src/main/res/values-cs/strings.xml",
+        "app/src/main/res/values-da/strings.xml",
+        "app/src/main/res/values-de/strings.xml",
+        "app/src/main/res/values-el/strings.xml",
+        "app/src/main/res/values-es/strings.xml",
+        "app/src/main/res/values-fr/strings.xml",
+        "app/src/main/res/values-hi/strings.xml",
+        "app/src/main/res/values-hu/strings.xml",
+        "app/src/main/res/values-in/strings.xml",
+        "app/src/main/res/values-it/strings.xml",
+        "app/src/main/res/values-iw/strings.xml",
+        "app/src/main/res/values-ja/strings.xml",
+        "app/src/main/res/values-lt/strings.xml",
+        "app/src/main/res/values-nl/strings.xml",
+        "app/src/main/res/values-no/strings.xml",
+        "app/src/main/res/values-pl/strings.xml",
+        "app/src/main/res/values-pt-rBR/strings.xml",
+        "app/src/main/res/values-pt-rPT/strings.xml",
+        "app/src/main/res/values-ro/strings.xml",
+        "app/src/main/res/values-ru/strings.xml",
+        "app/src/main/res/values-sk/strings.xml",
+        "app/src/main/res/values-sl/strings.xml",
+        "app/src/main/res/values-sq/strings.xml",
+        "app/src/main/res/values-sv/strings.xml",
+        "app/src/main/res/values-ta/strings.xml",
+        "app/src/main/res/values-tr/strings.xml",
+        "app/src/main/res/values-uk/strings.xml",
+        "app/src/main/res/values-vi/strings.xml",
+        "app/src/main/res/values-zh-rCN/strings.xml",
+        "app/src/main/res/values-zh-rTW/strings.xml"
+      ],
+      "existing_ios_equivalent": [],
+      "gaps": [
+        "iOS missing all 24 language translation files",
+        "iOS missing nuvio_reshaped_settings_strings translations",
+        "iOS missing seekr_key_strings translations",
+        "iOS missing audio_sync_strings translations",
+        "iOS missing connection_speed_strings translations",
+        "iOS missing pill_nav_strings translations",
+        "iOS missing reshaped_sync_strings translations",
+        "iOS missing full-flavor nuvio_rs_strings.xml"
+      ],
+      "port_required": true,
+      "status": "missing",
+      "priority": "P1",
+      "risk_level": "high",
+      "risks": [
+        "HIGH: 0 of 24 locales ported to iOS \u2014 app will show English/fallback strings on non-English devices"
+      ],
+      "limitations": [
+        "Android XML string resources cannot be used directly on iOS",
+        "Must convert to Apple .strings/.stringtable/.lproj format"
+      ],
+      "platform_limitations": [
+        "values-<locale>/strings.xml not consumable by iOS \u2014 must convert to .lproj"
+      ]
+    },
+    {
+      "id": "performance-baselines",
+      "capability": "Android Baseline Profiles + ProGuard rules (Android AOT optimization)",
+      "source_files": [
+        "app/src/main/baseline-prof.txt",
+        "app/src/main/generated/baselineProfiles/baseline-prof.txt",
+        "app/src/main/generated/baselineProfiles/startup-prof.txt",
+        "app/src/main/startup-prof.txt",
+        "baselineprofile/",
+        "app/proguard-rules.pro",
+        "app/reshaped-proguard-rules.pro"
+      ],
+      "existing_ios_equivalent": [],
+      "gaps": [
+        "iOS has no Baseline Profile equivalent (Android-specific AOT)",
+        "iOS has no ProGuard (Xcode LTO handles dead code elimination)",
+        "iOS has no compose_stability_config.conf (not applicable)"
+      ],
+      "port_required": false,
+      "status": "platform-adaptation",
+      "priority": "P3",
+      "risk_level": "low",
+      "risks": [],
+      "limitations": [
+        "Android Baseline Profile and ProGuard do not exist on iOS",
+        "Apple clang+LLVM handles dead code elimination"
+      ],
+      "platform_limitations": [
+        "Not applicable on iOS"
+      ]
+    },
+    {
+      "id": "platform-utilities",
+      "capability": "Cross-platform Kotlin utilities \u2014 date parsing, runtime parser, QR, server discovery",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/core/util/EpisodeReleaseDateParser.kt",
+        "app/src/main/java/com/nuvio/tv/core/util/ReleaseInfoUtils.kt",
+        "app/src/main/java/com/nuvio/tv/core/util/RuntimeParser.kt",
+        "app/src/main/java/com/nuvio/tv/core/qr/QrCodeGenerator.kt",
+        "app/src/main/java/com/nuvio/tv/data/remote/ServerDiscovery.kt"
+      ],
+      "existing_ios_equivalent": [
+        "composeApp/src/iosMain/kotlin/com/nuvio/app/core/time/EpisodeReleaseDatePlatform.ios.kt"
+      ],
+      "gaps": [
+        "iOS QrCodeGenerator missing (uses Android Canvas/Bitmap \u2014 needs UIKit/Compose replacement)",
+        "iOS ServerDiscovery missing (Android OkHttp \u2014 needs port to iOS HTTP client)",
+        "iOS RuntimeParser \u2014 should be in commonMain (pure Kotlin, no platform deps)",
+        "iOS ReleaseInfoUtils \u2014 verify commonMain port exists"
+      ],
+      "port_required": true,
+      "status": "partial",
+      "priority": "P1",
+      "risk_level": "high",
+      "risks": [
+        "HIGH: QrCodeGenerator and ServerDiscovery have no iOS implementation \u2014 QR phone entry and custom server features broken on iOS"
+      ],
+      "limitations": [
+        "Android Canvas/Bitmap APIs not available on iOS",
+        "zxing QR library may need iOS-compatible version"
+      ],
+      "platform_limitations": [
+        "QrCodeGenerator uses Android android.graphics.Bitmap \u2014 iOS needs CoreImage CIFilter"
+      ]
+    },
+    {
+      "id": "repo-metadata",
+      "capability": "Repository metadata \u2014 CONTRIBUTING, PR/issue templates, docs, license",
+      "source_files": [
+        "CONTRIBUTING.md",
+        "PRIVACY.md",
+        "README.md",
+        "LICENSE",
+        ".github/ISSUE_TEMPLATE/bug_report.yml",
+        ".github/ISSUE_TEMPLATE/feature_request.yml",
+        ".github/ISSUE_TEMPLATE/config.yml",
+        ".github/PULL_REQUEST_TEMPLATE.md",
+        ".github/autosync-release-notes.md",
+        ".gitignore"
+      ],
+      "existing_ios_equivalent": [
+        "CONTRIBUTING.md",
+        "README.md",
+        "LICENSE",
+        ".gitignore",
+        ".gitmodules"
+      ],
+      "gaps": [
+        "iOS missing GitHub issue templates (bug_report.yml, feature_request.yml, config.yml)",
+        "iOS missing PR template",
+        "iOS missing PRIVACY.md (may not be needed)",
+        "iOS missing autosync-release-notes.md (autosync not ported)"
+      ],
+      "port_required": false,
+      "status": "partial",
+      "priority": "P3",
+      "risk_level": "low",
+      "risks": [],
+      "limitations": [
+        "Not code \u2014 documentation/template porting"
+      ],
+      "platform_limitations": []
+    }
+  ],
+  "additional_files_inspected": [
+    ".github/workflows/build-ipa.yml",
+    ".github/workflows/build-mobile.yml",
+    ".gitmodules",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/core/build/AppFeaturePolicy.kt",
+    "composeApp/src/iosAppStore/kotlin/com/nuvio/app/core/build/AppFeaturePolicy.ios.kt",
+    "composeApp/src/iosFull/kotlin/com/nuvio/app/core/build/AppFeaturePolicy.ios.kt",
+    "composeApp/src/iosMain/kotlin/com/nuvio/app/MainViewController.kt",
+    "iosApp/iosApp/ContentView.swift",
+    "iosApp/iosApp/DownloadsWidgetExtension/DownloadsLiveActivityWidget.swift",
+    "iosApp/iosApp/Info.plist",
+    "iosApp/iosApp/Player/MPVPlayerBridge.swift",
+    "iosApp/iosApp/Player/MetalLayer.swift",
+    "iosApp/iosApp/Player/NowPlayingController.swift",
+    "iosApp/iosApp/iOSApp.swift"
+  ],
+  "risks": [
+    {
+      "capability_id": "build-gradle",
+      "risk": "CRITICAL: NuvioEngine XCFramework missing from build-mobile.yml \u2014 P2P streaming won't build on iOS"
+    },
+    {
+      "capability_id": "feature-policy",
+      "risk": "HIGH: inAppUpdaterEnabled=false on iOS \u2014 no self-update mechanism"
+    },
+    {
+      "capability_id": "plugin-runtime",
+      "risk": "HIGH: QuickJS JNI cannot run on iOS \u2014 plugin JS execution needs native port"
+    },
+    {
+      "capability_id": "plugin-runtime",
+      "risk": "HIGH: sherpa-onnx AAR Android-only \u2014 audio sync VAD missing on iOS"
+    },
+    {
+      "capability_id": "player-pipeline",
+      "risk": "MEDIUM: iOS MPV may not support Dolby Vision Profile 7 conversion (DoviBridge Android-only)"
+    },
+    {
+      "capability_id": "app-entry-di",
+      "risk": "HIGH: Hilt DI has no iOS equivalent \u2014 network service wiring must be reimplemented"
+    },
+    {
+      "capability_id": "app-entry-di",
+      "risk": "MEDIUM: 20+ Retrofit API endpoints need iOS HTTP client port"
+    },
+    {
+      "capability_id": "reshaped-features",
+      "risk": "CRITICAL: Reshaped features are the fork's differentiator \u2014 0 of 7 core RS features ported to iOS"
+    },
+    {
+      "capability_id": "ci-workflows",
+      "risk": "CRITICAL: build-mobile.yml missing NuvioEngine download \u2014 iOS P2P fails to compile"
+    },
+    {
+      "capability_id": "aar-dependencies",
+      "risk": "HIGH: NuvioEngine version mismatch (0.1.1 vs 0.1.2) + missing from CI"
+    },
+    {
+      "capability_id": "translations",
+      "risk": "HIGH: 0 of 24 locales ported to iOS \u2014 app will show English/fallback strings on non-English devices"
+    },
+    {
+      "capability_id": "platform-utilities",
+      "risk": "HIGH: QrCodeGenerator and ServerDiscovery have no iOS implementation \u2014 QR phone entry and custom server features broken on iOS"
+    },
+    {
+      "capability_id": "global",
+      "risk": "CRITICAL: build-mobile.yml omits NuvioEngine XCFramework download \u2014 iOS P2P streaming will fail to compile (CI 36967269105)"
+    },
+    {
+      "capability_id": "global",
+      "risk": "CRITICAL: 0 of 7 Reshaped-specific features (pill nav, Seekr, Live TV, QR entry, audio sync, Google sync, custom fonts) ported to iOS"
+    },
+    {
+      "capability_id": "global",
+      "risk": "CRITICAL: 0 of 24 locale translations ported \u2014 app will only show English"
+    },
+    {
+      "capability_id": "global",
+      "risk": "HIGH: inAppUpdaterEnabled=false on iOS vs true on Android \u2014 iOS users cannot self-update"
+    },
+    {
+      "capability_id": "global",
+      "risk": "HIGH: Hilt DI wiring (20+ Retrofit APIs) not ported \u2014 iOS network layer needs reimplementation"
+    },
+    {
+      "capability_id": "global",
+      "risk": "MEDIUM: iOS uses MPV instead of ExoPlayer \u2014 expected platform adaptation but feature parity not verified"
+    },
+    {
+      "capability_id": "global",
+      "risk": "LOW: iOS uses system fonts, system trust store, system locale \u2014 acceptable platform divergence"
+    }
+  ]
+}
