@@ -1,0 +1,996 @@
+{
+  "domain": "Settings, Auth, Profiles, Sync, Backup/Restore, Themes, Local Stores, Supporting Subsystems — Reshaped reference → NuvioMobile iOS port",
+  "source_sha": "b9408cd5729fd99e9afe56cc334973fe0725bc7d",
+  "target_start_sha": "6ad6c72c4ebf5cf1d9edf5d5d5eb110fc457cf92",
+  "audited_files": [
+    "app/src/main/java/com/nuvio/tv/ui/screens/settings/SettingsCatalog.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/settings/SettingsScreen.kt",
+    "app/src/main/java/com/nuvio/tv/reshaped/sync/ReshapedSyncedSettings.kt",
+    "app/src/main/java/com/nuvio/tv/core/sync/ProviderCredentialModels.kt",
+    "app/src/main/java/com/nuvio/tv/data/local/PlayerSettingsDataStore.kt",
+    "app/src/main/java/com/nuvio/tv/data/local/LayoutPreferenceDataStore.kt",
+    "app/src/main/java/com/nuvio/tv/data/local/ThemeDataStore.kt",
+    "app/src/main/java/com/nuvio/tv/data/local/DebridSettingsDataStore.kt",
+    "app/src/main/java/com/nuvio/tv/data/local/TmdbSettingsDataStore.kt",
+    "app/src/main/java/com/nuvio/tv/data/local/TraktSettingsDataStore.kt",
+    "app/src/main/java/com/nuvio/tv/data/local/TraktAuthDataStore.kt",
+    "app/src/main/java/com/nuvio/tv/data/local/DeviceLocalPlayerPreferences.kt",
+    "app/src/main/java/com/nuvio/tv/data/local/ProfileDataStore.kt",
+    "app/src/main/java/com/nuvio/tv/data/local/ProfileDataStoreFactory.kt",
+    "app/src/main/java/com/nuvio/tv/data/local/ProfileLockStateDataStore.kt",
+    "app/src/main/java/com/nuvio/tv/data/local/ProtectedProfilePreferences.kt",
+    "app/src/main/java/com/nuvio/tv/data/local/ExperienceModeDataStore.kt",
+    "app/src/main/java/com/nuvio/tv/data/local/ServerConfigurationStore.kt",
+    "app/src/main/java/com/nuvio/tv/data/local/AddonPreferences.kt",
+    "app/src/main/java/com/nuvio/tv/data/local/PluginDataStore.kt",
+    "app/src/main/java/com/nuvio/tv/data/local/DebugSettingsDataStore.kt",
+    "app/src/main/java/com/nuvio/tv/data/local/SentrySettingsDataStore.kt",
+    "app/src/main/java/com/nuvio/tv/data/local/TrailerSettingsDataStore.kt",
+    "app/src/main/java/com/nuvio/tv/data/local/ImagePerformancePreferences.kt",
+    "app/src/main/java/com/nuvio/tv/data/local/DiscoverSelectionDataStore.kt",
+    "app/src/main/java/com/nuvio/tv/data/local/StreamBadgeSettingsDataStore.kt",
+    "app/src/main/java/com/nuvio/tv/data/local/AppOnboardingDataStore.kt",
+    "app/src/main/java/com/nuvio/tv/data/local/LibraryPreferences.kt",
+    "app/src/main/java/com/nuvio/tv/data/local/TrackPreferenceDataStore.kt",
+    "app/src/main/java/com/nuvio/tv/data/local/AudioDelayRouteDataStore.kt",
+    "app/src/main/java/com/nuvio/tv/data/local/AuthSessionNoticeDataStore.kt",
+    "app/src/main/java/com/nuvio/tv/core/auth/AuthManager.kt",
+    "app/src/main/java/com/nuvio/tv/core/auth/SupabaseAuthSession.kt",
+    "app/src/main/java/com/nuvio/tv/core/auth/AuthSessionValidator.kt",
+    "app/src/main/java/com/nuvio/tv/core/auth/AuthRefreshResponsePolicy.kt",
+    "app/src/main/java/com/nuvio/tv/core/auth/AuthSessionValidationPolicy.kt",
+    "app/src/main/java/com/nuvio/tv/core/auth/DeviceSessionRegistration.kt",
+    "app/src/main/java/com/nuvio/tv/core/auth/AccountLocalDataResetService.kt",
+    "app/src/main/java/com/nuvio/tv/core/auth/diagnostics/AuthDiagnostics.kt",
+    "app/src/main/java/com/nuvio/tv/core/profile/ProfileManager.kt",
+    "app/src/main/java/com/nuvio/tv/core/profile/ProfileScopedCredentialStore.kt",
+    "app/src/main/java/com/nuvio/tv/core/profile/ProtectedProfilePreferences.kt",
+    "app/src/main/java/com/nuvio/tv/core/sync/ProfileSettingsSyncService.kt",
+    "app/src/main/java/com/nuvio/tv/core/sync/ProfileSyncService.kt",
+    "app/src/main/java/com/nuvio/tv/core/sync/ProviderCredentialSyncService.kt",
+    "app/src/main/java/com/nuvio/tv/core/sync/StartupSyncService.kt",
+    "app/src/main/java/com/nuvio/tv/core/sync/SyncClientIdentity.kt",
+    "app/src/main/java/com/nuvio/tv/core/sync/AddonSyncService.kt",
+    "app/src/main/java/com/nuvio/tv/core/sync/CollectionSyncService.kt",
+    "app/src/main/java/com/nuvio/tv/core/sync/HomeCatalogSettingsSyncService.kt",
+    "app/src/main/java/com/nuvio/tv/core/sync/LibrarySyncService.kt",
+    "app/src/main/java/com/nuvio/tv/core/sync/PluginSyncService.kt",
+    "app/src/main/java/com/nuvio/tv/core/sync/androidtv/AndroidTvChannelManager.kt",
+    "app/src/main/java/com/nuvio/tv/core/sync/androidtv/AndroidTvChannelSyncService.kt",
+    "app/src/main/java/com/nuvio/tv/core/sync/androidtv/TvChannelPreferences.kt",
+    "app/src/main/java/com/nuvio/tv/reshaped/ReshapedIdentity.kt",
+    "app/src/main/java/com/nuvio/tv/reshaped/ReshapedMigration.kt",
+    "app/src/main/java/com/nuvio/tv/reshaped/ReshapedMigrationProvider.kt",
+    "app/src/main/java/com/nuvio/tv/reshaped/sync/ReshapedSync.kt",
+    "app/src/main/java/com/nuvio/tv/reshaped/sync/DriveAppFolder.kt",
+    "app/src/main/java/com/nuvio/tv/reshaped/sync/GoogleAccount.kt",
+    "app/src/main/java/com/nuvio/tv/reshaped/sync/SyncDoc.kt",
+    "app/src/main/java/com/nuvio/tv/reshaped/sync/SyncSections.kt",
+    "app/src/main/java/com/nuvio/tv/reshaped/phoneentry/PhoneEntryServer.kt",
+    "app/src/main/java/com/nuvio/tv/reshaped/debuglog/DebugLogServer.kt",
+    "app/src/main/java/com/nuvio/tv/reshaped/net/LanAddress.kt",
+    "app/src/main/java/com/nuvio/tv/data/local/MemberAccessDataStore.kt",
+    "app/src/main/java/com/nuvio/tv/data/local/CollectionsDataStore.kt",
+    "app/src/main/java/com/nuvio/tv/data/local/ContinueWatchingEnrichmentCache.kt",
+    "app/src/main/java/com/nuvio/tv/data/local/EpisodeShuffleStore.kt",
+    "app/src/main/java/com/nuvio/tv/data/local/BingeGroupCacheDataStore.kt",
+    "app/src/main/java/com/nuvio/tv/data/local/SearchHistoryDataStore.kt",
+    "app/src/main/java/com/nuvio/tv/data/local/StreamLinkCacheDataStore.kt",
+    "app/src/main/java/com/nuvio/tv/data/local/AnimeSkipSettingsDataStore.kt",
+    "app/src/main/java/com/nuvio/tv/domain/model/AppTheme.kt",
+    "app/src/main/java/com/nuvio/tv/domain/model/AppFont.kt",
+    "app/src/main/java/com/nuvio/tv/domain/model/CustomThemeColors.kt",
+    "app/src/main/java/com/nuvio/tv/domain/model/ThemeSelection.kt",
+    "app/src/main/java/com/nuvio/tv/domain/model/MemberAccess.kt",
+    "app/src/main/java/com/nuvio/tv/domain/model/CosmeticEntitlements.kt",
+    "app/src/main/java/com/nuvio/tv/domain/model/ExperienceMode.kt",
+    "app/src/main/java/com/nuvio/tv/domain/model/DebridSettings.kt",
+    "app/src/main/java/com/nuvio/tv/domain/model/ServerConfiguration.kt",
+    "app/src/main/java/com/nuvio/tv/data/local/StartupSyncPreferences.kt",
+    "app/src/main/java/com/nuvio/tv/updater/UpdatePreferences.kt",
+    "app/src/main/java/com/nuvio/tv/updater/UpdateChannel.kt",
+    "app/src/main/java/com/nuvio/tv/updater/UpdateBannerPolicy.kt",
+    "app/src/main/java/com/nuvio/tv/updater/ReleaseSelector.kt",
+    "app/src/main/java/com/nuvio/tv/updater/VersionUtils.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/autosync/AutoSyncPreferences.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/autosync/bubble/AutoSyncBubbleToasts.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/seekpreview/SeekrKeyPreferences.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/seekpreview/local/LocalSeekPreviewSettings.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/seekbuffer/SeekBufferSettings.kt",
+    "app/src/main/java/com/nuvio/tv/reshaped/sync/GoogleSignInPhonePage.kt",
+    "app/src/main/java/com/nuvio/tv/ui/reshaped/phoneentry/PhoneEntryQr.kt",
+    "app/src/main/java/com/nuvio/tv/ui/reshaped/pillnav/PillNavPreferences.kt",
+    "app/src/main/java/com/nuvio/tv/core/connection/ConnectionSpeedEstimator.kt",
+    "app/src/main/java/com/nuvio/tv/core/server/AddonConfigServer.kt",
+    "app/src/main/java/com/nuvio/tv/core/server/CustomPosterConfigServer.kt",
+    "app/src/main/java/com/nuvio/tv/core/server/DebridFormatterConfigServer.kt",
+    "app/src/main/java/com/nuvio/tv/core/server/RepositoryConfigServer.kt",
+    "app/src/main/java/com/nuvio/tv/core/server/StreamBadgeConfigServer.kt",
+    "app/src/main/java/com/nuvio/tv/core/server/AddonWebPage.kt",
+    "app/src/main/java/com/nuvio/tv/core/server/CustomPosterWebPage.kt",
+    "app/src/main/java/com/nuvio/tv/core/server/DebridFormatterWebPage.kt",
+    "app/src/main/java/com/nuvio/tv/core/server/RepositoryWebPage.kt",
+    "app/src/main/java/com/nuvio/tv/core/server/StreamBadgeWebPage.kt",
+    "app/src/main/java/com/nuvio/tv/core/server/DeviceIpAddress.kt",
+    "app/src/main/java/com/nuvio/tv/ui/theme/Theme.kt",
+    "app/src/main/java/com/nuvio/tv/ui/theme/ThemeColors.kt",
+    "app/src/main/java/com/nuvio/tv/ui/theme/ThemeBranding.kt",
+    "app/src/main/java/com/nuvio/tv/ui/theme/SupporterThemeColors.kt",
+    "app/src/main/java/com/nuvio/tv/ui/theme/CustomThemePalette.kt",
+    "app/src/main/java/com/nuvio/tv/ui/theme/ComponentTokens.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/settings/AdvancedSettingsViewModel.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/settings/PlaybackSettingsViewModel.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/settings/ThemeSettingsViewModel.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/settings/TrackingSettingsViewModel.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/settings/ProfileSettingsViewModel.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/settings/DebridSettingsViewModel.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/settings/AnimeSkipSettingsViewModel.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/settings/DebugSettingsViewModel.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/settings/ExperienceModeSettingsViewModel.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/settings/TraktViewModel.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/settings/SimklSettingsViewModel.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/settings/SupportersContributorsViewModel.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/settings/SettingsDesignSystem.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/settings/SettingsSectionComponents.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/settings/SettingsValueRows.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/settings/SettingsPickerDialogs.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/settings/SettingsScrollIndicators.kt",
+    "app/src/main/java/com/nuvio/tv/data/remote/supabase/SupabaseModels.kt",
+    "app/src/main/java/com/nuvio/tv/core/build/AppFeaturePolicy.kt",
+    "app/src/full/java/com/nuvio/tv/updater/UpdateRepository.kt",
+    "app/src/full/java/com/nuvio/tv/updater/UpdateViewModel.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/settings/AppIconPicker.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/settings/NuvioReshapedSettingsContent.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/settings/ReshapedSettingsItems.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/settings/ReshapedSyncSettingsItems.kt"
+  ],
+  "capabilities": [
+    {
+      "id": "settings-catalog-structure",
+      "capability": "Settings catalog: rail/category organization, visibility gating (primary profile, essential mode, debug build)",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/ui/screens/settings/SettingsCatalog.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/settings/SettingsScreen.kt"
+      ],
+      "source_behavior": "12 SettingsCategory entries in 5 SettingsRailGroups: YOU (Account, Profiles), LOOK (Appearance, Layout), WATCH (ContentDiscovery, Playback, NuvioReshaped), SERVICES (Integration, Tracking), SYSTEM (Advanced, About, Debug, Experience). visibleSettingsCategories() gates: ACCOUNT/PROFILES require isPrimaryProfile=true, DEBUG requires isDebugBuild && !isEssentialMode, EXPERIENCE always hidden from visible. Two UI styles: HORIZON (top tab bar) and classic side rail. SettingsSectionDestination.Inline/External controls navigation mode. Essential mode hides most categories except a limited set.",
+      "existing_ios_equivalent": [
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/settings/SettingsScreen.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/settings/SettingsModels.kt"
+      ],
+      "target_behavior": "21 SettingsPage entries in 4 SettingsCategory groups: Account, General, About, Advanced. Different navigation model: root page with sub-page drill-down (parentPage hierarchy) on mobile, sidebar category filter + page picker on tablet. Has search overlay. Tablet/mobile responsive layout. No rail group concept. No equivalent to isEssentialMode/ExperienceMode gating on category visibility. No equivalent to NuvioReshaped category.",
+      "gaps": [
+        "No SettingsRailGroup/5-group model — flat category grouping instead",
+        "No isEssentialMode gating on settings pages (all pages always visible)",
+        "No isPrimaryProfile gating on Account/Profiles pages",
+        "No NuvioReshaped settings category (Reshaped-specific features)",
+        "No HORIZON/classic rail dual UI style — single mobile/tablet responsive layout",
+        "No Inline/External section destination concept for navigation"
+      ],
+      "port_required": true,
+      "tests": [
+        "app/src/test/java/com/nuvio/tv/ui/screens/settings/SettingsCatalogTest.kt",
+        "app/src/test/java/com/nuvio/tv/ui/screens/settings/SettingsStructureTest.kt"
+      ],
+      "status": "partial",
+      "platform_limitations": [
+        "iOS touch navigation model differs from TV D-pad focus — rail focus restoration logic is Android TV-specific"
+      ]
+    },
+    {
+      "id": "reshaped-synced-settings",
+      "capability": "Reshaped sync settings: shared and TV-only sync sections, setting-level read/write bridging, live_tv, autosync, seek_previews, pill_nav, connection_fit, seekr_key",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/reshaped/sync/ReshapedSyncedSettings.kt"
+      ],
+      "source_behavior": "ReshapedSyncedSettings object defines 2 sync sections: SHARED='settings/shared' (live_tv, autosync_bubble, autosync_tolerance_ms) and TV='settings/tv' (autosync, seek_previews, pill_nav, connection_fit, seekr_key). Each Setting has section, key, read lambda, write lambda. current() returns Map<section, Map<key, JsonPrimitive>>. apply() diffs current vs merged and writes changed values. Device-local settings explicitly excluded: buffer sizes, channel previews, volume boost, debug logs, subtitle font, connection speed history.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "NOT IMPLEMENTED — no ReshapedSyncedSettings or equivalent cross-device sync section system exists",
+      "gaps": [
+        "Entire Reshaped synced settings system missing",
+        "No SHARED/TV section partitioning",
+        "No setting-level read/write lambda bridging for cross-platform sync",
+        "No mechanism to sync live_tv, autosync, seek_previews, pill_nav, connection_fit, seekr_key across devices",
+        "No explicit exclusion of device-local settings from sync"
+      ],
+      "port_required": true,
+      "tests": [],
+      "status": "missing",
+      "platform_limitations": []
+    },
+    {
+      "id": "provider-credential-models",
+      "capability": "Provider credential model: snapshot/merge/seeding for debrid, mdblist, animeskip API keys",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/core/sync/ProviderCredentialModels.kt",
+        "app/src/main/java/com/nuvio/tv/core/sync/ProviderCredentialSyncService.kt"
+      ],
+      "source_behavior": "ProviderCredentialIds defines provider identifiers (MDBLIST, ANIMESKIP, debrid:<id>). ProviderCredentialValue holds provider/field/value. ProviderCredentialSnapshot holds profileId + values list, with mergeRemote() to combine local+remote, and shouldSeedProviderCredentials() to detect missing remote entries. Credentials stored per-profile via SupabaseProviderCredential remote table.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "NOT IMPLEMENTED — no provider credential sync model exists. DebridSettingsRepository stores API keys directly in NSUserDefaults (ProfileScopedKey). No SupabaseProviderCredential table or credential sync service.",
+      "gaps": [
+        "No ProviderCredentialSnapshot/ProviderCredentialValue models",
+        "No credential merge/seeding logic (mergeRemote, shouldSeedProviderCredentials)",
+        "No per-profile credential sync to Supabase",
+        "Credentials stored in NSUserDefaults rather than secure Keychain",
+        "No ProviderCredentialSyncService"
+      ],
+      "port_required": true,
+      "tests": [
+        "app/src/test/java/com/nuvio/tv/core/sync/ProviderCredentialModelsTest.kt"
+      ],
+      "status": "missing",
+      "platform_limitations": [
+        "iOS Keychain Services available as secure alternative to plain NSUserDefaults"
+      ]
+    },
+    {
+      "id": "local-player-settings-datastore",
+      "capability": "Player settings DataStore: profile-scoped DataStore for playback preferences with DataStore persistence",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/data/local/PlayerSettingsDataStore.kt"
+      ],
+      "source_behavior": "PlayerSettingsDataStore injected singleton using ProfileDataStoreFactory for per-profile DataStore. ~50+ preference keys for: showLoadingOverlay, showParentalGuide, resizeMode, holdToSpeed/value, touchGestures, externalPlayer, audio/subtitle languages, subtitle style (color, background, outline, bold, size, offset), addonSubtitleStartupMode, streamReuseLastLink, androidPlaybackEngine, libmpv settings, decoderPriority, mapDV7ToHevc, tunneling, streamAutoPlay, skipIntro, animeSkip, introDb, nextEpisode threshold, useLibass, libassRenderType. Uses DataStore (type-safe) with profile-scoped files. Has clearAll() to remove all keys.",
+      "existing_ios_equivalent": [
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerSettingsRepository.kt",
+        "composeApp/src/iosMain/kotlin/com/nuvio/app/features/player/PlayerSettingsStorage.ios.kt"
+      ],
+      "target_behavior": "PlayerSettingsRepository singleton with PlayerSettingsUiState data class. Persistence via PlayerSettingsStorage iOS actual using NSUserDefaults with ProfileScopedKey prefix. Similar field coverage (~70 fields) with additional iOS-specific fields (iosVideoOutputPreset, iosToneMappingMode, iosTargetPrimaries, iosTargetTransfer, iosHardwareDecoderMode, iosAudioOutputMode, iosExtendedDynamicRangeEnabled, iosTargetColorspaceHintEnabled, iosHdrComputePeakEnabled, iosDebandEnabled, iosInterpolationEnabled, iosBrightness, iosContrast, iosSaturation, iosGamma). Has exportToSyncPayload/replaceFromSyncPayload for sync. Missing clearAll().",
+      "gaps": [
+        "Uses NSUserDefaults instead of DataStore (no type-safe preferences API)",
+        "No clearAll() bulk removal method",
+        "Missing introSubmitEnabled field (exists in source as sync field)",
+        "Missing externalPlayerSendSkipSegments in source (present in target as iOS addition)",
+        "No equivalent to source's AutoSyncPreferences, AutoSyncBubbleToasts, SeekrKeyPreferences, LocalSeekPreviewSettings, SeekBufferSettings (these exist as separate source objects, not in PlayerSettingsDataStore)"
+      ],
+      "port_required": false,
+      "tests": [
+        "app/src/test/java/com/nuvio/tv/data/local/PlayerSettingsTimeoutMigrationTest.kt",
+        "app/src/test/java/com/nuvio/tv/data/local/PlayerSettingsTimeoutPredicateTest.kt"
+      ],
+      "status": "partial",
+      "platform_limitations": [
+        "NSUserDefaults is standard iOS persistence; Keychain should be used for API keys"
+      ]
+    },
+    {
+      "id": "layout-preference-datastore",
+      "capability": "Layout/UI preferences DataStore: home layout, poster cards, sidebar, hero, catalog order, continue watching, card depth",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/data/local/LayoutPreferenceDataStore.kt"
+      ],
+      "source_behavior": "LayoutPreferenceDataStore with ~50+ preference keys. Profile-scoped via ProfileDataStoreFactory. Fields: selectedLayout, hasChosenLayout, heroCatalogKeys, homeCatalogOrderKeys, disabledHomeCatalogKeys, customCatalogTitles, sidebarCollapsed, modernSidebar, modernSidebarBlur, modernLandscapePosters, modernHeroFullScreenBackdrop, heroSectionEnabled, posterLabels, catalogAddonName, catalogTypeSuffix, classicFocusGradient, focusedPosterBackdropExpand (enabled/delay/trailer/trailerMuted/trailerPlaybackTarget), posterCardWidth/Height/CornerRadius, cardDepth (enabled/edgeStrength/sheenStrength/edgeCoverage + surface toggles), blurUnwatchedEpisodes, randomEpisode, startupSplash, alwaysShowLandscapeClearlogo, episodeOptionsOverlayStyle, homeImdbRatingsVisibility, detailImdbRatingsVisibility, useEpisodeThumbnailsInCw, continueWatching (enabled/cardStyle/showUnairedNextUp/nextUpFromFurthestEpisode/blurNextUp/sortMode), detailPageTrailerButton, preferExternalMetaAddonDetail, hideUnreleasedContent, showFullReleaseDate, memoryOnlyVerticalScroll, smoothBringIntoView, fastHorizontalNavigation, followAddonsOrder, composeHighlighter, customPosterUrlPattern, customPosterEnabledScreens, discoverLocation. Has applyCatalogSettingsFromRemote for sync payload import. Migration from Set to String type.",
+      "existing_ios_equivalent": [
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/settings/SettingsScreen.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/settings/AppearanceSettingsPage.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/home/HomeCatalogSettingsRepository.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/home/HomeCatalogSettingsStorage.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/watchprogress/ContinueWatchingPreferencesRepository.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/watchprogress/ContinueWatchingPreferencesStorage.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/core/ui/CardDepthStyleRepository.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/core/ui/PosterCardStyleRepository.kt"
+      ],
+      "target_behavior": "Scattered across multiple repositories. HomeCatalogSettingsRepository handles home layout/order/hero. ContinueWatchingPreferencesRepository handles CW settings. PosterCardStyleRepository handles poster customization. CardDepthStyleRepository handles card depth. NSUserDefaults per-platform storage. No centralized DataStore. Missing fields: customPosterUrlPattern, customPosterEnabledScreens, posterCardWidth/Height/CornerRadius, discoverLocation, lastNonOffDiscoverLocation, search_discover_enabled, legacySearchDiscoverEnabledKey, classicFocusGradient, focusedPosterBackdropTrailerPlaybackTarget, memoryOnlyVerticalScroll, smoothBringIntoView, fastHorizontalNavigation, followAddonsOrder, composeHighlighter.",
+      "gaps": [
+        "No centralized LayoutPreferenceDataStore — scattered across repos",
+        "Missing customPosterUrlPattern and customPosterEnabledScreens (custom poster URL with token replacement)",
+        "Missing posterCardWidthDp, posterCardHeightDp, posterCardCornerRadiusDp (adjustable poster card dimensions)",
+        "Missing discoverLocation and lastNonOffDiscoverLocation (search/discover location preference)",
+        "Missing classicFocusGradientEnabled toggle",
+        "Missing focusedPosterBackdropTrailerPlaybackTarget (hero media vs external player)",
+        "Missing memoryOnlyVerticalScroll, smoothBringIntoView, fastHorizontalNavigation, followAddonsOrder, composeHighlighter (performance/navigation tweaks)",
+        "Missing customCatalogTitles support",
+        "Missing applyCatalogSettingsFromRemote sync import",
+        "Missing type migration (Set→String)"
+      ],
+      "port_required": true,
+      "tests": [
+        "app/src/test/java/com/nuvio/tv/data/local/CollectionsDataStoreSourceMigrationTest.kt",
+        "app/src/test/java/com/nuvio/tv/data/local/DiscoverLocationMigrationTest.kt"
+      ],
+      "status": "partial",
+      "platform_limitations": []
+    },
+    {
+      "id": "theme-datastore",
+      "capability": "Theme settings DataStore: selected theme, custom theme colors, AMOLED mode, app font, dark mode configuration",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/data/local/ThemeDataStore.kt",
+        "app/src/main/java/com/nuvio/tv/domain/model/AppTheme.kt",
+        "app/src/main/java/com/nuvio/tv/domain/model/AppFont.kt",
+        "app/src/main/java/com/nuvio/tv/domain/model/CustomThemeColors.kt",
+        "app/src/main/java/com/nuvio/tv/domain/model/ThemeSelection.kt"
+      ],
+      "source_behavior": "ThemeDataStore with profile-scoped DataStore. Keys: selected_theme, custom_theme_colors (encoded hex string), app_font. ThemeSelection data class (theme + customColors). AppTheme enum: CUSTOM, GOLD, JADE, ROSE_GOLD, ARCTIC_BLUE, GRAPHITE, CRIMSON, OCEAN, VIOLET, EMERALD, AMBER, ROSE, WHITE (13 values). AppFont enum: INTER, DM_SANS, OPEN_SANS (3 values). CustomThemeColors with 3 color fields (first/second/third), encode/decode, isSolid check. CustomThemeEditor screen for visual color picking. ThemeColorPicker and HexColorDialog for color input.",
+      "existing_ios_equivalent": [
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/settings/ThemeSettingsRepository.kt",
+        "composeApp/src/iosMain/kotlin/com/nuvio/app/features/settings/ThemeSettingsStorage.ios.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/core/ui/AppTheme.kt"
+      ],
+      "target_behavior": "ThemeSettingsRepository with NSUserDefaults persistence. AppTheme enum with 13 values matching source. Additional fields: amoledEnabled, liquidGlassNativeTabBarEnabled, selectedAppLanguage, navBarStyle. Has exportToSyncPayload/replaceFromSyncPayload. Missing: custom theme colors (CustomThemeColors), app font selection, theme color picker/editor UI. Has app icon picker (source also has AppIconPicker).",
+      "gaps": [
+        "Missing CustomThemeColors (3-color custom palette with encode/decode)",
+        "Missing AppFont selection (INTER, DM_SANS, OPEN_SANS)",
+        "Missing custom theme editor UI (CustomThemeEditor, ThemeColorPicker, HexColorDialog)",
+        "Missing Dark Mode toggle (source has dark mode configuration in ThemeDataStore)",
+        "Missing supporter-themed color schemes (SupporterThemeColors)"
+      ],
+      "port_required": true,
+      "tests": [
+        "app/src/test/java/com/nuvio/tv/ui/screens/settings/ThemeSettingsViewModelTest.kt",
+        "app/src/test/java/com/nuvio/tv/ui/theme/CustomThemePaletteTest.kt",
+        "app/src/test/java/com/nuvio/tv/ui/theme/ThemeBrandingTest.kt"
+      ],
+      "status": "partial",
+      "platform_limitations": []
+    },
+    {
+      "id": "auth-manager-session",
+      "capability": "Authentication: Supabase auth session management, anonymous auth, QR code sign-in, device registration, session validation/refresh",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/core/auth/AuthManager.kt",
+        "app/src/main/java/com/nuvio/tv/core/auth/SupabaseAuthSession.kt",
+        "app/src/main/java/com/nuvio/tv/core/auth/AuthSessionValidator.kt",
+        "app/src/main/java/com/nuvio/tv/core/auth/AuthRefreshResponsePolicy.kt",
+        "app/src/main/java/com/nuvio/tv/core/auth/AuthSessionValidationPolicy.kt",
+        "app/src/main/java/com/nuvio/tv/core/auth/DeviceSessionRegistration.kt",
+        "app/src/main/java/com/nuvio/tv/core/auth/AccountLocalDataResetService.kt",
+        "app/src/main/java/com/nuvio/tv/core/auth/diagnostics/AuthDiagnostics.kt"
+      ],
+      "source_behavior": "AuthManager singleton managing Supabase auth state, session refresh, anonymous auth flow. AuthSessionValidator validates session health. DeviceSessionRegistration handles device registration with Supabase. AccountLocalDataResetService handles full account data wipe. AuthDiagnostics for debugging auth issues. QR sign-in via phone entry server. Refresh response policy handles token rotation edge cases.",
+      "existing_ios_equivalent": [
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/core/auth/AuthRepository.kt"
+      ],
+      "target_behavior": "AuthRepository singleton managing Supabase auth state, anonymous auth, session collection. SupabaseProvider wraps client. Has AuthState sealed class (Loading, Authenticated, Unauthenticated). Missing: explicit session validator, DeviceSessionRegistration, AccountLocalDataResetService, AuthDiagnostics, QR sign-in flow. AuthStorage handles persistence.",
+      "gaps": [
+        "No DeviceSessionRegistration (device identity registration with Supabase)",
+        "No AccountLocalDataResetService (full account data wipe)",
+        "No AuthDiagnostics module for debugging auth issues",
+        "No explicit AuthSessionValidator with validation policy",
+        "No AuthRefreshResponsePolicy for token rotation edge cases",
+        "No QR code sign-in flow (PhoneEntryServer/GoogleSignInPhonePage)"
+      ],
+      "port_required": true,
+      "tests": [
+        "app/src/test/java/com/nuvio/tv/core/auth/AuthRefreshResponsePolicyTest.kt",
+        "app/src/test/java/com/nuvio/tv/core/auth/AuthSessionValidationPolicyTest.kt",
+        "app/src/test/java/com/nuvio/tv/core/auth/DeviceSessionRegistrationTest.kt",
+        "app/src/test/java/com/nuvio/tv/core/auth/SupabaseAuthSessionTest.kt"
+      ],
+      "status": "partial",
+      "platform_limitations": []
+    },
+    {
+      "id": "profile-management",
+      "capability": "Profile management: multi-profile CRUD, profile switching, protected profiles (PIN), profile settings copy, credential store per profile, primary/non-primary profile distinction",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/core/profile/ProfileManager.kt",
+        "app/src/main/java/com/nuvio/tv/core/profile/ProfileScopedCredentialStore.kt",
+        "app/src/main/java/com/nuvio/tv/core/profile/ProtectedProfilePreferences.kt",
+        "app/src/main/java/com/nuvio/tv/data/local/ProfileDataStore.kt",
+        "app/src/main/java/com/nuvio/tv/data/local/ProfileDataStoreFactory.kt",
+        "app/src/main/java/com/nuvio/tv/data/local/ProfileLockStateDataStore.kt",
+        "app/src/main/java/com/nuvio/tv/data/local/ProtectedProfilePreferences.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/profile/ProfileSelectionScreen.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/profile/ProfileSelectionViewModel.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/profile/ProfileSettingsCopyDialogs.kt"
+      ],
+      "source_behavior": "ProfileManager manages profiles list, active profile, primary profile (ID=1). Profile isPrimary=true gates Account/Profiles settings categories. ProfileDataStoreFactory provides per-profile DataStore instances. ProfileScopedCredentialStore stores API keys per profile. ProtectedProfilePreferences manages PIN-protected profiles. ProfileLockStateDataStore tracks lock state. ProfileSettingsCopyDialogs provides copyProfileSetup for duplicating settings between profiles. ProfileSelectionScreen with avatar/name grid for profile switching.",
+      "existing_ios_equivalent": [
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/profiles/ProfileRepository.kt"
+      ],
+      "target_behavior": "ProfileRepository with StoredProfilePayload (userId, activeProfileIndex, hasEverSelectedProfile, rememberLastProfileEnabled, profiles list). ProfileState data class. Handles profile load/save, switching, remember last profile. Missing: PIN-protected profiles, profile lock state, credential store per profile, copyProfileSetup dialogs, profile settings copy functionality, per-profile DataStore factory (uses ProfileScopedKey NSUserDefaults prefix instead).",
+      "gaps": [
+        "No ProtectedProfilePreferences (PIN/restricted profile access)",
+        "No ProfileLockStateDataStore (profile lock/unlock state tracking)",
+        "No ProfileScopedCredentialStore (per-profile API key isolation)",
+        "No ProfileSettingsCopyDialogs (copy settings between profiles)",
+        "No per-profile DataStore isolation (uses shared NSUserDefaults with ProfileScopedKey prefix — weaker isolation)",
+        "No profile avatar/name grid selection UI ported"
+      ],
+      "port_required": true,
+      "tests": [
+        "app/src/androidTest/java/com/nuvio/tv/core/profile/ProtectedProfilePreferencesTest.kt",
+        "app/src/test/java/com/nuvio/tv/core/sync/ProfilePullFreshnessTest.kt"
+      ],
+      "status": "partial",
+      "platform_limitations": [
+        "iOS Keychain can replace per-profile credential store"
+      ]
+    },
+    {
+      "id": "sync-services",
+      "capability": "Sync services: profile settings sync, provider credential sync, addon sync, collection sync, home catalog sync, library sync, plugin sync, startup sync, sync client identity",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/core/sync/ProfileSettingsSyncService.kt",
+        "app/src/main/java/com/nuvio/tv/core/sync/ProfileSyncService.kt",
+        "app/src/main/java/com/nuvio/tv/core/sync/ProviderCredentialSyncService.kt",
+        "app/src/main/java/com/nuvio/tv/core/sync/StartupSyncService.kt",
+        "app/src/main/java/com/nuvio/tv/core/sync/SyncClientIdentity.kt",
+        "app/src/main/java/com/nuvio/tv/core/sync/AddonSyncService.kt",
+        "app/src/main/java/com/nuvio/tv/core/sync/CollectionSyncService.kt",
+        "app/src/main/java/com/nuvio/tv/core/sync/HomeCatalogSettingsSyncService.kt",
+        "app/src/main/java/com/nuvio/tv/core/sync/LibrarySyncService.kt",
+        "app/src/main/java/com/nuvio/tv/core/sync/PluginSyncService.kt",
+        "app/src/main/java/com/nuvio/tv/core/sync/androidtv/AndroidTvChannelManager.kt",
+        "app/src/main/java/com/nuvio/tv/core/sync/androidtv/AndroidTvChannelSyncService.kt",
+        "app/src/main/java/com/nuvio/tv/core/sync/androidtv/TvChannelPreferences.kt",
+        "app/src/main/java/com/nuvio/tv/core/sync/androidtv/TvChannelBootReceiver.kt",
+        "app/src/main/java/com/nuvio/tv/core/sync/androidtv/TvChannelRefreshJobService.kt"
+      ],
+      "source_behavior": "Multiple sync services for different domains. ProfileSettingsSyncService syncs settings per profile. ProviderCredentialSyncService syncs API credentials. AddonSyncService syncs addon configurations. CollectionSyncService syncs user collections. HomeCatalogSettingsSyncService syncs home catalog layout/order. LibrarySyncService syncs library items. PluginSyncService syncs plugin data. StartupSyncService orchestrates initial sync. SyncClientIdentity manages device identity for sync conflict resolution. AndroidTvChannelSyncService syncs Android TV channel data.",
+      "existing_ios_equivalent": [
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/core/sync/ProfileSettingsSync.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/core/sync/ProfileSettingsCredentialPolicy.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/core/sync/SyncClientIdentity.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/collection/CollectionSyncService.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/home/HomeCatalogSettingsSyncService.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/iosMain/kotlin/com/nuvio/app/core/sync/SyncClientIdentityStorage.ios.kt"
+      ],
+      "target_behavior": "Partial sync implementation. ProfileSettingsSync exists but may not have full settings scope. SyncClientIdentity exists. CollectionSyncService and HomeCatalogSettingsSyncService exist. Missing: ProviderCredentialSyncService (credentials not synced), AddonSyncService, PluginSyncService, LibrarySyncService, StartupSyncService. Android TV channel sync is Android-specific (not needed).",
+      "gaps": [
+        "No ProviderCredentialSyncService (API keys not synced to cloud)",
+        "No AddonSyncService (addon config not synced)",
+        "No PluginSyncService (plugin data not synced)",
+        "No LibrarySyncService (library items not synced)",
+        "No StartupSyncService (no orchestrated initial sync)",
+        "Missing ProfileSettingsCredentialPolicy test"
+      ],
+      "port_required": true,
+      "tests": [
+        "app/src/test/java/com/nuvio/tv/core/sync/ProfileSettingsCredentialPolicyTest.kt",
+        "app/src/test/java/com/nuvio/tv/core/sync/ProfileSettingsPluginSyncTest.kt",
+        "app/src/test/java/com/nuvio/tv/core/sync/SurfacePullFreshnessTest.kt",
+        "composeApp/src/commonTest/kotlin/com/nuvio/app/core/sync/ProfileSettingsCredentialPolicyTest.kt"
+      ],
+      "status": "partial",
+      "platform_limitations": []
+    },
+    {
+      "id": "reshaped-sync-infrastructure",
+      "capability": "Reshaped sync infrastructure: Google Drive sync, Google account auth, phone entry flow, SyncDoc/SyncSections data model, ReshapedIdentity/ReshapedMigration",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/reshaped/sync/ReshapedSync.kt",
+        "app/src/main/java/com/nuvio/tv/reshaped/sync/DriveAppFolder.kt",
+        "app/src/main/java/com/nuvio/tv/reshaped/sync/GoogleAccount.kt",
+        "app/src/main/java/com/nuvio/tv/reshaped/sync/SyncDoc.kt",
+        "app/src/main/java/com/nuvio/tv/reshaped/sync/SyncSections.kt",
+        "app/src/main/java/com/nuvio/tv/reshaped/sync/GoogleSignInPhonePage.kt",
+        "app/src/main/java/com/nuvio/tv/reshaped/phoneentry/PhoneEntryServer.kt",
+        "app/src/main/java/com/nuvio/tv/ui/reshaped/phoneentry/PhoneEntryQr.kt",
+        "app/src/main/java/com/nuvio/tv/reshaped/ReshapedIdentity.kt",
+        "app/src/main/java/com/nuvio/tv/reshaped/ReshapedMigration.kt",
+        "app/src/main/java/com/nuvio/tv/reshaped/ReshapedMigrationProvider.kt"
+      ],
+      "source_behavior": "Google Drive-based sync system for Reshaped settings across devices. ReshapedSync orchestrates push/pull to DriveAppFolder (Google Drive API folder). GoogleAccount handles Google sign-in and token management. SyncDoc/SyncSections define the sync data model. GoogleSignInPhonePage provides web-based phone pairing for Google sign-in. PhoneEntryServer/PhoneEntryQr provide LAN-based phone configuration (QR code). ReshapedIdentity handles device identity within Reshaped ecosystem. ReshapedMigration/ReshapedMigrationProvider handles upgrade migration from legacy app versions.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "NOT IMPLEMENTED — no Reshaped sync infrastructure exists. No Google Drive integration, no phone entry flow, no SyncDoc/SyncSections models, no ReshapedIdentity, no migration framework.",
+      "gaps": [
+        "Entire Reshaped sync infrastructure missing (Google Drive-based cross-device sync)",
+        "No DriveAppFolder (Google Drive API integration)",
+        "No GoogleAccount/Google sign-in flow",
+        "No SyncDoc/SyncSections data model",
+        "No phone entry flow (PhoneEntryServer/PhoneEntryQr)",
+        "No ReshapedIdentity device identity",
+        "No ReshapedMigration framework",
+        "No cross-device settings sync (TV ↔ phone)"
+      ],
+      "port_required": true,
+      "tests": [
+        "app/src/test/java/com/nuvio/tv/reshaped/sync/SyncDocTest.kt"
+      ],
+      "status": "missing",
+      "platform_limitations": [
+        "iOS has its own Google sign-in SDK; DriveKit or webDAV alternative needed"
+      ]
+    },
+    {
+      "id": "server-configuration",
+      "capability": "Local configuration servers: web-based configuration UIs for addons, posters, debrid formatting, repositories, stream badges. Device IP detection.",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/core/server/AddonConfigServer.kt",
+        "app/src/main/java/com/nuvio/tv/core/server/AddonWebPage.kt",
+        "app/src/main/java/com/nuvio/tv/core/server/CustomPosterConfigServer.kt",
+        "app/src/main/java/com/nuvio/tv/core/server/CustomPosterWebPage.kt",
+        "app/src/main/java/com/nuvio/tv/core/server/DebridFormatterConfigServer.kt",
+        "app/src/main/java/com/nuvio/tv/core/server/DebridFormatterWebPage.kt",
+        "app/src/main/java/com/nuvio/tv/core/server/RepositoryConfigServer.kt",
+        "app/src/main/java/com/nuvio/tv/core/server/RepositoryWebPage.kt",
+        "app/src/main/java/com/nuvio/tv/core/server/StreamBadgeConfigServer.kt",
+        "app/src/main/java/com/nuvio/tv/core/server/StreamBadgeWebPage.kt",
+        "app/src/main/java/com/nuvio/tv/core/server/DeviceIpAddress.kt",
+        "app/src/main/java/com/nuvio/tv/data/local/ServerConfigurationStore.kt",
+        "app/src/main/java/com/nuvio/tv/domain/model/ServerConfiguration.kt"
+      ],
+      "source_behavior": "Embedded HTTP servers running on the device for configuration via web browser. AddonConfigServer serves addon configuration UI. CustomPosterConfigServer serves poster URL pattern config. DebridFormatterConfigServer serves debrid stream formatting config. RepositoryConfigServer serves addon repository management. StreamBadgeConfigServer serves stream badge config. Each has corresponding WebPage.kt that generates HTML/CSS/JS. DeviceIpAddress detects LAN IP. ServerConfigurationStore persists server settings. ServerConfiguration data model.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "NOT IMPLEMENTED — no local web-based configuration servers exist. Configuration is done entirely through native UI.",
+      "gaps": [
+        "Entire local web server configuration system missing",
+        "No embedded HTTP server for addon config",
+        "No custom poster URL configuration via web",
+        "No debrid formatter configuration via web",
+        "No repository management via web",
+        "No stream badge configuration via web",
+        "No DeviceIpAddress utility"
+      ],
+      "port_required": false,
+      "tests": [
+        "app/src/test/java/com/nuvio/tv/core/server/AddonConfigServerTest.kt",
+        "app/src/test/java/com/nuvio/tv/core/server/DebridFormatterConfigServerTest.kt",
+        "app/src/test/java/com/nuvio/tv/core/server/StreamBadgeConfigServerTest.kt"
+      ],
+      "status": "missing",
+      "platform_limitations": [
+        "iOS does not allow arbitrary embedded HTTP servers in App Store. Alternative: native configuration UI (already in progress for most settings)"
+      ]
+    },
+    {
+      "id": "updater",
+      "capability": "App update system: APK download/install, update channel selection, update banner, version check, Reshaped migration APK",
+      "source_files": [
+        "app/src/full/java/com/nuvio/tv/updater/AbiSelector.kt",
+        "app/src/full/java/com/nuvio/tv/updater/ApkDownloader.kt",
+        "app/src/full/java/com/nuvio/tv/updater/ApkInstaller.kt",
+        "app/src/full/java/com/nuvio/tv/updater/ReshapedApkAssets.kt",
+        "app/src/full/java/com/nuvio/tv/updater/ReshapedBridge.kt",
+        "app/src/full/java/com/nuvio/tv/updater/UpdatePreferences.kt",
+        "app/src/full/java/com/nuvio/tv/updater/UpdateRepository.kt",
+        "app/src/full/java/com/nuvio/tv/updater/UpdateViewModel.kt",
+        "app/src/main/java/com/nuvio/tv/updater/ReleaseSelector.kt",
+        "app/src/main/java/com/nuvio/tv/updater/UpdateBannerPolicy.kt",
+        "app/src/main/java/com/nuvio/tv/updater/UpdateChannel.kt",
+        "app/src/main/java/com/nuvio/tv/updater/VersionUtils.kt"
+      ],
+      "source_behavior": "Full APK-based update system for Android. UpdateChannel enum: STABLE, BETA, ALPHA. ReleaseSelector selects best APK variant. UpdateBannerPolicy controls banner display. UpdatePreferences persists update settings. UpdateRepository/UpdateViewModel manage update state. VersionUtils compares versions. AbiSelector selects correct ABI. ApkDownloader/ApkInstaller handle APK download and installation. ReshapedApkAssets/ReshapedBridge handle migration APK assets for Reshaped users.",
+      "existing_ios_equivalent": [
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/updater/AppUpdater.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/updater/AppUpdaterBanner.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/updater/AppUpdaterPlatform.kt",
+        "composeApp/src/iosMain/kotlin/com/nuvio/app/features/updater/AppUpdaterPlatform.ios.kt"
+      ],
+      "target_behavior": "Cross-platform AppUpdater with platform-specific actuals. AppUpdaterBanner for in-app update prompts. iOS uses App Store for updates (no in-app APK install). Missing: update channel selection UI, update preferences persistence, Reshaped migration handling.",
+      "gaps": [
+        "No update channel selection (STABLE/BETA/ALPHA)",
+        "No update preferences persistence",
+        "No Reshaped migration APK handling (Android-specific concept)",
+        "No version comparison utility ported"
+      ],
+      "port_required": false,
+      "tests": [
+        "app/src/test/java/com/nuvio/tv/updater/ReleaseSelectorTest.kt",
+        "app/src/test/java/com/nuvio/tv/updater/UpdateBannerPolicyTest.kt",
+        "app/src/test/java/com/nuvio/tv/updater/VersionUtilsTest.kt"
+      ],
+      "status": "partial",
+      "platform_limitations": [
+        "iOS App Store handles app updates — in-app APK download/install not applicable. Update channel concept may use TestFlight or phased rollouts"
+      ]
+    },
+    {
+      "id": "reshaped-ui-components",
+      "capability": "Reshaped UI: pill navigation, volume boost bar, debug log QR, phone entry QR",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/ui/reshaped/pillnav/PillNavPreferences.kt",
+        "app/src/main/java/com/nuvio/tv/ui/reshaped/pillnav/PillNavScaffold.kt",
+        "app/src/main/java/com/nuvio/tv/ui/reshaped/pillnav/PillNavigationBar.kt",
+        "app/src/main/java/com/nuvio/tv/ui/reshaped/pillnav/PillGlassBackdrop.kt",
+        "app/src/main/java/com/nuvio/tv/ui/reshaped/pillnav/PillGlassShader.kt",
+        "app/src/main/java/com/nuvio/tv/ui/reshaped/volumeboost/VolumeBoostBar.kt",
+        "app/src/main/java/com/nuvio/tv/ui/reshaped/volumeboost/VolumeBoostSoftClip.kt",
+        "app/src/main/java/com/nuvio/tv/ui/reshaped/debuglog/DebugLogQrDialog.kt",
+        "app/src/main/java/com/nuvio/tv/ui/reshaped/phoneentry/PhoneEntryQr.kt"
+      ],
+      "source_behavior": "PillNavPreferences manages pill navigation visibility. PillNavScaffold/PillNavigationBar provide glass-style bottom navigation with pill indicators. PillGlassBackdrop/PillGlassShader render glass morphism effects. VolumeBoostBar/VolumeBoostSoftClip provide per-channel volume boost UI with soft-clipping. DebugLogQrDialog shows QR code for debug log access. PhoneEntryQr shows QR for phone pairing.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "NOT IMPLEMENTED — no pill navigation, volume boost bar, debug log QR, or phone entry QR exist. VolumeBoost controller has been partially ported (VolumeBoost.kt) but without UI.",
+      "gaps": [
+        "No pill navigation UI (PillNavScaffold/PillNavigationBar)",
+        "No glass morphism effects (PillGlassBackdrop/PillGlassShader)",
+        "No volume boost UI (VolumeBoostBar) — controller exists but no settings slider",
+        "No debug log QR dialog",
+        "No phone entry QR dialog",
+        "PillNavPreferences not implemented"
+      ],
+      "port_required": true,
+      "tests": [],
+      "status": "missing",
+      "platform_limitations": [
+        "iOS navigation bar uses native UITabBar; pill nav may need different implementation"
+      ]
+    },
+    {
+      "id": "device-local-player-preferences",
+      "capability": "Device-local player preferences: buffer sizes, cache settings, connection speed history, seek buffer — explicitly NOT synced across devices",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/data/local/DeviceLocalPlayerPreferences.kt",
+        "app/src/main/java/com/nuvio/tv/core/connection/ConnectionSpeedEstimator.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/seekbuffer/SeekBufferSettings.kt"
+      ],
+      "source_behavior": "DeviceLocalPlayerPreferences stores device-specific settings that should not sync: buffer settings, cache preferences, connection speed history. ConnectionSpeedEstimator tracks connection quality over time (used by connection_fit setting). SeekBufferSettings manages seek buffer size with options (0, 256, 512, 1024 MB), MPV cache bytes calculation, RAM-aware budget limiting. Has explicit migration from old defaults.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "NOT IMPLEMENTED — no device-local player preferences concept. All player settings are stored in PlayerSettingsStorage (NSUserDefaults) without device-local vs synced distinction. No ConnectionSpeedEstimator. No SeekBufferSettings.",
+      "gaps": [
+        "No device-local preferences concept (all settings treated as sync-capable)",
+        "No ConnectionSpeedEstimator (connection quality tracking)",
+        "No SeekBufferSettings (seek buffer size configuration)",
+        "No MPV cache byte calculation",
+        "No RAM-aware budget limiting for cache"
+      ],
+      "port_required": true,
+      "tests": [
+        "app/src/test/java/com/nuvio/tv/data/local/DeviceLocalPlayerPreferencesTest.kt"
+      ],
+      "status": "missing",
+      "platform_limitations": [
+        "iOS AVPlayer/MPVKit handles buffering differently; some cache settings may not apply"
+      ]
+    },
+    {
+      "id": "backup-restore",
+      "capability": "Backup and restore: account data backup/restore, settings export/import, profile backup",
+      "source_files": [],
+      "source_behavior": "NO DEDICATED BACKUP/RESTORE FILES in manifest — backup/restore functionality is scattered. AccountLocalDataResetService handles data wipe (inverse of backup). ProfileSettingsCopyDialogs handles profile copy (partial backup). Sync services provide cloud-based backup via Supabase.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "NOT IMPLEMENTED — no dedicated backup/restore system. iCloud backup provides system-level backup. No in-app settings export/import.",
+      "gaps": [
+        "No in-app backup/restore functionality",
+        "No settings export/import feature",
+        "No profile backup/restore"
+      ],
+      "port_required": false,
+      "tests": [],
+      "status": "missing",
+      "platform_limitations": [
+        "iOS iCloud backup provides system-level backup. In-app backup may still be desired for selective restore"
+      ]
+    },
+    {
+      "id": "app-feature-policy",
+      "capability": "App feature policy: feature gating for plugins, addons, supporters page, account deletion, personal media addon copy",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/core/build/AppFeaturePolicy.kt"
+      ],
+      "source_behavior": "AppFeaturePolicy object with boolean feature flags: pluginsEnabled, supportersContributorsPageEnabled, accountDeletionEnabled, personalMediaAddonCopyEnabled. Different policies per build variant (debug/full/playstore).",
+      "existing_ios_equivalent": [
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/core/build/AppFeaturePolicy.kt",
+        "composeApp/src/iosAppStore/kotlin/com/nuvio/app/core/build/AppFeaturePolicy.ios.kt",
+        "composeApp/src/iosFull/kotlin/com/nuvio/app/core/build/AppFeaturePolicy.ios.kt"
+      ],
+      "target_behavior": "AppFeaturePolicy with platform-specific actuals. Same feature flags plus additional iOS-specific flags. Good coverage.",
+      "gaps": [],
+      "port_required": false,
+      "tests": [],
+      "status": "equivalent",
+      "platform_limitations": []
+    },
+    {
+      "id": "reshaped-settings-ui",
+      "capability": "Reshaped settings UI: NuvioReshapedSettingsContent, ReshapedSettingsItems, ReshapedSyncSettingsItems",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/ui/screens/settings/NuvioReshapedSettingsContent.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/settings/ReshapedSettingsItems.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/settings/ReshapedSyncSettingsItems.kt"
+      ],
+      "source_behavior": "NuvioReshapedSettingsContent displays Reshaped-specific settings panel (pill nav, volume boost, connection fit, autosync, seek previews, seekr key, debug log server). ReshapedSettingsItems provides individual setting rows. ReshapedSyncSettingsItems provides sync-related settings (Google account, drive sync status, phone entry). These are gated behind the NUVIO_RESHAPED category.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "NOT IMPLEMENTED — no Reshaped settings UI exists in target",
+      "gaps": [
+        "Entire Reshaped settings UI missing",
+        "No pill nav toggle",
+        "No volume boost settings",
+        "No connection fit toggle",
+        "No autosync settings",
+        "No seek preview settings",
+        "No seekr key entry",
+        "No debug log server access",
+        "No Google account sync status display",
+        "No phone entry QR display"
+      ],
+      "port_required": true,
+      "tests": [],
+      "status": "missing",
+      "platform_limitations": []
+    },
+    {
+      "id": "member-entitlements",
+      "capability": "Member entitlements: supporter tier, cosmetic entitlements (themes, profile backgrounds, avatars), member access data store",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/domain/model/MemberAccess.kt",
+        "app/src/main/java/com/nuvio/tv/domain/model/CosmeticEntitlements.kt",
+        "app/src/main/java/com/nuvio/tv/data/local/MemberAccessDataStore.kt",
+        "app/src/main/java/com/nuvio/tv/data/local/MemberCatalogStorage.kt"
+      ],
+      "source_behavior": "MemberTier enum: SUPPORTER, SUPPORTER_PLUS. MemberAccess data class with tier + CosmeticEntitlements. CosmeticEntitlements holds unlocked set of CosmeticEntitlement values (GOLD_THEME, JADE_THEME, ROSE_GOLD_THEME, ARCTIC_BLUE_THEME, GRAPHITE_THEME, PROFILE_BACKGROUNDS, PROFILE_AVATARS). MemberAccessDataStore persists member access. MemberCatalogStorage stores catalog data for member-only features.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "NOT IMPLEMENTED — no member entitlement system exists. No CosmeticEntitlements, no MemberAccess model, no supporter tier gating on themes/backgrounds/avatars.",
+      "gaps": [
+        "No MemberAccess/MemberTier models",
+        "No CosmeticEntitlements system",
+        "No supporter-tier gating on themes (GOLD, JADE, ROSE_GOLD, ARCTIC_BLUE, GRAPHITE are freely selectable)",
+        "No profile backgrounds/avatars entitlement check"
+      ],
+      "port_required": true,
+      "tests": [
+        "app/src/test/java/com/nuvio/tv/data/repository/MemberAccessRepositoryTest.kt"
+      ],
+      "status": "missing",
+      "platform_limitations": []
+    },
+    {
+      "id": "tracking-integrations",
+      "capability": "Tracking integrations: Trakt (auth, scrobbling, sync, comments), Simkl (auth, sync, diagnostics), tracking provider management",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/data/local/TraktAuthDataStore.kt",
+        "app/src/main/java/com/nuvio/tv/data/local/TraktSettingsDataStore.kt",
+        "app/src/main/java/com/nuvio/tv/data/repository/TraktAuthService.kt",
+        "app/src/main/java/com/nuvio/tv/data/repository/TraktCommentsService.kt",
+        "app/src/main/java/com/nuvio/tv/data/repository/TraktScrobbleService.kt",
+        "app/src/main/java/com/nuvio/tv/data/repository/TraktLibraryService.kt",
+        "app/src/main/java/com/nuvio/tv/data/repository/TraktProgressService.kt",
+        "app/src/main/java/com/nuvio/tv/data/repository/TraktRelatedService.kt",
+        "app/src/main/java/com/nuvio/tv/data/repository/TraktTrackingProvider.kt",
+        "app/src/main/java/com/nuvio/tv/data/repository/TraktTrackingScrobbler.kt",
+        "app/src/main/java/com/nuvio/tv/data/repository/TraktTrackingLibraryProvider.kt",
+        "app/src/main/java/com/nuvio/tv/data/repository/TraktTrackingProgressProvider.kt",
+        "app/src/main/java/com/nuvio/tv/data/repository/TraktTrackingHistoryWriter.kt",
+        "app/src/main/java/com/nuvio/tv/data/repository/TraktEpisodeMapping.kt",
+        "app/src/main/java/com/nuvio/tv/data/repository/TraktEpisodeMappingService.kt",
+        "app/src/main/java/com/nuvio/tv/data/repository/TraktIdUtils.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/settings/SimklSettingsConnectionPolicy.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/settings/SimklSettingsViewModel.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/settings/TrackingProviderDialogs.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/settings/TrackingSettingsScreen.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/settings/TrackingSettingsViewModel.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/settings/TraktViewModel.kt",
+        "app/src/main/java/com/nuvio/tv/core/sync/ProfileSettingsCredentialPolicy.kt"
+      ],
+      "source_behavior": "Comprehensive Trakt integration: OAuth flow, scrobbling, library sync, progress sync, comments, episode mapping, ID resolution. Simkl integration: auth, sync, diagnostics. TrackingSettingsViewModel manages settings UI. ProfileSettingsCredentialPolicy gates credential sync per profile.",
+      "existing_ios_equivalent": [
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/trakt/TraktAuthRepository.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/trakt/TraktSettingsRepository.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/trakt/TraktSettingsStorage.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/simkl/SimklAuthRepository.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/simkl/SimklSyncRepository.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/simkl/SimklWatchDiagnostics.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/tracking/TrackingSettings.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/settings/TrackingSettingsPage.kt"
+      ],
+      "target_behavior": "Trakt and Simkl auth repos exist with OAuth flows. TraktSettingsRepository manages settings. SimklSyncRepository handles sync. TrackingSettingsPage for UI. Missing: TraktCommentsService, TraktScrobbleService, TraktLibraryService, TraktProgressService, TraktRelatedService, TraktTrackingProvider/Scrobbler/LibraryProvider/ProgressProvider/HistoryWriter, TraktEpisodeMapping, TraktIdUtils, TraktViewModel, SimklSettingsConnectionPolicy, TrackingProviderDialogs.",
+      "gaps": [
+        "No Trakt scrobble service",
+        "No Trakt library sync service",
+        "No Trakt progress sync service",
+        "No Trakt comments service",
+        "No Trakt episode mapping/ID resolution",
+        "No Trakt tracking providers (history writer, library provider, progress provider)",
+        "No Simkl settings connection policy",
+        "No tracking provider dialogs (multi-service management)",
+        "TraktViewModel not ported"
+      ],
+      "port_required": true,
+      "tests": [
+        "app/src/test/java/com/nuvio/tv/data/repository/TraktAuthServiceTest.kt",
+        "app/src/test/java/com/nuvio/tv/data/repository/TraktCommentsServiceTest.kt",
+        "app/src/test/java/com/nuvio/tv/data/repository/TraktProgressPolicyTest.kt",
+        "app/src/test/java/com/nuvio/tv/data/repository/TraktTrackingListManagerTest.kt",
+        "app/src/test/java/com/nuvio/tv/data/repository/TraktTrackingScrobblerTest.kt",
+        "composeApp/src/commonTest/kotlin/com/nuvio/app/features/trakt/TraktAuthRepositoryTest.kt",
+        "composeApp/src/commonTest/kotlin/com/nuvio/app/features/trakt/TraktSettingsRepositoryTest.kt"
+      ],
+      "status": "partial",
+      "platform_limitations": []
+    },
+    {
+      "id": "local-data-stores",
+      "capability": "Local data stores: addon preferences, anime skip settings, app onboarding, audio delay route, auth session notice, binge group cache, collections, continue watching enrichment cache, debrid settings, debug settings, discover selection, episode shuffle, experience mode, image performance, library preferences, member catalog, plugin data, search history, sentry settings, stream badge, stream link cache, trailer settings, track preference",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/data/local/AddonPreferences.kt",
+        "app/src/main/java/com/nuvio/tv/data/local/AnimeSkipSettingsDataStore.kt",
+        "app/src/main/java/com/nuvio/tv/data/local/AppOnboardingDataStore.kt",
+        "app/src/main/java/com/nuvio/tv/data/local/AudioDelayRouteDataStore.kt",
+        "app/src/main/java/com/nuvio/tv/data/local/AuthSessionNoticeDataStore.kt",
+        "app/src/main/java/com/nuvio/tv/data/local/BingeGroupCacheDataStore.kt",
+        "app/src/main/java/com/nuvio/tv/data/local/CollectionsDataStore.kt",
+        "app/src/main/java/com/nuvio/tv/data/local/ContinueWatchingEnrichmentCache.kt",
+        "app/src/main/java/com/nuvio/tv/data/local/DebridSettingsDataStore.kt",
+        "app/src/main/java/com/nuvio/tv/data/local/DebugSettingsDataStore.kt",
+        "app/src/main/java/com/nuvio/tv/data/local/DiscoverSelectionDataStore.kt",
+        "app/src/main/java/com/nuvio/tv/data/local/EpisodeShuffleStore.kt",
+        "app/src/main/java/com/nuvio/tv/data/local/ExperienceModeDataStore.kt",
+        "app/src/main/java/com/nuvio/tv/data/local/ImagePerformancePreferences.kt",
+        "app/src/main/java/com/nuvio/tv/data/local/LibraryPreferences.kt",
+        "app/src/main/java/com/nuvio/tv/data/local/MemberCatalogStorage.kt",
+        "app/src/main/java/com/nuvio/tv/data/local/PluginDataStore.kt",
+        "app/src/main/java/com/nuvio/tv/data/local/SearchHistoryDataStore.kt",
+        "app/src/main/java/com/nuvio/tv/data/local/SentrySettingsDataStore.kt",
+        "app/src/main/java/com/nuvio/tv/data/local/StreamBadgeSettingsDataStore.kt",
+        "app/src/main/java/com/nuvio/tv/data/local/StreamLinkCacheDataStore.kt",
+        "app/src/main/java/com/nuvio/tv/data/local/TrailerSettingsDataStore.kt",
+        "app/src/main/java/com/nuvio/tv/data/local/TrackPreferenceDataStore.kt",
+        "app/src/main/java/com/nuvio/tv/data/local/StartupSyncPreferences.kt"
+      ],
+      "source_behavior": "Individual DataStore-based preference stores for various features. Each uses ProfileDataStoreFactory for per-profile isolation. Common pattern: keys defined as PreferencesKey, getters/setters, profileFlow for reactive observation. Some have clearAll/reset methods.",
+      "existing_ios_equivalent": [
+        "composeApp/src/iosMain/kotlin/com/nuvio/app/features/debrid/DebridSettingsStorage.ios.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/debrid/DebridSettings.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/debrid/DebridSettingsRepository.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/tmdb/TmdbSettingsStorage.ios.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/tmdb/TmdbSettings.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/tmdb/TmdbSettingsRepository.kt",
+        "composeApp/src/iosMain/kotlin/com/nuvio/app/features/settings/SentrySettingsStorage.ios.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/settings/SentrySettingsRepository.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/watchprogress/ContinueWatchingEnrichmentCache.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/watchprogress/ContinueWatchingEnrichmentStorage.kt"
+      ],
+      "target_behavior": "Partial coverage. Debrid, TMDB, Sentry settings have repos with platform storage. ContinueWatching enrichment cache exists. Missing: AddonPreferences, AnimeSkipSettings, AppOnboarding, AudioDelayRoute, AuthSessionNotice, BingeGroupCache, CollectionsDataStore, DebugSettings, DiscoverSelection, EpisodeShuffle, ExperienceMode, ImagePerformance, LibraryPreferences, MemberCatalog, PluginDataStore, SearchHistory, StreamBadge, StreamLinkCache, TrailerSettings, TrackPreference, StartupSyncPreferences. Many of these are Android-specific or have no iOS equivalent yet.",
+      "gaps": [
+        "Missing ~20 local data stores with no iOS equivalent",
+        "No centralized DataStore pattern — scattered NSUserDefaults per repo",
+        "No per-profile DataStore isolation pattern — ProfileScopedKey prefix used instead"
+      ],
+      "port_required": true,
+      "tests": [
+        "app/src/test/java/com/nuvio/tv/data/local/EpisodeShuffleStoreTest.kt",
+        "app/src/test/java/com/nuvio/tv/data/local/TraktAuthDataStoreTest.kt"
+      ],
+      "status": "partial",
+      "platform_limitations": []
+    },
+    {
+      "id": "reshaped-pillnav-preferences",
+      "capability": "Pill navigation preferences: enable/disable pill-style bottom navigation",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/ui/reshaped/pillnav/PillNavPreferences.kt"
+      ],
+      "source_behavior": "PillNavPreferences object with enabled flag persisted in SharedPreferences. Synced via ReshapedSyncedSettings as TV-section setting.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "NOT IMPLEMENTED — no equivalent exists",
+      "gaps": [
+        "No PillNavPreferences",
+        "No pill navigation toggle in settings"
+      ],
+      "port_required": true,
+      "tests": [],
+      "status": "missing",
+      "platform_limitations": []
+    },
+    {
+      "id": "autosync-preferences",
+      "capability": "Auto subtitle sync preferences: enable/disable, aggressive mode, debug logs, sync tolerance, bubble toasts",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/autosync/AutoSyncPreferences.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/autosync/bubble/AutoSyncBubbleToasts.kt"
+      ],
+      "source_behavior": "AutoSyncPreferences singleton with SharedPreferences persistence. Keys: enabled (default false), aggressiveMode (default true), debugLogs (default false), syncToleranceMs (default 0, options: 0,100,200,300,400,500). AutoSyncBubbleToasts manages bubble notification visibility for sync status.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "NOT IMPLEMENTED — no auto subtitle sync preferences exist",
+      "gaps": [
+        "No AutoSyncPreferences",
+        "No AutoSyncBubbleToasts",
+        "No sync tolerance configuration",
+        "No aggressive mode toggle"
+      ],
+      "port_required": true,
+      "tests": [],
+      "status": "missing",
+      "platform_limitations": []
+    },
+    {
+      "id": "seekr-preferences",
+      "capability": "Seek preview (Seekr) preferences: API key management, local preview enable/disable",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/seekpreview/SeekrKeyPreferences.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/seekpreview/local/LocalSeekPreviewSettings.kt"
+      ],
+      "source_behavior": "SeekrKeyPreferences manages Seekr API key (user key + BuildConfig fallback, validation against seekr.tv API). LocalSeekPreviewSettings manages local preview generation toggle.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "NOT IMPLEMENTED — no Seekr key management or local preview settings",
+      "gaps": [
+        "No SeekrKeyPreferences (API key entry/validation)",
+        "No LocalSeekPreviewSettings toggle"
+      ],
+      "port_required": true,
+      "tests": [],
+      "status": "missing",
+      "platform_limitations": []
+    },
+    {
+      "id": "experience-mode",
+      "capability": "Experience mode: Essential vs Advanced mode switching, mode persistence, mode-gated UI",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/domain/model/ExperienceMode.kt",
+        "app/src/main/java/com/nuvio/tv/data/local/ExperienceModeDataStore.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/settings/ExperienceModeSettingsViewModel.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/settings/ExperienceModeConfirmationDialog.kt"
+      ],
+      "source_behavior": "ExperienceMode enum: ESSENTIAL, ADVANCED. ExperienceModeDataStore persists mode selection. ExperienceModeSettingsViewModel manages mode state and switching. ExperienceModeConfirmationDialog confirms switch with warning. Essential mode hides Advanced, Debug, ContentDiscovery sections and limits Playback to essential subset.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "NOT IMPLEMENTED — no ExperienceMode concept exists",
+      "gaps": [
+        "No ExperienceMode enum",
+        "No mode persistence",
+        "No mode switching UI",
+        "No essential mode UI gating"
+      ],
+      "port_required": true,
+      "tests": [],
+      "status": "missing",
+      "platform_limitations": []
+    },
+    {
+      "id": "connection-speed-estimator",
+      "capability": "Connection speed estimation: network quality tracking, connection fit toggle, speed history",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/core/connection/ConnectionSpeedEstimator.kt"
+      ],
+      "source_behavior": "ConnectionSpeedEstimator tracks network connection quality over time. enabled toggle synced via ReshapedSyncedSettings. Provides speed estimation for adaptive streaming decisions.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "NOT IMPLEMENTED — no connection speed estimator exists",
+      "gaps": [
+        "No ConnectionSpeedEstimator",
+        "No connection fit toggle in settings"
+      ],
+      "port_required": true,
+      "tests": [],
+      "status": "missing",
+      "platform_limitations": []
+    }
+  ],
+  "additional_files_inspected": [
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/settings/SettingsScreen.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/settings/SettingsModels.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/settings/AppearanceSettingsPage.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerSettingsRepository.kt",
+    "composeApp/src/iosMain/kotlin/com/nuvio/app/features/player/PlayerSettingsStorage.ios.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/settings/ThemeSettingsRepository.kt",
+    "composeApp/src/iosMain/kotlin/com/nuvio/app/features/settings/ThemeSettingsStorage.ios.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/profiles/ProfileRepository.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/core/auth/AuthRepository.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/core/sync/ProfileSettingsSync.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/core/sync/SyncClientIdentity.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/core/build/AppFeaturePolicy.kt",
+    "composeApp/src/iosAppStore/kotlin/com/nuvio/app/core/build/AppFeaturePolicy.ios.kt",
+    "composeApp/src/iosFull/kotlin/com/nuvio/app/core/build/AppFeaturePolicy.ios.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/debrid/DebridSettings.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/debrid/DebridSettingsRepository.kt",
+    "composeApp/src/iosMain/kotlin/com/nuvio/app/features/debrid/DebridSettingsStorage.ios.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/tmdb/TmdbSettings.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/tmdb/TmdbSettingsRepository.kt",
+    "composeApp/src/iosMain/kotlin/com/nuvio/app/features/tmdb/TmdbSettingsStorage.ios.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/trakt/TraktAuthRepository.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/trakt/TraktSettingsRepository.kt",
+    "composeApp/src/iosMain/kotlin/com/nuvio/app/features/trakt/TraktSettingsStorage.ios.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/simkl/SimklAuthRepository.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/simkl/SimklSyncRepository.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/tracking/TrackingSettings.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/settings/TrackingSettingsPage.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/home/HomeCatalogSettingsRepository.kt",
+    "composeApp/src/iosMain/kotlin/com/nuvio/app/features/home/HomeCatalogSettingsStorage.ios.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/home/HomeCatalogSettingsSyncService.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/watchprogress/ContinueWatchingPreferencesRepository.kt",
+    "composeApp/src/iosMain/kotlin/com/nuvio/app/features/watchprogress/ContinueWatchingPreferencesStorage.ios.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/watchprogress/ContinueWatchingEnrichmentCache.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/collection/CollectionSyncService.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/core/ui/AppTheme.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/core/ui/PosterCardStyleRepository.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/core/ui/CardDepthStyleRepository.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/updater/AppUpdater.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/updater/AppUpdaterBanner.kt",
+    "composeApp/src/iosMain/kotlin/com/nuvio/app/features/updater/AppUpdaterPlatform.ios.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/core/sync/ProfileSettingsCredentialPolicy.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/settings/SentrySettingsRepository.kt",
+    "composeApp/src/iosMain/kotlin/com/nuvio/app/features/settings/SentrySettingsStorage.ios.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/streams/StreamBadgeSettingsRepository.kt"
+  ],
+  "risks": [
+    "Reshaped subsystem entirely missing: no ReshapedSync, DriveAppFolder, SyncDoc, ReshapedIdentity, ReshapedMigration — this is the core cross-device sync mechanism and may be the most impactful gap",
+    "Credentials stored in NSUserDefaults (ProfileScopedKey prefix) instead of iOS Keychain — API keys are not securely stored",
+    "No ProviderCredentialSyncService means API keys (debrid, mdblist, animeskip) are not synced to cloud — lost on device change",
+    "Missing ~20 local data stores with no iOS equivalent yet — many may be acceptable platform differences but need triage",
+    "No backup/restore system — iCloud backup provides system-level protection but no selective in-app restore",
+    "No experience mode (Essential/Advanced) — all settings pages always visible",
+    "No member entitlement system — premium themes (GOLD, JADE, etc.) are freely selectable without supporter check",
+    "Multiple small preferences missing: poster card dimensions, custom poster URLs, discover location, classic focus gradient, various performance/navigation toggles",
+    "Profile PIN/lock protection not implemented — anyone with device access can switch profiles"
+  ]
+}

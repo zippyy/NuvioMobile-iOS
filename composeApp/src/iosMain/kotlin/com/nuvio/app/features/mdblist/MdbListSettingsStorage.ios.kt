@@ -41,10 +41,10 @@ actual object MdbListSettingsStorage {
     }
 
     actual fun loadApiKey(): String? =
-        NSUserDefaults.standardUserDefaults.stringForKey(ProfileScopedKey.of(apiKey))
+        com.nuvio.app.core.storage.ProfileSecureStorage.load(ProfileScopedKey.of(apiKey))
 
     actual fun saveApiKey(apiKey: String) {
-        NSUserDefaults.standardUserDefaults.setObject(apiKey, forKey = ProfileScopedKey.of(this.apiKey))
+        com.nuvio.app.core.storage.ProfileSecureStorage.save(ProfileScopedKey.of(this.apiKey), apiKey)
     }
 
     actual fun loadUseImdb(): Boolean? = loadBoolean(useImdbKey)

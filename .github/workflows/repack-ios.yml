@@ -1,0 +1,55 @@
+name: Repair existing iOS sideload package
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_run_id:
+        description: Successful Full iOS build run containing Nuvio-iOS-Full
+        required: true
+        default: '37032248919'
+  push:
+    branches: [port/nuvio-reshaped-ios]
+    paths:
+      - scripts/prepare-ios-ipa.py
+      - scripts/test_prepare_ios_ipa.py
+      - .github/workflows/repack-ios.yml
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Test package repair guards
+        run: python3 scripts/test_prepare_ios_ipa.py
+      - name: Download previously verified unsigned build
+        uses: actions/download-artifact@v4
+        with:
+          name: Nuvio-iOS-Full
+          run-id: ${{ inputs.source_run_id || '37032248919' }}
+          github-token: ${{ github.token }}
+          path: source-ipa
+      - name: Repair and verify sideload IPA
+        run: |
+          set -euo pipefail
+          mkdir -p repaired-ipa
+          python3 - <<'PY'
+          from pathlib import Path
+          import subprocess
+          sources = list(Path('source-ipa').glob('*.ipa'))
+          if len(sources) != 1:
+              raise SystemExit('Expected exactly one source IPA')
+          destination = Path('repaired-ipa') / (sources[0].stem + '-Sideload.ipa')
+          subprocess.run(['python3', 'scripts/prepare-ios-ipa.py', str(sources[0]),
+                          '--output', str(destination), '--report', 'repaired-ipa/package-audit.json'], check=True)
+          PY
+          unzip -tq repaired-ipa/*.ipa
+      - name: Upload repaired IPA and package audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: Nuvio-iOS-Full-Sideload
+          if-no-files-found: error
+          path: repaired-ipa/

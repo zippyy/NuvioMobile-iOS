@@ -89,6 +89,12 @@ internal fun PlayerScreenModalHosts(
     onSubmitIntroEndTimeChanged: (String) -> Unit,
     onSubmitIntroDismissed: () -> Unit,
     onSubmitIntroSuccess: () -> Unit,
+    volumeBoostSupported: Boolean = false,
+    readVolumeBoostPercent: () -> Int = { 100 },
+    onVolumeBoostChanged: (Int) -> Unit = {},
+    audioDelaySupported: Boolean = false,
+    readAudioDelayMs: () -> Int = { 0 },
+    onAudioDelayChanged: (Int) -> Unit = {},
 ) {
     if (pendingP2pSwitch != null) {
         P2pConsentDialog(
@@ -119,6 +125,12 @@ internal fun PlayerScreenModalHosts(
         audioTracks = audioTracks,
         selectedIndex = selectedAudioIndex,
         onTrackSelected = onAudioTrackSelected,
+        volumeBoostSupported = volumeBoostSupported,
+        readVolumeBoostPercent = readVolumeBoostPercent,
+        onVolumeBoostChanged = onVolumeBoostChanged,
+        audioDelaySupported = audioDelaySupported,
+        readAudioDelayMs = readAudioDelayMs,
+        onAudioDelayChanged = onAudioDelayChanged,
         onDismiss = onAudioModalDismissed,
     )
 

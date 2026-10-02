@@ -673,23 +673,21 @@ actual object PlayerSettingsStorage {
     }
 
     actual fun loadAnimeSkipClientId(): String? {
-        val defaults = NSUserDefaults.standardUserDefaults
         val key = ProfileScopedKey.of(animeSkipClientIdKey)
-        return defaults.stringForKey(key)
+        return com.nuvio.app.core.storage.ProfileSecureStorage.load(key)
     }
 
     actual fun saveAnimeSkipClientId(clientId: String) {
-        NSUserDefaults.standardUserDefaults.setObject(clientId, forKey = ProfileScopedKey.of(animeSkipClientIdKey))
+        com.nuvio.app.core.storage.ProfileSecureStorage.save(ProfileScopedKey.of(animeSkipClientIdKey), clientId)
     }
 
     actual fun loadIntroDbApiKey(): String? {
-        val defaults = NSUserDefaults.standardUserDefaults
         val key = ProfileScopedKey.of(introDbApiKeyKey)
-        return defaults.stringForKey(key)
+        return com.nuvio.app.core.storage.ProfileSecureStorage.load(key)
     }
 
     actual fun saveIntroDbApiKey(apiKey: String) {
-        NSUserDefaults.standardUserDefaults.setObject(apiKey, forKey = ProfileScopedKey.of(introDbApiKeyKey))
+        com.nuvio.app.core.storage.ProfileSecureStorage.save(ProfileScopedKey.of(introDbApiKeyKey), apiKey)
     }
 
     actual fun loadIntroSubmitEnabled(): Boolean? {

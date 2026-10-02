@@ -7,6 +7,7 @@ import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
+import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 import java.util.Properties
@@ -271,10 +272,19 @@ val runtimeLocalProperties = Properties().apply {
     }
 }
 
-fun runtimeConfigValue(key: String, fallback: String = ""): String =
-    runtimeLocalProperties.getProperty(key)?.trim()?.takeIf { it.isNotBlank() }
-        ?: providers.environmentVariable(key).orNull?.trim()?.takeIf { it.isNotBlank() }
+fun runtimeConfigValue(vararg keys: String, fallback: String = ""): String =
+    keys.asSequence()
+        .mapNotNull { key ->
+            runtimeLocalProperties.getProperty(key)?.trim()?.takeIf { it.isNotBlank() }
+                ?: providers.environmentVariable(key).orNull?.trim()?.takeIf { it.isNotBlank() }
+        }
+        .firstOrNull()
         ?: fallback
+
+// Public client defaults published by yesnt10/NuvioMobile-Enhanced at 894499115f.
+// This is a publishable client key, not a Supabase service-role credential.
+val publicNuvioApiUrl = "https://api.nuvio.tv"
+val publicNuvioApiKey = "sb_publishable_1Clq8rlTVACkdcZuqr6_AD__xUUC_EN"
 
 fun runtimeConfigBoolean(key: String, default: Boolean): Boolean =
     when (runtimeConfigValue(key).lowercase()) {
@@ -288,8 +298,8 @@ val generateRuntimeConfigs = tasks.register<GenerateRuntimeConfigsTask>("generat
     localPropertiesFile.set(rootProject.layout.projectDirectory.file("local.properties"))
     appVersionName.set(releaseAppVersionName)
     appVersionCode.set(releaseAppVersionCode)
-    supabaseUrl.set(runtimeConfigValue("NUVIO_SUPABASE_URL"))
-    supabaseAnonKey.set(runtimeConfigValue("NUVIO_SUPABASE_ANON_KEY"))
+    supabaseUrl.set(runtimeConfigValue("NUVIO_SUPABASE_URL", "SUPABASE_URL", fallback = publicNuvioApiUrl))
+    supabaseAnonKey.set(runtimeConfigValue("NUVIO_SUPABASE_ANON_KEY", "SUPABASE_ANON_KEY", fallback = publicNuvioApiKey))
     supabaseFallbackUrl.set(runtimeConfigValue("NUVIO_SUPABASE_FALLBACK_URL"))
     sentryDsn.set(runtimeConfigValue("SENTRY_DSN"))
     sentryEnvironment.set(
@@ -369,18 +379,23 @@ kotlin {
             }
         }
 
+        // Full engine dependencies also apply to the native test executable.
+        iosTarget.binaries.all {
+            if (iosDistribution == "full") {
+                linkerOpts("-lc++", "-framework", "Security", "-framework", "SystemConfiguration", "-framework", "CoreFoundation")
+            }
+        }
+
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
             isStatic = true
-            freeCompilerArgs += listOf("-Xbinary=bundleId=$iosFrameworkBundleId")
-            if (iosDistribution == "full") {
-                linkerOpts(
-                    "-lc++",
-                    "-framework", "Security",
-                    "-framework", "SystemConfiguration",
-                    "-framework", "CoreFoundation",
-                )
+            if (buildType == NativeBuildType.RELEASE) {
+                // Kotlin 2.3 whole-program devirtualization exhausts the CI heap on this app.
+                // Retain Release/LLVM optimization while skipping the coupled IR LTO passes.
+                // Track upstream KT-84412; re-enable after a compiler fix and size/perf validation.
+                freeCompilerArgs += "-Xdisable-phases=DevirtualizationAnalysis,Devirtualization,DCEPhase,RemoveRedundantCallsToStaticInitializersPhase"
             }
+            freeCompilerArgs += listOf("-Xbinary=bundleId=$iosFrameworkBundleId")
         }
     }
     

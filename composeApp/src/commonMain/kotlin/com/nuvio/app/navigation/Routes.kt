@@ -147,3 +147,9 @@ data class PlayerRoute(
     override val hidesNavigationBar: Boolean
         get() = true
 }
+
+/** Touch Live TV guide, hosted in the current navigation stack. */
+@Serializable
+data object LiveTvRoute : AppRoute {
+    override val title: String get() = "Live TV"
+}

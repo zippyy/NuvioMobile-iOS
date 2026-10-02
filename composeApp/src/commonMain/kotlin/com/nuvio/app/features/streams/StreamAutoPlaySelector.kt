@@ -7,6 +7,8 @@ object StreamAutoPlaySelector {
     fun orderAddonStreams(
         groups: List<AddonStreamGroup>,
         installedOrder: List<String>,
+        runtimeMinutes: Int? = null,
+        connectionMbps: Double? = null,
     ): List<AddonStreamGroup> {
         if (groups.isEmpty()) return groups
 
@@ -17,7 +19,8 @@ object StreamAutoPlaySelector {
             }
         }
 
-        val (directDebridEntries, remainingEntries) = groups.partition { group ->
+        val rankedGroups = connectionFitPolicy(runtimeMinutes, connectionMbps)?.applyToGroups(groups) ?: groups
+        val (directDebridEntries, remainingEntries) = rankedGroups.partition { group ->
             group.addonId.startsWith("debrid:") ||
                 group.streams.any { stream -> stream.isAddonDebridCandidate && stream.isDirectDebridStream }
         }
@@ -45,6 +48,8 @@ object StreamAutoPlaySelector {
         bingeGroupOnly: Boolean = false,
         debridEnabled: Boolean = true,
         activeResolverProviderId: String? = null,
+        runtimeMinutes: Int? = null,
+        connectionMbps: Double? = null,
     ): StreamItem? =
         evaluateAutoPlayStream(
             streams = streams,
@@ -59,6 +64,8 @@ object StreamAutoPlaySelector {
             bingeGroupOnly = bingeGroupOnly,
             debridEnabled = debridEnabled,
             activeResolverProviderId = activeResolverProviderId,
+            runtimeMinutes = runtimeMinutes,
+            connectionMbps = connectionMbps,
         ).stream
 
     fun evaluateAutoPlayStream(
@@ -74,13 +81,16 @@ object StreamAutoPlaySelector {
         bingeGroupOnly: Boolean = false,
         debridEnabled: Boolean = true,
         activeResolverProviderId: String? = null,
+        runtimeMinutes: Int? = null,
+        connectionMbps: Double? = null,
     ): StreamAutoPlayEvaluation {
         if (streams.isEmpty()) return StreamAutoPlayEvaluation()
 
+        val rankedStreams = connectionFitPolicy(runtimeMinutes, connectionMbps)?.apply(streams) ?: streams
         val sourceScopedStreams = when (source) {
-            StreamAutoPlaySource.ALL_SOURCES -> streams
-            StreamAutoPlaySource.INSTALLED_ADDONS_ONLY -> streams.filter { it.addonName in installedAddonNames }
-            StreamAutoPlaySource.ENABLED_PLUGINS_ONLY -> streams.filter { it.addonName !in installedAddonNames }
+            StreamAutoPlaySource.ALL_SOURCES -> rankedStreams
+            StreamAutoPlaySource.INSTALLED_ADDONS_ONLY -> rankedStreams.filter { it.addonName in installedAddonNames }
+            StreamAutoPlaySource.ENABLED_PLUGINS_ONLY -> rankedStreams.filter { it.addonName !in installedAddonNames }
         }
         val candidateStreams = sourceScopedStreams.filter { stream ->
             val isAddonStream = stream.addonName in installedAddonNames

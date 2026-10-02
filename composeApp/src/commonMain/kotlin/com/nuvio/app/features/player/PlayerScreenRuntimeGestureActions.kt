@@ -44,6 +44,7 @@ internal fun PlayerScreenRuntime.showGestureMessage(message: String) {
 }
 
 internal fun PlayerScreenRuntime.clearLiveGestureFeedback() {
+    playerController?.cancelSeekPreview()
     liveGestureFeedback = null
 }
 
@@ -99,6 +100,7 @@ internal fun PlayerScreenRuntime.showSeekFeedback(direction: PlayerSeekDirection
 }
 
 internal fun PlayerScreenRuntime.showHorizontalSeekPreview(previewPositionMs: Long, baselinePositionMs: Long) {
+    playerController?.requestSeekPreview(previewPositionMs)
     val deltaMs = previewPositionMs - baselinePositionMs
     val direction = if (deltaMs < 0L) PlayerSeekDirection.Backward else PlayerSeekDirection.Forward
     liveGestureFeedback = GestureFeedbackState(

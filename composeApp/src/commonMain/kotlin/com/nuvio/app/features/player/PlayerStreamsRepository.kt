@@ -157,6 +157,8 @@ object PlayerStreamsRepository {
         jobHolder()?.cancel()
         stateFlow.value = StreamsUiState()
 
+        val (fitRuntime, fitSpeed) = com.nuvio.app.features.streams.connectionFitSnapshot(type, videoId)
+        val fit = com.nuvio.app.features.streams.connectionFitPolicy(fitRuntime, fitSpeed)
         val streamBadgeRules = StreamBadgeSettingsRepository.snapshot()
         val embeddedStreams = MetaDetailsRepository.findEmbeddedStreams(videoId)
         if (embeddedStreams.isNotEmpty()) {
@@ -164,7 +166,7 @@ object PlayerStreamsRepository {
             val group = AddonStreamGroup(
                 addonName = embeddedStreams.first().addonName,
                 addonId = "embedded",
-                streams = embeddedStreams,
+                streams = fit?.apply(embeddedStreams) ?: embeddedStreams,
                 isLoading = false,
             )
             val presentedGroup = StreamBadgePresentation.apply(
@@ -285,6 +287,8 @@ object PlayerStreamsRepository {
                             if (currentGroup.addonId == group.addonId) group else currentGroup
                         },
                         installedOrder = installedAddonOrder,
+                        runtimeMinutes = fitRuntime,
+                        connectionMbps = fitSpeed,
                     )
                     val anyLoading = updated.any { it.isLoading }
                     current.copy(
@@ -441,6 +445,8 @@ object PlayerStreamsRepository {
                                     }
                                 },
                                 installedOrder = installedAddonOrder,
+                        runtimeMinutes = fitRuntime,
+                        connectionMbps = fitSpeed,
                             )
                             val anyLoading = updated.any { it.isLoading }
                             current.copy(

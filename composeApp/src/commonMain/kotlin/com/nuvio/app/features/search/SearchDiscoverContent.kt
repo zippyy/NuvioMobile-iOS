@@ -98,6 +98,7 @@ internal fun LazyListScope.discoverContent(
         else -> {
             items(state.items.chunked(columns)) { rowItems ->
                 PosterGridRow(
+                    artworkScreen = com.nuvio.app.features.artwork.ArtworkScreen.SEARCH,
                     items = rowItems,
                     columns = columns,
                     modifier = Modifier.padding(horizontal = 16.dp),

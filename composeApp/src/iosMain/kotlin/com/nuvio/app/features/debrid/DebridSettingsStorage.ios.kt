@@ -65,10 +65,10 @@ actual object DebridSettingsStorage {
     }
 
     actual fun loadProviderApiKey(providerId: String): String? =
-        loadString(providerApiKeyKey(providerId))
+        com.nuvio.app.core.storage.ProfileSecureStorage.load(ProfileScopedKey.of(providerApiKeyKey(providerId)))
 
     actual fun saveProviderApiKey(providerId: String, apiKey: String) {
-        saveString(providerApiKeyKey(providerId), apiKey)
+        com.nuvio.app.core.storage.ProfileSecureStorage.save(ProfileScopedKey.of(providerApiKeyKey(providerId)), apiKey)
     }
 
     actual fun loadTorboxApiKey(): String? = loadProviderApiKey(DebridProviders.TORBOX_ID)

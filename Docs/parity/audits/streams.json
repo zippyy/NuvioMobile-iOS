@@ -1,0 +1,687 @@
+{
+  "domain": "streams",
+  "source_sha": "b9408cd5729fd99e9afe56cc334973fe0725bc7d",
+  "target_start_sha": "6ad6c72c4ebf5cf1d9edf5d5d5eb110fc457cf92",
+  "audited_files": [
+    "app/src/full/java/com/lagradost/cloudstream3/AcraApplication.kt",
+    "app/src/full/java/com/lagradost/cloudstream3/CloudStreamApp.kt",
+    "app/src/full/java/com/lagradost/cloudstream3/CommonActivity.kt",
+    "app/src/full/java/com/lagradost/cloudstream3/network/CloudflareKiller.kt",
+    "app/src/full/java/com/lagradost/cloudstream3/plugins/Plugin.kt",
+    "app/src/full/java/com/lagradost/cloudstream3/plugins/PluginManagerStub.kt",
+    "app/src/full/java/com/lagradost/cloudstream3/ui/home/HomeViewModel.kt",
+    "app/src/full/java/com/lagradost/cloudstream3/utils/DataStore.kt",
+    "app/src/full/java/com/lagradost/cloudstream3/utils/DataStoreHelper.kt",
+    "app/src/full/java/com/nuvio/tv/core/plugin/FetchResponseHeaders.kt",
+    "app/src/full/java/com/nuvio/tv/core/plugin/PluginManager.kt",
+    "app/src/full/java/com/nuvio/tv/core/plugin/PluginRuntime.kt",
+    "app/src/full/java/com/nuvio/tv/core/plugin/cloudstream/ExternalExtensionLoader.kt",
+    "app/src/full/java/com/nuvio/tv/core/plugin/cloudstream/ExternalExtensionRunner.kt",
+    "app/src/full/java/com/nuvio/tv/core/plugin/cloudstream/ExternalExtractorRegistry.kt",
+    "app/src/full/java/com/nuvio/tv/core/plugin/cloudstream/ExternalRepoParser.kt",
+    "app/src/full/java/com/nuvio/tv/core/plugin/cloudstream/TvTypeExtensions.kt",
+    "app/src/full/java/com/nuvio/tv/di/PluginModule.kt",
+    "app/src/main/java/com/nuvio/tv/core/cloud/CloudLibraryModels.kt",
+    "app/src/main/java/com/nuvio/tv/core/cloud/CloudLibraryPlaybackProgressStore.kt",
+    "app/src/main/java/com/nuvio/tv/core/cloud/CloudLibraryPlaybackSessionStore.kt",
+    "app/src/main/java/com/nuvio/tv/core/cloud/CloudLibraryProviderApi.kt",
+    "app/src/main/java/com/nuvio/tv/core/cloud/CloudLibraryRepository.kt",
+    "app/src/main/java/com/nuvio/tv/core/cloud/PremiumizeCloudLibraryProviderApi.kt",
+    "app/src/main/java/com/nuvio/tv/core/cloud/TorboxCloudLibraryProviderApi.kt",
+    "app/src/main/java/com/nuvio/tv/core/connection/ConnectionSpeed.kt",
+    "app/src/main/java/com/nuvio/tv/core/connection/PlaybackThroughput.kt",
+    "app/src/main/java/com/nuvio/tv/core/connection/StreamConnectionFit.kt",
+    "app/src/main/java/com/nuvio/tv/core/debrid/DebridDeviceAuth.kt",
+    "app/src/main/java/com/nuvio/tv/core/debrid/DebridFileSelection.kt",
+    "app/src/main/java/com/nuvio/tv/core/debrid/DebridMagnetBuilder.kt",
+    "app/src/main/java/com/nuvio/tv/core/debrid/DebridProvider.kt",
+    "app/src/main/java/com/nuvio/tv/core/debrid/DebridStreamFormatter.kt",
+    "app/src/main/java/com/nuvio/tv/core/debrid/DebridStreamFormatterDefaults.kt",
+    "app/src/main/java/com/nuvio/tv/core/debrid/DebridStreamPresentation.kt",
+    "app/src/main/java/com/nuvio/tv/core/debrid/DebridStreamTemplateEngine.kt",
+    "app/src/main/java/com/nuvio/tv/core/debrid/DirectDebridResolver.kt",
+    "app/src/main/java/com/nuvio/tv/core/debrid/DirectDebridStreamFilter.kt",
+    "app/src/main/java/com/nuvio/tv/core/debrid/DirectDebridStreamPreparer.kt",
+    "app/src/main/java/com/nuvio/tv/core/debrid/LocalDebridAvailabilityService.kt",
+    "app/src/main/java/com/nuvio/tv/core/debrid/LocalDebridService.kt",
+    "app/src/main/java/com/nuvio/tv/core/debrid/PremiumizeDirectDebridResolver.kt",
+    "app/src/main/java/com/nuvio/tv/core/debrid/PremiumizeDirectDownloadFileSelector.kt",
+    "app/src/main/java/com/nuvio/tv/core/debrid/RealDebridDirectDebridResolver.kt",
+    "app/src/main/java/com/nuvio/tv/core/debrid/RealDebridFileSelector.kt",
+    "app/src/main/java/com/nuvio/tv/core/debrid/StreamTextSizeParser.kt",
+    "app/src/main/java/com/nuvio/tv/core/debrid/TorboxDirectDebridResolver.kt",
+    "app/src/main/java/com/nuvio/tv/core/debrid/TorboxFileSelector.kt",
+    "app/src/main/java/com/nuvio/tv/core/di/TorrentModule.kt",
+    "app/src/main/java/com/nuvio/tv/core/plugin/PluginEpisodeRequestRules.kt",
+    "app/src/main/java/com/nuvio/tv/core/plugin/PluginSafety.kt",
+    "app/src/main/java/com/nuvio/tv/core/plugin/TestDiagnostics.kt",
+    "app/src/main/java/com/nuvio/tv/core/streams/PlaybackAvailability.kt",
+    "app/src/main/java/com/nuvio/tv/core/streams/StreamBadgePresentation.kt",
+    "app/src/main/java/com/nuvio/tv/core/streams/StreamBadgeRules.kt",
+    "app/src/main/java/com/nuvio/tv/core/streams/StreamBadgeSettings.kt",
+    "app/src/main/java/com/nuvio/tv/core/streams/YouTubeStreamResolver.kt",
+    "app/src/main/java/com/nuvio/tv/core/torrent/TorrentCache.kt",
+    "app/src/main/java/com/nuvio/tv/core/torrent/TorrentDiagnostics.kt",
+    "app/src/main/java/com/nuvio/tv/core/torrent/TorrentEngineConfig.kt",
+    "app/src/main/java/com/nuvio/tv/core/torrent/TorrentLoadingProgress.kt",
+    "app/src/main/java/com/nuvio/tv/core/torrent/TorrentMagnet.kt",
+    "app/src/main/java/com/nuvio/tv/core/torrent/TorrentService.kt",
+    "app/src/main/java/com/nuvio/tv/core/torrent/TorrentSettings.kt",
+    "app/src/main/java/com/nuvio/tv/core/torrent/TorrentState.kt",
+    "app/src/main/java/com/nuvio/tv/data/trailer/InAppYouTubeExtractor.kt",
+    "app/src/main/java/com/nuvio/tv/data/trailer/TrailerPlaybackSource.kt",
+    "app/src/main/java/com/nuvio/tv/data/trailer/TrailerService.kt",
+    "app/src/main/java/com/nuvio/tv/data/trailer/YoutubeChunkedDataSourceFactory.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/addon/AddonManagementAccess.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/addon/AddonManagerScreen.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/addon/AddonManagerUiState.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/addon/AddonManagerViewModel.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/addon/CatalogOrderScreen.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/addon/CatalogOrderViewModel.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/addon/EssentialAddonSetupScreen.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/plugin/PluginScreen.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/plugin/PluginUiState.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/plugin/PluginViewModel.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/stream/DirectAutoPlayWatchdogPolicy.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/stream/StreamScreen.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/stream/StreamScreenUiState.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/stream/StreamScreenViewModel.kt",
+    "app/src/playstore/java/com/nuvio/tv/core/plugin/PluginManager.kt",
+    "app/src/playstore/java/com/nuvio/tv/di/PluginModule.kt",
+    "app/src/test/java/com/nuvio/tv/core/connection/ConnectionSpeedTest.kt",
+    "app/src/test/java/com/nuvio/tv/core/connection/StreamConnectionFitTest.kt",
+    "app/src/test/java/com/nuvio/tv/core/debrid/DebridFileSelectionTest.kt",
+    "app/src/test/java/com/nuvio/tv/core/debrid/DebridFileSelectorParityTest.kt",
+    "app/src/test/java/com/nuvio/tv/core/debrid/DebridFileSelectorReleaseTest.kt",
+    "app/src/test/java/com/nuvio/tv/core/debrid/DebridMagnetBuilderTest.kt",
+    "app/src/test/java/com/nuvio/tv/core/debrid/DebridProvidersTest.kt",
+    "app/src/test/java/com/nuvio/tv/core/debrid/DebridStreamFormatterTest.kt",
+    "app/src/test/java/com/nuvio/tv/core/debrid/DebridStreamTemplateEngineTest.kt",
+    "app/src/test/java/com/nuvio/tv/core/debrid/DirectDebridStreamFilterTest.kt",
+    "app/src/test/java/com/nuvio/tv/core/debrid/LocalDebridAvailabilityServiceTest.kt",
+    "app/src/test/java/com/nuvio/tv/core/debrid/RealDebridDirectDebridResolverTest.kt",
+    "app/src/test/java/com/nuvio/tv/core/debrid/StreamBadgeRulesTest.kt",
+    "app/src/test/java/com/nuvio/tv/core/debrid/StreamTextSizeParserTest.kt",
+    "app/src/test/java/com/nuvio/tv/core/debrid/TorboxDirectDebridResolverTest.kt",
+    "app/src/test/java/com/nuvio/tv/core/debrid/TorboxFileSelectorTest.kt",
+    "app/src/test/java/com/nuvio/tv/core/plugin/PluginBinaryFetchTest.kt",
+    "app/src/test/java/com/nuvio/tv/core/plugin/PluginEpisodeRequestRulesTest.kt",
+    "app/src/test/java/com/nuvio/tv/core/streams/PlaybackAvailabilityTest.kt",
+    "app/src/test/java/com/nuvio/tv/core/streams/YouTubeStreamResolverTest.kt",
+    "app/src/test/java/com/nuvio/tv/core/torrent/TorrentEngineConfigTest.kt",
+    "app/src/test/java/com/nuvio/tv/core/torrent/TorrentMagnetTest.kt",
+    "app/src/test/java/com/nuvio/tv/data/trailer/InAppYouTubeExtractorAudioTrackTest.kt",
+    "app/src/test/java/com/nuvio/tv/data/trailer/InAppYouTubeExtractorSourcePreferenceTest.kt",
+    "app/src/test/java/com/nuvio/tv/data/trailer/TrailerServiceCancellationTest.kt",
+    "app/src/test/java/com/nuvio/tv/data/trailer/TrailerServiceCandidateRankingTest.kt",
+    "app/src/test/java/com/nuvio/tv/data/trailer/TrailerServiceUseTrailersGateTest.kt",
+    "app/src/test/java/com/nuvio/tv/data/trailer/TrailerServiceYouTubeSessionCacheTest.kt",
+    "app/src/test/java/com/nuvio/tv/ui/screens/addon/AddonManagementAccessTest.kt",
+    "app/src/test/java/com/nuvio/tv/ui/screens/stream/DirectAutoPlayWatchdogPolicyTest.kt",
+    "app/src/testFull/java/com/nuvio/tv/core/plugin/FetchResponseHeadersTest.kt",
+    "app/src/testFull/java/com/nuvio/tv/core/plugin/cloudstream/HomeViewModelCompatStubTest.kt"
+  ],
+  "capabilities": [
+    {
+      "id": "connection-speed-estimation",
+      "capability": "Connection speed estimation with persistent samples",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/core/connection/ConnectionSpeed.kt"
+      ],
+      "source_behavior": "ConnectionSpeedEstimator with ConnectionSpeedSample data class. Persistent speed samples via DataStore (PREFS_NAME, KEY_SAMPLES). Network-aware partitioning (sameNetwork vs otherNetworks). estimateMbps(context: Context) returns Double?. Android-only due to Context dependency.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "No equivalent. StreamConnectionFit takes connectionMbps as constructor parameter (passed from caller). No speed estimation, no persistence, no network-aware sampling.",
+      "gaps": [
+        "No ConnectionSpeedEstimator or equivalent",
+        "No persistent speed samples",
+        "No network-aware speed estimation",
+        "No estimateMbps() function",
+        "Speed is passed externally, not measured internally"
+      ],
+      "port_required": true,
+      "ios_implementation_plan": "Implement ConnectionSpeedEstimator using URLSession speed measurement (download sample bytes), store estimates in NSUserDefaults/Keychain via expect/actual, remove Android Context dependency",
+      "tests": [
+        "app/src/test/java/com/nuvio/tv/core/connection/ConnectionSpeedTest.kt"
+      ],
+      "status": "missing",
+      "platform_limitations": [
+        "JVM/Android Context dependency in source; needs iOS-native speed measurement via URLSession"
+      ]
+    },
+    {
+      "id": "playback-throughput-monitoring",
+      "capability": "Real-time playback throughput monitoring via ExoPlayer/MPV byte counting",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/core/connection/PlaybackThroughput.kt"
+      ],
+      "source_behavior": "PlaybackThroughput object with AtomicLong network byte counter. TransferListener for ExoPlayer. countingNetworkBytes() wraps DataSource.Factory. onExoTick() and onMpvTick() report bytesPerSecond. Sampler per stream URL. finish() method.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "No equivalent. No byte counting, no TransferListener, no MPV tick monitoring for throughput.",
+      "gaps": [
+        "No PlaybackThroughput equivalent",
+        "No byte counter for network transfers",
+        "No MPV tick-based speed monitoring",
+        "No ExoPlayer TransferListener equivalent"
+      ],
+      "port_required": true,
+      "ios_implementation_plan": "Implement via AVPlayer/MPV accessLog or custom URLProtocol for byte counting. Or use MPV's observed-bitrate property directly.",
+      "tests": [],
+      "status": "missing",
+      "platform_limitations": [
+        "ExoPlayer-specific TransferListener; iOS equivalent via AVPlayer accessLog or MPV observeProperty"
+      ]
+    },
+    {
+      "id": "stream-connection-fit-ordering",
+      "capability": "StreamConnectionFit: order streams by estimated bitrate vs measured connection speed",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/core/connection/StreamConnectionFit.kt"
+      ],
+      "source_behavior": "StreamConnectionFit class that ranks/orders streams by comparing average bitrate against measured connection speed with headroom. Uses runtimeMinutes for bitrate estimation.",
+      "existing_ios_equivalent": [
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/streams/StreamConnectionFit.kt"
+      ],
+      "target_behavior": "Equivalent StreamConnectionFit exists. Takes connectionMbps as parameter, uses BITRATE_HEADROOM (1.5), MIN_RUNTIME_MINUTES (10), MAX_RUNTIME_MINUTES (600). applyToGroups() and apply() methods. Heavy stream detection. averageBitrateMbps() extension on StreamItem.",
+      "gaps": [],
+      "port_required": false,
+      "ios_implementation_plan": "Already ported. Target StreamConnectionFit provides same ordering logic with connectionMbps parameter.",
+      "tests": [
+        "app/src/test/java/com/nuvio/tv/core/connection/StreamConnectionFitTest.kt"
+      ],
+      "status": "equivalent",
+      "platform_limitations": []
+    },
+    {
+      "id": "autoplay-modes",
+      "capability": "Stream auto-play modes: MANUAL, FIRST_STREAM, REGEX_MATCH",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/ui/screens/stream/DirectAutoPlayWatchdogPolicy.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/stream/StreamScreenViewModel.kt"
+      ],
+      "source_behavior": "DirectAutoPlayWatchdogPolicy with awaitForeground() and shouldTearDownResolvedTarget(). StreamScreenViewModel orchestrates auto-play selection including binge group persistence, addon filtering, direct debrid preparation.",
+      "existing_ios_equivalent": [
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/streams/StreamAutoPlaySelector.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/streams/StreamAutoPlayPolicy.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/streams/StreamAutoPlayModels.kt"
+      ],
+      "target_behavior": "StreamAutoPlaySelector with MANUAL, FIRST_STREAM, REGEX_MATCH modes. selectAutoPlayStream(), orderAddonStreams(), evaluateAutoPlayStream(). StreamAutoPlayPolicy with isEffectivelyEnabled(), isRegexSelectionConfigured(). StreamAutoPlayModels enum classes. Richer than source with explicit StreamAutoPlaySource enum. Has isReadyDebridAutoPlay(), isPendingDebridAutoPlay() methods. No DirectAutoPlayWatchdogPolicy equivalent (watchdog logic is integrated into StreamsScreen).",
+      "gaps": [
+        "No DirectAutoPlayWatchdogPolicy equivalent (target integrates watchdog logic into StreamsScreen/StreamFetchSupport)"
+      ],
+      "port_required": false,
+      "ios_implementation_plan": "Already ported with enhanced design. Watchdog behavior is embedded in StreamFetchSupport/StreamsScreen.",
+      "tests": [
+        "composeApp/src/commonTest/kotlin/com/nuvio/app/features/streams/StreamAutoPlaySelectorTest.kt"
+      ],
+      "status": "platform-adaptation",
+      "platform_limitations": [
+        "Target autoplay logic is more sophisticated (separate selector/policy/models), watchdog is integrated rather than standalone policy object"
+      ]
+    },
+    {
+      "id": "addon-filtering",
+      "capability": "Filter streams by addon/provider in stream selection screen",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/ui/screens/stream/StreamScreenViewModel.kt"
+      ],
+      "source_behavior": "StreamScreenViewModel has filterByAddon(addonName: String?) which filters allStreams by addonName. OnAddonFilterSelected event. Selected addon filter is part of StreamScreenUiState.",
+      "existing_ios_equivalent": [
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/streams/StreamsScreen.kt"
+      ],
+      "target_behavior": "StreamsScreen has onFilterSelected callback. StreamsRepository.selectFilter() manages filter state. Addon groups are displayed with filtering by addonId. Equivalent functionality with slightly different architecture (filter managed in repository vs ViewModel).",
+      "gaps": [],
+      "port_required": false,
+      "ios_implementation_plan": "Already ported with similar UX. Filtering by addonId (not addonName).",
+      "tests": [],
+      "status": "equivalent",
+      "platform_limitations": []
+    },
+    {
+      "id": "binge-group-persistence",
+      "capability": "Binge group caching for auto-play next episode continuity",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/core/connection/PlaybackThroughput.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/stream/StreamScreenViewModel.kt"
+      ],
+      "source_behavior": "BingeGroupCacheDataStore persists binge group per contentId. StreamScreenViewModel uses preferBingeGroupInSelection, persistedBingeGroup, bingeGroupOnly flags. Timeout-based: before timeout try binge-group-only early match, after timeout full fallback. persistBingeGroupForPlayback().",
+      "existing_ios_equivalent": [
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/streams/BingeGroupCacheRepository.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/streams/StreamAutoPlaySelector.kt"
+      ],
+      "target_behavior": "BingeGroupCacheRepository provides get/put. StreamAutoPlaySelector has preferredBingeGroup, preferBingeGroupInSelection, bingeGroupOnly state. Same timeout-based early-match vs full-fallback logic. Also supports bingeGroupDirectFlow (non-manual + persisted group). More refined: 3-phase approach (early match after addon availability, after debrid-prep, after timeout).",
+      "gaps": [],
+      "port_required": false,
+      "ios_implementation_plan": "Already ported with enhanced logic (3-phase vs source's 2-phase).",
+      "tests": [
+        "composeApp/src/commonTest/kotlin/com/nuvio/app/features/streams/StreamAutoPlaySelectorTest.kt"
+      ],
+      "status": "equivalent",
+      "platform_limitations": []
+    },
+    {
+      "id": "debrid-direct-resolver",
+      "capability": "Direct debrid stream resolution for RealDebrid, Premiumize, Torbox",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/core/debrid/DirectDebridResolver.kt",
+        "app/src/main/java/com/nuvio/tv/core/debrid/PremiumizeDirectDebridResolver.kt",
+        "app/src/main/java/com/nuvio/tv/core/debrid/RealDebridDirectDebridResolver.kt",
+        "app/src/main/java/com/nuvio/tv/core/debrid/TorboxDirectDebridResolver.kt",
+        "app/src/main/java/com/nuvio/tv/core/debrid/DebridProvider.kt"
+      ],
+      "source_behavior": "DirectDebridResolver interface with resolve() returning DirectDebridResolveResult. Per-provider implementations: PremiumizeDirectDebridResolver, RealDebridDirectDebridResolver, TorboxDirectDebridResolver. DebridProvider enum with ids, display names, short names. Device auth flow.",
+      "existing_ios_equivalent": [
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/debrid/DebridProviderApis.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/debrid/DirectDebridResolver.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/debrid/DebridApiClients.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/debrid/DebridApiModels.kt"
+      ],
+      "target_behavior": "DebridProviderApis with per-provider API implementations (TorboxDebridProviderApi, PremiumizeDebridProviderApi, RealDebridProviderApi) inside a single file. DirectDebridResolver as common orchestrator. DebridApiClients with per-provider HTTP clients (TorboxApiClient, RealDebridApiClient, PremiumizeApiClient). DebridApiModels with per-provider DTOs. Equivalent functionality with shared HTTP infrastructure.",
+      "gaps": [
+        "Source has separate files per provider; target consolidates into fewer files with shared HTTP layer",
+        "Source has DebridStreamFormatter with template engine (DebridStreamTemplateEngine.kt); target has DebridStreamFormatter but without separate template engine (integrated rendering)"
+      ],
+      "port_required": false,
+      "ios_implementation_plan": "Already ported with consolidated architecture. Shared HTTP clients reduce duplication.",
+      "tests": [
+        "app/src/test/java/com/nuvio/tv/core/debrid/RealDebridDirectDebridResolverTest.kt",
+        "app/src/test/java/com/nuvio/tv/core/debrid/TorboxDirectDebridResolverTest.kt"
+      ],
+      "status": "equivalent",
+      "platform_limitations": []
+    },
+    {
+      "id": "pending-debrid",
+      "capability": "Pending debrid cache check handling in autoplay flow",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/core/debrid/LocalDebridAvailabilityService.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/stream/StreamScreenViewModel.kt"
+      ],
+      "source_behavior": "LocalDebridAvailabilityService with hasPendingCacheCheck(). StreamScreenViewModel uses shouldWaitForCacheCheck flag. Pending debrid streams kept as candidates during timeout window.",
+      "existing_ios_equivalent": [
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/debrid/LocalDebridAvailabilityService.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/streams/StreamAutoPlaySelector.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/streams/StreamsRepository.kt"
+      ],
+      "target_behavior": "LocalDebridAvailabilityService with hasPendingCacheCheck(). StreamAutoPlaySelector with isPendingDebridAutoPlay(), hasPendingDebridCandidate in evaluation. StreamsRepository checks shouldWaitForCacheCheck. Dedicated test for timeout evaluation keeping pending regex debrid candidate open.",
+      "gaps": [],
+      "port_required": false,
+      "ios_implementation_plan": "Already ported with equivalent logic.",
+      "tests": [
+        "composeApp/src/commonTest/kotlin/com/nuvio/app/features/streams/StreamAutoPlaySelectorTest.kt"
+      ],
+      "status": "equivalent",
+      "platform_limitations": []
+    },
+    {
+      "id": "external-url-handling",
+      "capability": "External URL playback (open in external player, web URLs)",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/ui/screens/stream/StreamScreenViewModel.kt"
+      ],
+      "source_behavior": "ExternalPlaybackTracker monitors external player state. isExternalPlayerActive(), isExternalPlayerAutoLaunch(), isAutoNextContinuationAborted(). getStreamForPlayback() handles external playback URLs.",
+      "existing_ios_equivalent": [
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerScreenRuntimeSourceActions.kt",
+        "composeApp/src/iosMain/kotlin/com/nuvio/app/features/player/ExternalPlayerPlatform.ios.kt"
+      ],
+      "target_behavior": "ExternalPlayerPlatform.ios.kt provides iOS-specific external player integration. PlayerScreenRuntimeSourceActions handles external URL routing. App.kt has shouldOpenExternally and openExternal logic.",
+      "gaps": [],
+      "port_required": false,
+      "ios_implementation_plan": "Already ported with iOS-native external player support.",
+      "tests": [],
+      "status": "equivalent",
+      "platform_limitations": [
+        "iOS uses native URL scheme for external player; Android uses ExternalPlaybackTracker"
+      ]
+    },
+    {
+      "id": "torrent-p2p-streaming",
+      "capability": "Peer-to-peer streaming (torrent engine)",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/core/torrent/TorrentService.kt",
+        "app/src/main/java/com/nuvio/tv/core/torrent/TorrentEngineConfig.kt",
+        "app/src/main/java/com/nuvio/tv/core/torrent/TorrentSettings.kt",
+        "app/src/main/java/com/nuvio/tv/core/torrent/TorrentCache.kt",
+        "app/src/main/java/com/nuvio/tv/core/torrent/TorrentDiagnostics.kt",
+        "app/src/main/java/com/nuvio/tv/core/torrent/TorrentState.kt",
+        "app/src/main/java/com/nuvio/tv/core/torrent/TorrentMagnet.kt",
+        "app/src/main/java/com/nuvio/tv/core/torrent/TorrentLoadingProgress.kt",
+        "app/src/main/java/com/nuvio/tv/di/TorrentModule.kt"
+      ],
+      "source_behavior": "Android torrent engine (libtorrent4j-based). TorrentService manages lifecycle. TorrentEngineConfig with settings. TorrentCache for disk caching. TorrentState for connection/streaming states. TorrentDiagnostics for peer/tracker stats. TorrentLoadingProgress. TorrentSettings with profile/cache size. TorrentMagnet building. TorrentModule for DI.",
+      "existing_ios_equivalent": [
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/p2p/P2pStreaming.kt",
+        "composeApp/src/iosFull/kotlin/com/nuvio/app/features/p2p/P2pStreamingEngine.ios.kt",
+        "composeApp/src/iosAppStore/kotlin/com/nuvio/app/features/p2p/P2pStreamingEngine.ios.kt",
+        "composeApp/src/androidMain/kotlin/com/nuvio/app/features/p2p/P2pStreamingEngine.android.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/p2p/P2pPlayerOverlays.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/p2p/P2pConsentDialog.kt"
+      ],
+      "target_behavior": "KMP P2P streaming with expect/actual pattern. P2pStreaming.kt has common models (P2pSettingsUiState, P2pStreamRequest, P2pStreamingState sealed class). P2pStreamingEngine expect/actual with state/cacheState flows, startStream/clearCache/stopStream/shutdown. iOS uses native engine (P2pStreamingEngine.ios.kt), Android uses libtorrent (P2pStreamingEngine.android.kt). P2pPlayerOverlays for UI. P2pConsentDialog. No TorrentService lifecycle manager (simpler engine wrapper).",
+      "gaps": [
+        "No TorrentCache equivalent (cache management in P2pStreamingEngine)",
+        "No TorrentDiagnostics equivalent (stats available via P2pStreamingState)",
+        "No TorrentLoadingProgress equivalent (progress in P2pStreamingState)",
+        "Source has TorrentService as lifecycle manager; target integrates engine lifecycle in P2pStreamingEngine",
+        "No TorrentModule (DI) - target uses expect/actual without DI framework"
+      ],
+      "port_required": false,
+      "ios_implementation_plan": "Already ported with KMP expect/actual pattern. iOS uses native P2P engine; Android uses libtorrent. Architecture is cleaner (sealed class states, no DI framework).",
+      "tests": [
+        "app/src/test/java/com/nuvio/tv/core/torrent/TorrentEngineConfigTest.kt",
+        "app/src/test/java/com/nuvio/tv/core/torrent/TorrentMagnetTest.kt"
+      ],
+      "status": "platform-adaptation",
+      "platform_limitations": [
+        "Android uses libtorrent4j; iOS uses native engine (likely uTP/libtorrent via cinterop). Different architecture (expect/actual vs DI). No TorrServer in either."
+      ]
+    },
+    {
+      "id": "youtube-extraction",
+      "capability": "In-app YouTube video/audio extraction with chunked streaming",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/core/streams/YouTubeStreamResolver.kt",
+        "app/src/main/java/com/nuvio/tv/data/trailer/InAppYouTubeExtractor.kt",
+        "app/src/main/java/com/nuvio/tv/data/trailer/YoutubeChunkedDataSourceFactory.kt",
+        "app/src/main/java/com/nuvio/tv/data/trailer/TrailerService.kt",
+        "app/src/main/java/com/nuvio/tv/data/trailer/TrailerPlaybackSource.kt"
+      ],
+      "source_behavior": "YouTubeStreamResolver resolves YouTube video streams. InAppYouTubeExtractor with full extraction pipeline (signature deciphering, format selection). YoutubeChunkedDataSourceFactory for chunked DASH streaming. TrailerService orchestrates trailer fetching. TrailerPlaybackSource models. Separate audio track support (InAppYouTubeExtractorAudioTrackTest).",
+      "existing_ios_equivalent": [
+        "composeApp/src/fullCommonMain/kotlin/com/nuvio/app/features/trailer/InAppYouTubeExtractor.kt",
+        "composeApp/src/androidFull/kotlin/com/nuvio/app/features/trailer/YoutubeChunkedDataSourceFactory.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/trailer/TrailerPlaybackResolver.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/trailer/TrailerPlaybackSource.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/details/HeroTrailerSelector.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/details/components/TrailerPlayerPopup.kt",
+        "composeApp/src/iosFull/kotlin/com/nuvio/app/features/details/components/HeroTrailerPlayerSurface.ios.kt"
+      ],
+      "target_behavior": "InAppYouTubeExtractor ported to KMP (fullCommonMain). YoutubeChunkedDataSourceFactory only in androidFull (Android ExoPlayer chunked source; iOS uses MPV which handles chunked natively). TrailerPlaybackResolver (common) replaces TrailerService. HeroTrailerSelector + TrailerPlayerPopup for UI. iOS-specific HeroTrailerPlayerSurface. Separate audio track support preserved.",
+      "gaps": [
+        "YoutubeChunkedDataSourceFactory only available for Android (androidFull); iOS uses MPV's native chunked playback capability",
+        "TrailerService replaced by TrailerPlaybackResolver (different architecture)",
+        "YouTubeStreamResolver (for stream playback) not directly ported; stream-level YouTube resolution handled differently"
+      ],
+      "port_required": false,
+      "ios_implementation_plan": "Already ported with platform-appropriate adaptation. YouTube chunked audio uses MPV native support on iOS.",
+      "tests": [
+        "app/src/test/java/com/nuvio/tv/core/streams/YouTubeStreamResolverTest.kt",
+        "app/src/test/java/com/nuvio/tv/data/trailer/InAppYouTubeExtractorAudioTrackTest.kt",
+        "app/src/test/java/com/nuvio/tv/data/trailer/InAppYouTubeExtractorSourcePreferenceTest.kt",
+        "app/src/test/java/com/nuvio/tv/data/trailer/TrailerServiceCancellationTest.kt",
+        "app/src/test/java/com/nuvio/tv/data/trailer/TrailerServiceCandidateRankingTest.kt",
+        "app/src/test/java/com/nuvio/tv/data/trailer/TrailerServiceUseTrailersGateTest.kt",
+        "app/src/test/java/com/nuvio/tv/data/trailer/TrailerServiceYouTubeSessionCacheTest.kt"
+      ],
+      "status": "platform-adaptation",
+      "platform_limitations": [
+        "Chunked data source is Android-specific (ExoPlayer); iOS uses MPV's built-in streaming. Trailer service refactored to TrailerPlaybackResolver."
+      ]
+    },
+    {
+      "id": "plugin-system",
+      "capability": "Plugin/scraper system for stream resolution",
+      "source_files": [
+        "app/src/full/java/com/nuvio/tv/core/plugin/PluginManager.kt",
+        "app/src/full/java/com/nuvio/tv/core/plugin/PluginRuntime.kt",
+        "app/src/full/java/com/nuvio/tv/core/plugin/cloudstream/ExternalExtensionLoader.kt",
+        "app/src/full/java/com/nuvio/tv/core/plugin/cloudstream/ExternalExtensionRunner.kt",
+        "app/src/full/java/com/nuvio/tv/core/plugin/cloudstream/ExternalExtractorRegistry.kt",
+        "app/src/full/java/com/nuvio/tv/core/plugin/cloudstream/ExternalRepoParser.kt",
+        "app/src/full/java/com/nuvio/tv/core/plugin/cloudstream/TvTypeExtensions.kt",
+        "app/src/full/java/com/nuvio/tv/di/PluginModule.kt",
+        "app/src/main/java/com/nuvio/tv/core/plugin/PluginEpisodeRequestRules.kt",
+        "app/src/main/java/com/nuvio/tv/core/plugin/PluginSafety.kt",
+        "app/src/main/java/com/nuvio/tv/core/plugin/TestDiagnostics.kt",
+        "app/src/playstore/java/com/nuvio/tv/core/plugin/PluginManager.kt",
+        "app/src/playstore/java/com/nuvio/tv/di/PluginModule.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/plugin/PluginScreen.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/plugin/PluginUiState.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/plugin/PluginViewModel.kt"
+      ],
+      "source_behavior": "Android CloudStream3 (.cs3) plugin system. DEX-based external extension loading. PluginManager manages lifecycle (full and playstore variants). PluginRuntime executes plugins. ExternalExtensionLoader/Runner for CloudStream3 compatibility. ExternalRepoParser for repository parsing. ExternalExtractorRegistry for extractor management. PluginSafety with safety checks. TestDiagnostics for debugging. DI via PluginModule. PluginScreen/ViewModel/UiState for management UI.",
+      "existing_ios_equivalent": [
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/plugins/PluginRepository.kt",
+        "composeApp/src/fullCommonMain/kotlin/com/nuvio/app/features/plugins/PluginRepository.kt",
+        "composeApp/src/fullCommonMain/kotlin/com/nuvio/app/features/plugins/runtime/PluginRuntime.kt",
+        "composeApp/src/fullCommonMain/kotlin/com/nuvio/app/features/plugins/runtime/js/JsRuntime.kt",
+        "composeApp/src/fullCommonMain/kotlin/com/nuvio/app/features/plugins/runtime/js/JsBindings.kt",
+        "composeApp/src/fullCommonMain/kotlin/com/nuvio/app/features/plugins/runtime/network/FetchBridge.kt",
+        "composeApp/src/fullCommonMain/kotlin/com/nuvio/app/features/plugins/runtime/wasm/WasmBridge.kt",
+        "composeApp/src/fullCommonMain/kotlin/com/nuvio/app/features/plugins/runtime/crypto/CryptoBridge.kt",
+        "composeApp/src/fullCommonMain/kotlin/com/nuvio/app/features/plugins/runtime/dom/DomBridge.kt",
+        "composeApp/src/iosFull/kotlin/com/nuvio/app/features/plugins/PluginPlatform.ios.kt",
+        "composeApp/src/androidFull/kotlin/com/nuvio/app/features/plugins/PluginPlatform.android.kt",
+        "composeApp/src/androidFull/kotlin/com/nuvio/app/features/plugins/PluginCrypto.android.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/plugins/PluginContentIds.kt"
+      ],
+      "target_behavior": "Complete rewrite: KMP QuickJS-based JavaScript runtime. PluginRuntime uses Dokar QuickJS bindings. JsBindings provides CryptoJS compatibility, Web Crypto API polyfill, TextEncoder/Decoder. FetchBridge for HTTP requests. WasmBridge for WebAssembly support. CryptoBridge for native crypto (AES, HMAC, PBKDF2, sign/verify). DomBridge for HTML parsing (Ksoup-based cheerio API). PluginPlatform expect/actual for platform-specific JS runtime initialization. PluginRepository replaces PluginManager. PluginContentIds for content ID resolution. NO DEX loading, NO CloudStream3 compatibility layer.",
+      "gaps": [
+        "No CloudStream3 (.cs3) DEX extension support (platform-incompatible - JVM only)",
+        "No ExternalExtensionLoader/Runner (CloudStream3 compat layer removed)",
+        "No ExternalRepoParser (repository parsing integrated into PluginRepository)",
+        "No ExternalExtractorRegistry (extractors managed differently)",
+        "No PluginSafety (safety checks integrated into runtime)",
+        "No TestDiagnostics equivalent",
+        "No PluginModule (DI); target uses expect/actual",
+        "Source has PluginManager.kt variant for playstore; target differentiates via androidPlaystore vs androidFull source sets"
+      ],
+      "port_required": false,
+      "ios_implementation_plan": "Already ported with fundamentally different architecture (QuickJS JS runtime instead of DEX class loading). This is a platform-mandated rewrite, not a port gap. Source's .cs3 DEX plugins are JVM-only; target's JS plugins work on iOS via QuickJS.",
+      "tests": [
+        "app/src/test/java/com/nuvio/tv/core/plugin/PluginBinaryFetchTest.kt",
+        "app/src/test/java/com/nuvio/tv/core/plugin/PluginEpisodeRequestRulesTest.kt",
+        "app/src/testFull/java/com/nuvio/tv/core/plugin/FetchResponseHeadersTest.kt",
+        "app/src/testFull/java/com/nuvio/tv/core/plugin/cloudstream/HomeViewModelCompatStubTest.kt"
+      ],
+      "status": "platform-adaptation",
+      "platform_limitations": [
+        "Source uses DEX class loading (JVM-only); target uses QuickJS JavaScript runtime (cross-platform)",
+        "Source's .cs3 plugins are Android-specific; target's JS plugins work on iOS via QuickJS engine",
+        "Target has WebAssembly support (source does not)",
+        "Target has CryptoJS polyfill, Web Crypto API, and native crypto bridge",
+        "Target has Ksoup-based DOM/cheerio bridge (source uses Jsoup)",
+        "This is a GENUINE platform limitation: JVM bytecode cannot run on iOS, requiring the architecture change"
+      ]
+    },
+    {
+      "id": "cloud-library",
+      "capability": "Cloud library integration (Premiumize, Torbox)",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/core/cloud/CloudLibraryModels.kt",
+        "app/src/main/java/com/nuvio/tv/core/cloud/CloudLibraryRepository.kt",
+        "app/src/main/java/com/nuvio/tv/core/cloud/CloudLibraryProviderApi.kt",
+        "app/src/main/java/com/nuvio/tv/core/cloud/PremiumizeCloudLibraryProviderApi.kt",
+        "app/src/main/java/com/nuvio/tv/core/cloud/TorboxCloudLibraryProviderApi.kt",
+        "app/src/main/java/com/nuvio/tv/core/cloud/CloudLibraryPlaybackProgressStore.kt",
+        "app/src/main/java/com/nuvio/tv/core/cloud/CloudLibraryPlaybackSessionStore.kt"
+      ],
+      "source_behavior": "CloudLibraryModels with data classes. CloudLibraryRepository orchestrates cloud library operations. CloudLibraryProviderApi interface. PremiumizeCloudLibraryProviderApi and TorboxCloudLibraryProviderApi implementations. CloudLibraryPlaybackProgressStore for progress tracking. CloudLibraryPlaybackSessionStore for session management.",
+      "existing_ios_equivalent": [
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/cloud/CloudLibraryModels.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/cloud/CloudLibraryRepository.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/cloud/CloudLibraryProviderApi.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/cloud/PremiumizeCloudLibraryProviderApi.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/cloud/TorboxCloudLibraryProviderApi.kt"
+      ],
+      "target_behavior": "CloudLibraryModels, CloudLibraryRepository, CloudLibraryProviderApi, PremiumizeCloudLibraryProviderApi, TorboxCloudLibraryProviderApi all ported to commonMain.",
+      "gaps": [
+        "CloudLibraryPlaybackProgressStore not ported (progress tracking uses WatchProgressRepository instead)",
+        "CloudLibraryPlaybackSessionStore not ported (session management handled differently)"
+      ],
+      "port_required": true,
+      "ios_implementation_plan": "CloudLibraryModels/Repository/ProviderApis already ported. PlaybackProgressStore and PlaybackSessionStore replaced by WatchProgressRepository (target's superior cross-provider progress tracking system). Consider if cloud-specific progress store is still needed.",
+      "tests": [],
+      "status": "partial",
+      "platform_limitations": [
+        "Progress store and session store replaced by WatchProgressRepository (target's superior unified progress tracking). No direct equivalent of cloud-specific progress/session stores."
+      ]
+    },
+    {
+      "id": "addon-management",
+      "capability": "Addon (Stremio addon) management: install, configure, catalog order",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/ui/screens/addon/AddonManagementAccess.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/addon/AddonManagerScreen.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/addon/AddonManagerUiState.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/addon/AddonManagerViewModel.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/addon/CatalogOrderScreen.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/addon/CatalogOrderViewModel.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/addon/EssentialAddonSetupScreen.kt"
+      ],
+      "source_behavior": "AddonManagementAccess with read-only flag. AddonManagerScreen with QR mode for phone pairing. AddonManagerViewModel with install/configure lifecycle. CatalogOrderViewModel for catalog ordering. EssentialAddonSetupScreen for first-run setup. UI state with pending changes confirmation.",
+      "existing_ios_equivalent": [
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/addons/AddonRepository.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/addons/AddonManifestParser.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/addons/AddonModels.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/addons/AddonPlatform.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/addons/AddonPlatform.ios.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/addons/AddonHttpClient.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/addons/AddonTransportUrls.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/addons/AddonsScreen.kt"
+      ],
+      "target_behavior": "AddonRepository (replaces AddonManagerViewModel). AddonManifestParser for Stremio manifest parsing. AddonModels with managed addon data classes. AddonPlatform expect/actual with platform-specific storage and HTTP. AddonHttpClient for HTTP requests. AddonTransportUrls for URL resolution. AddonsScreen with install UI. QR mode via AddonPlatform.ios.kt. Essential addon setup via PlaybackSettingsPage. Catalog ordering via HomeCatalogSettings.",
+      "gaps": [
+        "No AddonManagementAccess equivalent (access control handled differently)",
+        "No CatalogOrderViewModel/Screen (catalog order managed via HomeCatalogSettings)",
+        "No EssentialAddonSetupScreen (onboarding handled via PlaybackSettingsPage)",
+        "No AddonManagerViewModel (replaced by AddonRepository singleton)",
+        "Source has dedicated QR mode screen; target integrates QR via platform"
+      ],
+      "port_required": false,
+      "ios_implementation_plan": "Already ported with refactored architecture. Repository pattern replaces ViewModel. Catalog order integrated into home settings.",
+      "tests": [
+        "app/src/test/java/com/nuvio/tv/ui/screens/addon/AddonManagementAccessTest.kt"
+      ],
+      "status": "equivalent",
+      "platform_limitations": [
+        "Refactored architecture (Repository vs ViewModel). Catalog order and essential setup integrated into other screens."
+      ]
+    },
+    {
+      "id": "networking-layer",
+      "capability": "HTTP networking, DNS resolution, rate limiting, safe API calls",
+      "source_files": [],
+      "source_behavior": "IPv4FirstDns for IPv4-preferred DNS resolution. NetworkModule with OkHttp client configuration. SafeApiCall wrapper for error handling. BackendRateLimit for rate limiting. StreamSpeedTester for bandwidth testing. ConnectionSpeedSettingsItems for UI.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "Uses Ktor HttpClient with platform engines (Darwin on iOS, OkHttp on Android). AddonHttpClient for addon-specific requests. DebridApiClients for debrid API requests. No IPv4FirstDns equivalent. No BackendRateLimit equivalent. No StreamSpeedTester equivalent.",
+      "gaps": [
+        "No IPv4FirstDns equivalent",
+        "No BackendRateLimit equivalent",
+        "No StreamSpeedTester equivalent",
+        "No ConnectionSpeedSettingsItems UI (speed test settings)"
+      ],
+      "port_required": true,
+      "ios_implementation_plan": "Evaluate need for IPv4-first DNS on iOS (less relevant due to Happy Eyeballs). StreamSpeedTester could be implemented with URLSession. Rate limiting may be handled by Ktor plugins.",
+      "tests": [],
+      "status": "partial",
+      "platform_limitations": [
+        "Ktor replaces OkHttp. IPv4-first DNS less critical on iOS (system handles Happy Eyeballs). Speed testing and rate limiting not yet ported."
+      ]
+    },
+    {
+      "id": "cloudflare-bypass",
+      "capability": "Cloudflare challenge bypass for addon/plugin HTTP requests",
+      "source_files": [
+        "app/src/full/java/com/lagradost/cloudstream3/network/CloudflareKiller.kt"
+      ],
+      "source_behavior": "CloudflareKiller with Cloudflare challenge detection and bypass logic. Android-specific (uses Android WebView for challenge solving).",
+      "existing_ios_equivalent": [],
+      "target_behavior": "No CloudflareKiller equivalent. Target relies on direct HTTP requests without Cloudflare bypass. Cloudflare challenges would fail on iOS without equivalent solution.",
+      "gaps": [
+        "No Cloudflare bypass mechanism on iOS",
+        "Addon/plugin requests to Cloudflare-protected sites will fail"
+      ],
+      "port_required": true,
+      "ios_implementation_plan": "Implement Cloudflare bypass using WKWebView (JavaScript challenge solving) or cloudscraper equivalent. Challenge: WKWebView limitations on programmatic control vs Android WebView.",
+      "tests": [],
+      "status": "missing",
+      "platform_limitations": [
+        "Android uses WebView for Cloudflare challenge solving; iOS WKWebView has stricter limitations (no easy JavaScript injection for challenge bypass). This is a significant platform limitation."
+      ]
+    },
+    {
+      "id": "watch-progress",
+      "capability": "Unified watch progress tracking (cross-provider, server sync)",
+      "source_files": [],
+      "source_behavior": "Source has cloud-specific progress stores (CloudLibraryPlaybackProgressStore, CloudLibraryPlaybackSessionStore) for Premiumize/Torbox cloud library playback position tracking.",
+      "existing_ios_equivalent": [
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/watchprogress/WatchProgressRepository.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/watchprogress/WatchProgressModels.kt",
+        "composeApp/src/iosMain/kotlin/com/nuvio/app/features/watchprogress/WatchProgressStorage.ios.kt"
+      ],
+      "target_behavior": "WatchProgressRepository with sophisticated cross-provider progress tracking. Supports Nuvio server sync, addon provider progress, delta sync, metadata resolution. Far more advanced than source's cloud-specific progress stores.",
+      "gaps": [],
+      "port_required": false,
+      "ios_implementation_plan": "Already ported and enhanced. Target has superior progress tracking that replaces source's cloud-specific stores.",
+      "tests": [],
+      "status": "equivalent",
+      "platform_limitations": [
+        "Target has superior unified progress tracking. Source had only cloud-specific stores. This is a target enhancement."
+      ]
+    }
+  ],
+  "additional_files_inspected": [
+    "app/src/full/java/com/lagradost/cloudstream3/network/CloudflareKiller.kt",
+    "app/src/full/java/com/lagradost/cloudstream3/ui/home/HomeViewModel.kt",
+    "app/src/full/java/com/lagradost/cloudstream3/utils/DataStore.kt",
+    "app/src/full/java/com/lagradost/cloudstream3/utils/DataStoreHelper.kt",
+    "app/src/main/java/com/nuvio/tv/core/network/StreamSpeedTester.kt",
+    "app/src/main/java/com/nuvio/tv/core/network/IPv4FirstDns.kt",
+    "app/src/main/java/com/nuvio/tv/core/network/SafeApiCall.kt",
+    "app/src/main/java/com/nuvio/tv/core/network/BackendRateLimit.kt",
+    "app/src/main/java/com/nuvio/tv/core/di/NetworkModule.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/settings/NetworkSettingsScreen.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/settings/ConnectionSpeedSettingsItems.kt",
+    "app/src/main/java/com/nuvio/tv/core/player/StreamAutoPlaySelector.kt",
+    "app/src/main/java/com/nuvio/tv/core/player/StreamAutoPlayPolicy.kt",
+    "app/src/main/java/com/nuvio/tv/core/player/StreamAutoPlayModels.kt",
+    "app/src/main/java/com/nuvio/tv/domain/model/Stream.kt",
+    "app/src/main/java/com/nuvio/tv/data/repository/StreamRepositoryImpl.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerNextEpisodeAutoPlay.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerScreenRuntimeSourceActions.kt",
+    "composeApp/src/iosMain/kotlin/com/nuvio/app/features/player/ExternalPlayerPlatform.ios.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerEngine.kt",
+    "composeApp/src/iosMain/kotlin/com/nuvio/app/features/player/PlayerEngine.ios.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/cloud/CloudLibraryRepository.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/p2p/P2pStreaming.kt",
+    "composeApp/src/iosFull/kotlin/com/nuvio/app/features/p2p/P2pStreamingEngine.ios.kt",
+    "composeApp/src/androidMain/kotlin/com/nuvio/app/features/p2p/P2pStreamingEngine.android.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/debrid/DebridProviderApis.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/debrid/DebridApiClients.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/debrid/DebridApiModels.kt",
+    "composeApp/src/fullCommonMain/kotlin/com/nuvio/app/features/plugins/runtime/PluginRuntime.kt",
+    "composeApp/src/fullCommonMain/kotlin/com/nuvio/app/features/plugins/runtime/js/JsBindings.kt",
+    "composeApp/src/fullCommonMain/kotlin/com/nuvio/app/features/plugins/runtime/js/JsRuntime.kt",
+    "composeApp/src/fullCommonMain/kotlin/com/nuvio/app/features/plugins/runtime/wasm/WasmBridge.kt",
+    "composeApp/src/fullCommonMain/kotlin/com/nuvio/app/features/plugins/runtime/crypto/CryptoBridge.kt",
+    "composeApp/src/fullCommonMain/kotlin/com/nuvio/app/features/plugins/runtime/dom/DomBridge.kt",
+    "composeApp/src/fullCommonMain/kotlin/com/nuvio/app/features/plugins/runtime/network/FetchBridge.kt",
+    "composeApp/src/fullCommonMain/kotlin/com/nuvio/app/features/trailer/InAppYouTubeExtractor.kt",
+    "composeApp/src/iosFull/kotlin/com/nuvio/app/features/details/components/HeroTrailerPlayerSurface.ios.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/details/HeroTrailerSelector.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/details/components/TrailerPlayerPopup.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/watchprogress/WatchProgressRepository.kt",
+    "composeApp/src/iosMain/kotlin/com/nuvio/app/features/watchprogress/WatchProgressStorage.ios.kt",
+    "composeApp/src/iosMain/kotlin/com/nuvio/app/core/sync/AppForegroundMonitor.ios.kt",
+    "composeApp/src/iosMain/kotlin/com/nuvio/app/features/player/PlayerBridge.kt",
+    "iosApp/iosApp/Player/MPVPlayerBridge.swift",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/profiles/ProfileModels.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/settings/PlaybackSettingsPage.kt",
+    "composeApp/src/iosAppStore/kotlin/com/nuvio/app/core/build/AppFeaturePolicy.ios.kt",
+    "composeApp/src/iosFull/kotlin/com/nuvio/app/core/build/AppFeaturePolicy.ios.kt",
+    "composeApp/src/androidFull/kotlin/com/nuvio/app/core/build/AppFeaturePolicy.android.kt"
+  ],
+  "risks": [
+    "Cloudflare bypass missing: Source uses CloudflareKiller (Android WebView); iOS has no equivalent. Addon/plugin HTTP requests to Cloudflare-protected sites will fail on iOS.",
+    "Connection speed estimation missing: Source measures speed with persistent samples; target requires external connectionMbps parameter. No fallback speed measurement.",
+    "Playback throughput monitoring missing: Source monitors real-time bytesPerSecond via ExoPlayer/MPV ticks; target has no equivalent. Cannot adapt stream quality based on real-time network conditions.",
+    "No StreamSpeedTester: Source has standalone speed testing; target doesn't. Users cannot run bandwidth tests from settings.",
+    "No IPv4FirstDns: Source prefers IPv4 for compatibility; target uses system DNS resolution (less control).",
+    "No BackendRateLimit: Source has explicit rate limiting; target relies on Ktor defaults.",
+    "No PluginSafety module: Source has dedicated plugin safety checks; target integrates safety into runtime. Verify safety parity.",
+    "Test coverage disparity: Source has 27 test files for streams/debrid/torrent/plugin domains; target has 2 test files (StreamAutoPlaySelectorTest, StreamConnectionFitTest). Significant gap in test coverage.",
+    "TorrServer not present in either source or target - not a port gap.",
+    "YouTube chunked data source: Android has YoutubeChunkedDataSourceFactory (ExoPlayer); iOS relies on MPV native chunked streaming. Verify MPV handles all YouTube DASH formats correctly.",
+    "WatchProgress system: Target has far more sophisticated progress tracking than source. Ensure cloud-specific progress stores (PlaybackProgressStore, PlaybackSessionStore) are not needed for Premiumize/Torbox cloud library resume functionality."
+  ]
+}

@@ -114,6 +114,7 @@ internal fun CoroutineScope.launchPlayerNextEpisodeAutoPlay(
             .map { it.displayTitle }
             .toSet()
         val debridSettings = DebridSettingsRepository.snapshot()
+        val (fitRuntime, fitSpeed) = com.nuvio.app.features.streams.connectionFitSnapshot(type, nextVideo.id, parentMetaId)
 
         val timeoutSeconds = settings.streamAutoPlayTimeoutSeconds
         var autoSelectTriggered = false
@@ -152,6 +153,8 @@ internal fun CoroutineScope.launchPlayerNextEpisodeAutoPlay(
                 bingeGroupOnly = bingeGroupOnlyManualMode,
                 debridEnabled = debridSettings.canResolvePlayableLinks,
                 activeResolverProviderId = debridSettings.activeResolverProviderId,
+                runtimeMinutes = fitRuntime,
+                connectionMbps = fitSpeed,
             )
 
         fun tryBingeGroupOnly(streams: List<StreamItem>): StreamItem? {
@@ -169,6 +172,8 @@ internal fun CoroutineScope.launchPlayerNextEpisodeAutoPlay(
                 bingeGroupOnly = true,
                 debridEnabled = debridSettings.canResolvePlayableLinks,
                 activeResolverProviderId = debridSettings.activeResolverProviderId,
+                runtimeMinutes = fitRuntime,
+                connectionMbps = fitSpeed,
             )
         }
 

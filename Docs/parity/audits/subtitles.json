@@ -1,0 +1,752 @@
+{
+  "domain": "subtitles",
+  "source_sha": "b9408cd5729fd99e9afe56cc334973fe0725bc7d",
+  "target_start_sha": "6ad6c72c4ebf5cf1d9edf5d5d5eb110fc457cf92",
+  "audited_files": [
+    "app/src/main/java/com/nuvio/tv/core/player/OpenSubtitlesHasher.kt",
+    "app/src/main/java/com/nuvio/tv/core/player/SubtitleCharsetDetector.kt",
+    "app/src/main/java/com/nuvio/tv/core/player/SubtitleFileCache.kt",
+    "app/src/main/java/com/nuvio/tv/data/remote/dto/SubtitleResponseDto.kt",
+    "app/src/main/java/com/nuvio/tv/data/repository/SubtitleRepositoryImpl.kt",
+    "app/src/main/java/com/nuvio/tv/domain/model/Subtitle.kt",
+    "app/src/main/java/com/nuvio/tv/domain/repository/SubtitleRepository.kt",
+    "app/src/main/java/com/nuvio/tv/reshaped/subtitlefont/SubtitleFontStore.kt",
+    "app/src/main/java/com/nuvio/tv/reshaped/subtitlefont/SubtitleFontUploadServer.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerRuntimeControllerAutomaticSubtitleSync.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerRuntimeControllerSubtitleTiming.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerSidecarSubtitles.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerSubtitleCueParser.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerSubtitleDataSource.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerSubtitleRtlFix.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerSubtitleUtils.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/StreamSidecarSubtitles.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/SubtitleDelayConfig.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/SubtitleMojibakeSanitizer.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/SubtitleSdhFilter.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/SubtitleSelectionOverlay.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/SubtitleStyleSidePanel.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/SubtitleTimingDialog.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/AudioSpotSampler.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/AudioSubtitleSyncController.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/AudioSyncDecoder.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/AudioSyncExtractors.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/AudioSyncFallback.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/AudioSyncSettings.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/AudioSyncTracker.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/DialogueSpotPlanner.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/Fft.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/PlaybackAudioTap.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/SileroVad.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/SpeechAnalyzer.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/SpeechTimeline.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/SpotConnections.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/SubtitleAudioAligner.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/SubtitleCandidatePool.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/SubtitleSpeechTrack.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/SubtitleSyncStatus.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/SubtitleSyncStatusOverlay.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/SyncLog.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/asr/AsrModel.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/asr/AsrSyncEngine.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/asr/SharedRecognizer.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/asr/SherpaSpeechToText.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/asr/SpeechSegmenter.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/asr/SubtitleBridge.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/asr/WordAnchorMatcher.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/autosync/AutoSyncDebugLog.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/autosync/AutoSyncDelayPreflight.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/autosync/AutoSyncExtractorsFactory.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/autosync/AutoSyncNoFitTracker.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/autosync/AutoSyncPlayerContracts.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/autosync/AutoSyncPreferences.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/autosync/AutoSyncReferenceConsistency.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/autosync/AutoSyncRunPolicy.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/autosync/AutoSyncSampledReferenceAligner.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/autosync/AutoSyncSidecarBridge.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/autosync/AutoSyncSubtitleCueParser.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/autosync/AutoSyncSubtitleHttp.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/autosync/AutoSyncSyncedLabel.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/autosync/AutoSyncTimelineRetime.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/autosync/AutoSyncTimingDump.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/autosync/AutomaticSubtitleSync.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/autosync/EmbeddedSubtitleTimelineLoader.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/autosync/SubtitleLanguageMatching.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/autosync/bubble/AutoSyncBubbleToast.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/autosync/bubble/AutoSyncBubbleToasts.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/settings/AudioSyncSettingsItems.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/settings/AutoSyncBubbleSettingsItems.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/settings/AutoSyncSettingsItems.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/settings/PlaybackSubtitleSettings.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/settings/SubtitleFontSettingsItems.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerScreenRuntimeSubtitleActions.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerSubtitleCueParser.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/SubtitleRepository.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/SubtitleAudioModels.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerScreenRuntimeTrackActions.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerSettingsRepository.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/SubtitleForwarder.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerScreenRuntimeEffects.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerScreenRuntimeUi.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerEngine.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/SubtitleCacheProvider.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerTrackPreferenceStorage.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/AddonSubtitleStartupPolicy.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/addons/AddonRepository.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/addons/AddonHttpClient.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerBridge.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerModels.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/SubtitleSelectionModel.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/SubtitleStylePanel.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/SubtitleModal.kt",
+    "composeApp/src/iosMain/kotlin/com/nuvio/app/features/player/SubtitleCacheProvider.ios.kt",
+    "composeApp/src/iosMain/kotlin/com/nuvio/app/features/player/PlayerTrackPreferenceStorage.ios.kt",
+    "composeApp/src/iosMain/kotlin/com/nuvio/app/features/player/PlayerEngine.ios.kt",
+    "composeApp/src/iosMain/kotlin/com/nuvio/app/features/player/PlayerBridge.kt",
+    "composeApp/src/iosMain/kotlin/com/nuvio/app/features/addons/AddonPlatform.ios.kt",
+    "iosApp/iosApp/Player/MPVPlayerBridge.swift",
+    "app/src/test/java/com/nuvio/tv/core/player/SubtitleCharsetDetectorTest.kt",
+    "app/src/test/java/com/nuvio/tv/ui/screens/player/PlayerSubtitleUtilsMimeTest.kt",
+    "app/src/test/java/com/nuvio/tv/ui/screens/player/SubtitleCredentialScopeTest.kt",
+    "app/src/test/java/com/nuvio/tv/ui/screens/player/SubtitleMojibakeSanitizerTest.kt",
+    "app/src/test/java/com/nuvio/tv/ui/screens/player/SubtitleRaceConditionUpgradeTest.kt",
+    "app/src/test/java/com/nuvio/tv/ui/screens/player/SubtitleRoutingTest.kt",
+    "app/src/test/java/com/nuvio/tv/ui/screens/player/audiosync/AsrMatchingTest.kt",
+    "app/src/test/java/com/nuvio/tv/ui/screens/player/audiosync/AudioSubtitleSyncTest.kt",
+    "app/src/test/java/com/nuvio/tv/ui/screens/player/audiosync/SpeechTimelineTest.kt",
+    "app/src/test/java/com/nuvio/tv/ui/screens/player/audiosync/SpotSamplingTest.kt",
+    "app/src/test/java/com/nuvio/tv/ui/screens/player/audiosync/SubtitleCandidatePoolTest.kt",
+    "app/src/test/java/com/nuvio/tv/ui/screens/player/autosync/AutoSyncDenseDialogueRegressionTest.kt",
+    "app/src/test/java/com/nuvio/tv/ui/screens/player/autosync/AutoSyncNoFitTrackerTest.kt",
+    "app/src/test/java/com/nuvio/tv/ui/screens/player/autosync/AutoSyncReferenceConsistencyTest.kt",
+    "app/src/test/java/com/nuvio/tv/ui/screens/player/autosync/AutoSyncSecondaryLanguageTest.kt",
+    "app/src/test/java/com/nuvio/tv/ui/screens/player/autosync/AutoSyncSubtitleCueParserTest.kt",
+    "app/src/test/java/com/nuvio/tv/ui/screens/player/autosync/AutoSyncTimelineRetimeTest.kt",
+    "app/src/test/java/com/nuvio/tv/ui/screens/player/autosync/AutoSyncTimingDumpTest.kt",
+    "app/src/test/java/com/nuvio/tv/ui/screens/player/autosync/EmbeddedSubtitleTimelineLoaderTest.kt",
+    "app/src/test/java/com/nuvio/tv/ui/screens/player/autosync/bubble/AutoSyncBubbleToastsTest.kt",
+    "composeApp/src/commonTest/kotlin/com/nuvio/app/features/player/SubtitleSelectionModelTest.kt",
+    "composeApp/src/commonTest/kotlin/com/nuvio/app/features/player/AddonSubtitleStartupPolicyTest.kt",
+    "composeApp/src/commonTest/kotlin/com/nuvio/app/features/player/PlayerTrackSelectionTest.kt"
+  ],
+  "capabilities": [
+    {
+      "id": "subtitle-addon-fetching-repository",
+      "capability": "Fetch subtitles from installed addon providers with parallel requests, incremental streaming, and metadata",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/data/repository/SubtitleRepositoryImpl.kt",
+        "app/src/main/java/com/nuvio/tv/domain/repository/SubtitleRepository.kt",
+        "app/src/main/java/com/nuvio/tv/data/remote/dto/SubtitleResponseDto.kt",
+        "app/src/main/java/com/nuvio/tv/domain/model/Subtitle.kt"
+      ],
+      "source_behavior": "Repository filters addons by subtitle resource support, dispatches async per-addon fetches with 20s per-addon timeout using coroutine supervisorScope. Streams results incrementally via onSubtitlesEmitted callback. Returns Subtitle objects with id, url, lang, addonName, addonLogo, and per-subtitle headers map. Also passes videoHash/videoSize/filename parameters for OpenSubtitles integration.",
+      "existing_ios_equivalent": [
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/SubtitleRepository.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/SubtitleAudioModels.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/addons/AddonRepository.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/addons/AddonHttpClient.kt"
+      ],
+      "target_behavior": "iOS SubtitleRepository fetches addon subtitles sequentially (for loop, not parallel) with no per-addon timeout. Uses fetchAddonResponseText which delegates to httpGetTextWithHeaders with cache-control header or httpGetText. No videoHash/videoSize/filename parameters. Returns AddonSubtitle objects missing headers map, isStreamProvided flag, and addonLogo. No incremental streaming callback.",
+      "gaps": [
+        "Sequential not parallel: iOS fetches addons one-by-one in a for loop",
+        "No per-addon 20s timeout",
+        "No videoHash/videoSize/filename query parameters in subtitle request URL",
+        "AddonSubtitle model lacks headers map (critical for auth tokens)",
+        "No isStreamProvided flag",
+        "No addonLogo on AddonSubtitle",
+        "No incremental result streaming (onSubtitlesEmitted callback)"
+      ],
+      "port_required": true,
+      "ios_implementation_plan": "1. Add headers, isStreamProvided, addonLogo fields to AddonSubtitle model 2. Convert SubtitleRepository.fetchAddonSubtitles to parallel async per-addon with timeout 3. Add optional videoHash/videoSize/filename parameters 4. Add incremental result callback",
+      "tests": [],
+      "status": "partial",
+      "platform_limitations": []
+    },
+    {
+      "id": "subtitle-transport-credential-scope",
+      "capability": "Secure subtitle HTTP request construction with per-redirect credential scoping, HTTPS->HTTP downgrade protection, two-client TLS fallback, and header forwarding guard",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerRuntimeControllerSubtitleTiming.kt"
+      ],
+      "source_behavior": "buildSubtitleRequest uses: (1) subtitleStreamHeaders — only cross-host-safe headers (referer, origin, user-agent, accept-language) forwarded to different hosts; (2) ForwardedStreamHeaderGuard Interceptor — strips host-scoped credentials per redirect hop via OkHttp tag forwarding; (3) SubtitleOwnHeaders tag — tracks per-subtitle header scope; (4) HTTPS->HTTP downgrade — strips referer and origin on downgrade; (5) two-client TLS fallback — validated subtitleHttpClient first, on SSLException retries with permissive subtitleUnvalidatedTlsHttpClient, removing credential headers on fallback via withoutCredentialHeaders; (6) default Accept and User-Agent if absent. executeSubtitleRequest wraps the two-client pattern. Retry loop: 3 attempts with 350ms linear backoff.",
+      "existing_ios_equivalent": [
+        "iosApp/iosApp/Player/MPVPlayerBridge.swift",
+        "composeApp/src/iosMain/kotlin/com/nuvio/app/features/addons/AddonPlatform.ios.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerEngine.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerScreenRuntimeSubtitleActions.kt"
+      ],
+      "target_behavior": "iOS sanitizePlaybackHeaders (PlayerEngine.kt:29-42) strips empty keys/values and Range header only — no host scoping. httpGetTextWithHeaders (AddonPlatform.ios.kt:117-137) passes all provided headers through without any scope filtering. MPVPlayerBridge.sanitizeRequestHeaders strips Range header only; applyRequestHeaders sets mpv http-header-fields as a global per-process property. addSubtitle wraps sub-add with temporary header apply/restore. No per-redirect scoping �� headers persist through all redirects. No HTTPS->HTTP downgrade protection. No two-client TLS fallback. No Accept/User-Agent defaults. Subtitle cue download (PlayerScreenRuntimeSubtitleActions.kt:27-29) uses httpGetTextWithHeaders with sanitizePlaybackHeaders, missing the credential scoping that the reference applies.",
+      "gaps": [
+        "No per-redirect credential scope tracking — headers persist through all redirect hops",
+        "No HTTPS->HTTP downgrade header stripping (referer, origin)",
+        "No validated-then-permissive-TLS two-client fallback",
+        "No ForwardedStreamHeaders / SubtitleOwnHeaders tagging mechanism",
+        "No Accept or User-Agent default headers",
+        "Subtitle retries: iOS downloadSubtitleBody has 3 retries with linear backoff (350ms) in PlayerScreenRuntimeSubtitleActions.kt:61-63, but header handling on retries uses sanitizePlaybackHeaders not buildSubtitleRequest",
+        "mpv's http-header-fields is a per-process property — racing sub-add calls can corrupt headers (existing race condition)"
+      ],
+      "port_required": true,
+      "ios_implementation_plan": "1. Implement header scoping in Kotlin layer before passing to bridge (filter stream headers to allowed cross-host set) 2. Add two-client TLS fallback pattern for subtitle downloads 3. Add Accept/User-Agent defaults 4. Serialize sub-add header apply/restore to prevent race conditions 5. Apply header scoping to timing dialog subtitle download path",
+      "tests": [
+        {"ref": "app/src/test/java/com/nuvio/tv/ui/screens/player/SubtitleCredentialScopeTest.kt"},
+        {"ref": "app/src/test/java/com/nuvio/tv/ui/screens/player/SubtitleRoutingTest.kt"}
+      ],
+      "status": "partial",
+      "platform_limitations": [
+        "mpv http-header-fields is global per-process — safe sub-add header switching requires serialization or separate connections"
+      ]
+    },
+    {
+      "id": "subtitle-charset-detection",
+      "capability": "Automatic subtitle charset detection with BOM handling, UTF-8 validation, language-hint heuristics, statistical detection, and double-encoding repair",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/core/player/SubtitleCharsetDetector.kt"
+      ],
+      "source_behavior": "Comprehensive decoder: (1) BOM detection (UTF-8, UTF-16LE, UTF-16BE) with BOM-stripped decoding; (2) fast UTF-8 validity check for pure-ASCII/UTF-8 bypass; (3) language-hint-based charset resolution for 23 language groups (Windows code pages 1250-1258, KOI8-R, GB18030, Big5, Shift_JIS, EUC-KR); (4) universal statistical detection: CJK disambiguation (Big5 vs GB18030 via codepoint block counting), Korean Hangul vs Chinese Hanzi, Thai single-byte, Hebrew/Arabic/Cyrillic/Greek vowel-frequency heuristics; (5) double-encoded UTF-8 repair (Hebrew mojibake via Windows-1252→Windows-1255 round-trip with Latin-1 character analysis). Falls back to UTF-8.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "iOS has no charset detection. All subtitle bodies are assumed UTF-8. The PlayerSubtitleCueParser strips BOM from text but performs no charset detection, no language-hint resolution, and no double-encoding repair.",
+      "gaps": [
+        "No charset detection at all — iOS assumes all subtitles are UTF-8",
+        "No BOM-aware byte-level decoding (text assumed already decoded)",
+        "No language-hint-based charset resolution",
+        "No double-encoding repair (Hebrew mojibake from Ktuvit-style providers)",
+        "No statistical charset detection for single-byte encodings (Windows-1251, etc.)"
+      ],
+      "port_required": true,
+      "ios_implementation_plan": "Port SubtitleCharsetDetector to Kotlin (no Android dependencies — pure Java/Kotlin charset API). Integrate into subtitle download path before cue parsing. Same JVM Charset API available on iOS.",
+      "tests": [
+        {"ref": "app/src/test/java/com/nuvio/tv/core/player/SubtitleCharsetDetectorTest.kt"}
+      ],
+      "status": "missing",
+      "platform_limitations": []
+    },
+    {
+      "id": "subtitle-file-caching",
+      "capability": "Cache subtitle files locally with charset normalization and mojibake sanitization",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/core/player/SubtitleFileCache.kt"
+      ],
+      "source_behavior": "Downloads remote subtitle files, guesses extension from URL path, runs charset detection + mojibake sanitization, writes as UTF-8 to app cache dir, returns content:// URI via FileProvider. Clears old cache before new downloads.",
+      "existing_ios_equivalent": [
+        "composeApp/src/iosMain/kotlin/com/nuvio/app/features/player/SubtitleCacheProvider.ios.kt"
+      ],
+      "target_behavior": "iOS SubtitleCacheProvider.ios.kt is a no-op pass-through — returns subtitles unchanged. Intentional: iOS external players (Infuse) accept remote URLs directly. However, the internal MPV player also receives raw URLs without caching or charset normalization.",
+      "gaps": [
+        "No file caching for internal MPV player path",
+        "No charset detection or mojibake sanitization in the download path"
+      ],
+      "port_required": false,
+      "ios_implementation_plan": "Optional: add caching for MPV player reliability. The charset/sanitization gap should be fixed in the download path regardless.",
+      "tests": [],
+      "status": "platform-adaptation",
+      "platform_limitations": [
+        "External players accept URLs directly — caching unnecessary for that path",
+        "MPV player could benefit from caching for flaky subtitle hosts"
+      ]
+    },
+    {
+      "id": "subtitle-open-subtitles-hashing",
+      "capability": "OpenSubtitles file hash computation for improved subtitle search results",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/core/player/OpenSubtitlesHasher.kt"
+      ],
+      "source_behavior": "Computes OpenSubtitles hash via HTTP HEAD (for Content-Length) and two Range: bytes requests for first/last 64KB. Consults PlayerMediaSourceFactory probeInfoCache to skip HEAD when possible. Aborts on non-range-request-capable streams.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "iOS has no OpenSubtitles hashing. videoHash/videoSize are never passed to subtitle addons.",
+      "gaps": [
+        "OpenSubtitles hashing not implemented",
+        "Cannot pass videoHash to subtitle addons for improved search relevance"
+      ],
+      "port_required": false,
+      "ios_implementation_plan": "Port to Kotlin using iOS HTTP client with range request support. Lower priority than other gaps.",
+      "tests": [],
+      "status": "missing",
+      "platform_limitations": [
+        "Streaming sources may not support Range requests — hash would fail silently as reference handles"
+      ]
+    },
+    {
+      "id": "sidecar-subtitle-rendering",
+      "capability": "Buffer-preserving sidecar subtitle rendering without media source reload",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerSidecarSubtitles.kt"
+      ],
+      "source_behavior": "Downloads and parses addon subtitles via Media3 DefaultSubtitleParserFactory, pushes timed cues to SubtitleView without touching the ExoPlayer MediaPeriod. Includes: multi-MIME parse attempt chain (Media3 → lenient SRT/VTT), RTL fix, mojibake sanitization, SDH filtering, cue position normalization for VTT, generation-tracking for stale attachment detection, render loop at 100ms polling. commitPreparedSidecarSubtitle allows replacing cues without re-download. ASS/SSA excluded when libass is active.",
+      "existing_ios_equivalent": [
+        "iosApp/iosApp/Player/MPVPlayerBridge.swift",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerScreenRuntimeSubtitleActions.kt"
+      ],
+      "target_behavior": "iOS uses MPV sub-add command for external subtitles — MPV handles all parsing and rendering natively. No sidecar bypass. No mojibake sanitization, SDH filtering, RTL fix, or cue position normalization applied before passing subtitles to MPV. The stripSdh setting exists in SubtitleStyleState but is never applied.",
+      "gaps": [
+        "No buffer-preserving sidecar — iOS always routes to MPV",
+        "No mojibake sanitization applied to subtitle text before MPV",
+        "No SDH filter applied (stripSdh setting unused)",
+        "No RTL text normalization",
+        "No VTT cue position normalization",
+        "No generation-tracking for stale subtitle detection"
+      ],
+      "port_required": false,
+      "ios_implementation_plan": "Apple platforms differ fundamentally — MPVKit handles subtitles natively. Sanitization (mojibake, SDH, RTL) should be applied in Kotlin layer before sub-add command if implemented.",
+      "tests": [],
+      "status": "platform-adaptation",
+      "platform_limitations": [
+        "MPVKit handles all subtitle rendering — sidecar bypass unnecessary",
+        "Custom sanitization should happen before passing to MPV"
+      ]
+    },
+    {
+      "id": "subtitle-cue-parser",
+      "capability": "Parse SRT, WebVTT, ASS/SSA, and TTML subtitle formats into structured cues",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerSubtitleCueParser.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/autosync/AutoSyncSubtitleCueParser.kt"
+      ],
+      "source_behavior": "Two parsers: PlayerSubtitleCueParser (for UI timing dialog) parses SRT and VTT with mojibake sanitization and HTML tag stripping. AutoSyncSubtitleCueParser (for AutoSync V2) also handles ASS/SSA (Format line, Dialogue parsing, multiple section boundaries) and TTML (frame-rate-aware timestamps, offset-with-unit formats) with cooperative cancellation checks every 64 iterations. Both normalize and sort cues.",
+      "existing_ios_equivalent": [
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerSubtitleCueParser.kt"
+      ],
+      "target_behavior": "iOS PlayerSubtitleCueParser parses SRT, WebVTT, ASS (limited), and TTML. Format detection by URL extension and content sniffing. ASS parser reads Format line and Dialogue payloads but assumes single [Events] section. TTML parser extracts begin/start with clock-time and offset-with-unit formats. Cue text cleaned for ASS/HTML markup and HTML entities. Lacks: cooperative cancellation, ASS multiple section handling, TTML frame rate parsing, estimated-cue-end detection.",
+      "gaps": [
+        "No cooperative cancellation on iOS parser (can't abort mid-parse)",
+        "TTML frame rate parsing missing (not needed without AutoSync pipeline)",
+        "ASS assumes single [Events] section",
+        "No estimated-cue-end detection"
+      ],
+      "port_required": true,
+      "ios_implementation_plan": "Add cooperative cancellation check parameter. Enhanced ASS/TTML parsing needed only if AutoSync pipeline is ported. Currently sufficient for manual cue timing dialog.",
+      "tests": [
+        {"ref": "app/src/test/java/com/nuvio/tv/ui/screens/player/autosync/AutoSyncSubtitleCueParserTest.kt"}
+      ],
+      "status": "partial",
+      "platform_limitations": []
+    },
+    {
+      "id": "subtitle-mojibake-sanitizer",
+      "capability": "Fix UTF-8 text misinterpreted as Windows-1252/ISO-8859-1 (mojibake artifacts)",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/SubtitleMojibakeSanitizer.kt"
+      ],
+      "source_behavior": "Replaces known multi-byte mojibake patterns (â™ª→♪, â€™→', â€œ→\", etc.) with correct Unicode. Quick pre-check for trigger chars (â, Â, U+FFFD). Operates on both plain and Spanned CharSequence. Cue-aware variant for Media3 Cue objects.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "iOS does not apply mojibake sanitization. PlayerSubtitleCueParser normalizes HTML entities and ASS markup but does not fix Windows-1252-misinterpreted UTF-8 byte sequences.",
+      "gaps": [
+        "No mojibake sanitization on iOS subtitle text"
+      ],
+      "port_required": true,
+      "ios_implementation_plan": "Port sanitizer directly — pure character replacement logic, no platform dependencies.",
+      "tests": [
+        {"ref": "app/src/test/java/com/nuvio/tv/ui/screens/player/SubtitleMojibakeSanitizerTest.kt"}
+      ],
+      "status": "missing",
+      "platform_limitations": []
+    },
+    {
+      "id": "subtitle-sdh-filter",
+      "capability": "Filter SDH (Subtitles for the Deaf/Hard-of-Hearing) annotations from cue text",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/SubtitleSdhFilter.kt"
+      ],
+      "source_behavior": "Filters square brackets, speaker chevrons (>>, >>>), parenthetical descriptions, and speaker labels (NAME:). Handles ASCII and full-width CJK parentheses. Pluggable via SdhFilteringTextOutput for Media3.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "iOS has no SDH filter. stripSdh setting defined in SubtitleStyleState but never applied.",
+      "gaps": [
+        "No SDH filtering on iOS",
+        "stripSdh setting unused"
+      ],
+      "port_required": true,
+      "ios_implementation_plan": "Port regex-based SDH filter to Kotlin — no platform dependencies.",
+      "tests": [],
+      "status": "missing",
+      "platform_limitations": []
+    },
+    {
+      "id": "subtitle-rtl-fix",
+      "capability": "RTL text normalization (Arabic/Hebrew) for correct display in LTR containers",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerSubtitleRtlFix.kt"
+      ],
+      "source_behavior": "Arabic: RLE/PDF wrapping per line. Hebrew: punctuation boundary swapping with number chunk preservation, mirrored punctuation, directional mark stripping. Handles SpannedStringBuilder for formatted text.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "iOS does not apply RTL normalization to subtitle text.",
+      "gaps": [
+        "No RTL text normalization on iOS",
+        "Arabic/Hebrew subtitles may render incorrectly in LTR layout"
+      ],
+      "port_required": true,
+      "ios_implementation_plan": "Port RTL fix logic — pure character-level transformation, no platform dependencies.",
+      "tests": [],
+      "status": "missing",
+      "platform_limitations": [
+        "iOS native text rendering may handle RTL better than Android Media3 SubtitleView — actual behavior needs testing"
+      ]
+    },
+    {
+      "id": "subtitle-style-styling",
+      "capability": "Subtitle style configuration: color, background, outline, bold, size, position",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/SubtitleStyleSidePanel.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/settings/PlaybackSubtitleSettings.kt"
+      ],
+      "source_behavior": "Reference supports: textColor (10 swatches), backgroundColor (6 swatches), outline enable/disable, outlineColor selection, outlineWidth (1-4), bold, fontSize (12-40sp), verticalOffset, stripSDH toggle, showOnlyPreferredLanguages, useForcedSubtitles, preferred/secondary language, libass mode selection (OVERLAY_GL, OVERLAY_CANVAS, EFFECTS_GL, EFFECTS_CANVAS, STANDARD).",
+      "existing_ios_equivalent": [
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/SubtitleAudioModels.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerSettingsRepository.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/SubtitleStylePanel.kt",
+        "iosApp/iosApp/Player/MPVPlayerBridge.swift"
+      ],
+      "target_behavior": "iOS SubtitleStyleState: textColor, backgroundColor, outlineColor, outlineEnabled, outlineWidth, bold, fontSize (6-40), bottomOffset, useForcedSubtitles, showOnlyPreferredLanguages. applySubtitleStyle sets: sub-ass-override=no, sub-color, sub-back-color, sub-outline-color, sub-border-style (outline-and-shadow vs opaque-box), sub-bold, sub-outline-size, sub-font-size, sub-pos. iOS explicitly disables ASS override.",
+      "gaps": [
+        "No libass mode selection — sub-ass-override always 'no' (iOS uses mpv rendering, not ExoPlayer+libass)",
+        "Font size range differs (6-40 vs 12-40) — platform adaptation correct",
+        "Subtitle position uses sub-pos vs reference's sub-margin-y approach"
+      ],
+      "port_required": false,
+      "ios_implementation_plan": "Functionally equivalent. iOS uses mpv native styling which provides equivalent visual results.",
+      "tests": [],
+      "status": "equivalent",
+      "platform_limitations": [
+        "Different rendering pipeline (mpv vs ExoPlayer/libass) — sub-ass-override=no is appropriate"
+      ]
+    },
+    {
+      "id": "subtitle-custom-fonts",
+      "capability": "Import, validate, and apply custom subtitle fonts (TTF/OTF)",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/reshaped/subtitlefont/SubtitleFontStore.kt",
+        "app/src/main/java/com/nuvio/tv/reshaped/subtitlefont/SubtitleFontUploadServer.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/settings/SubtitleFontSettingsItems.kt"
+      ],
+      "source_behavior": "Manages one imported font: validates size (max 20MB), TrueType/OpenType signature (0x00010000, 'true', 'OTTO'), reads family name from 'name' table (platform 3/1, name ID 1). Provides Typeface for ExoPlayer and mpv options (sub-fonts-dir, sub-font). Import from: URI (picker), URL (HTTP download with cancellation), local upload server (NanoHTTPD, port 8100+, random token auth, QR code).",
+      "existing_ios_equivalent": [],
+      "target_behavior": "iOS has no custom subtitle font support. MPVPlayerBridge does not set sub-fonts-dir or sub-font properties. No font picker, validation, or upload server.",
+      "gaps": [
+        "No custom font import UI on iOS",
+        "No custom font application to MPV player",
+        "No font validation or family-name extraction"
+      ],
+      "port_required": true,
+      "ios_implementation_plan": "1. Port font validation (pure binary parsing) 2. Add UIDocumentPicker-based font selection 3. Set mpv sub-fonts-dir and sub-font in applySubtitleStyle 4. Upload server optional (iOS has native file picker, QR-code flow is Android TV-specific)",
+      "tests": [],
+      "status": "missing",
+      "platform_limitations": [
+        "iOS has native file picker — upload server/QR code redundant on phone",
+        "MPVKit supports sub-fonts-dir and sub-font properties"
+      ]
+    },
+    {
+      "id": "auto-sync-v2-pipeline",
+      "capability": "Automatic subtitle timeline synchronization using embedded reference tracks and cue correlation",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/autosync/AutomaticSubtitleSync.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/autosync/AutoSyncTimelineRetime.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/autosync/AutoSyncDelayPreflight.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/autosync/AutoSyncNoFitTracker.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/autosync/AutoSyncReferenceConsistency.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/autosync/AutoSyncSampledReferenceAligner.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/autosync/AutoSyncSidecarBridge.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/autosync/AutoSyncSubtitleHttp.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/autosync/AutoSyncTimingDump.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/autosync/EmbeddedSubtitleTimelineLoader.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/autosync/AutoSyncExtractorsFactory.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/autosync/SubtitleLanguageMatching.kt"
+      ],
+      "source_behavior": "Extensive (~12000 lines) auto sync system: EmbeddedSubtitleTimelineLoader reads MKV (EBML/Cues via HTTP range requests) and MP4 (moov/text sample tables) subtitle indices. Scheduler: (1) fetches embedded index in parallel with selected subtitle, (2) prefetches same-language alternatives, (3) ranks reference profiles by dialogue density/role flags/SDH status, (4) runs outlier detection via AutoSyncReferenceConsistency (Jaccard overlap on 100ms activity bins), (5) evaluates candidate-reference pairs via banded DP with group shapes (1:1/1:2/2:1/1:3/3:1/2:2). Alignment via activity-based correlation (500ms coarse + 100ms fine bins) with scale candidates (25/23.976, etc.). Delay-only fast path for simple offsets. Secondary language fallback. Aggressive/passive checkpoint-based early termination. Cancellation-safe.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "iOS has no AutoSync V2. The existing cue timing dialog (captureSubtitleAutoSyncTime + applySubtitleAutoSyncCue) is a manual single-cue tool: user marks position, picks matching cue line, constant delay computed as captured_position - cue_start - 300ms. No automatic reference extraction, correlation search, DP retiming, or alternative evaluation.",
+      "gaps": [
+        "Whole AutoSync V2 pipeline missing on iOS",
+        "No embedded subtitle timeline extraction via HTTP range requests",
+        "No activity-correlation alignment search",
+        "No banded DP for cue group alignment",
+        "No alternative subtitle prefetching/evaluation",
+        "No reference track consistency checking",
+        "No secondary language search fallback",
+        "No aggressive/passive mode or checkpoint termination"
+      ],
+      "port_required": false,
+      "ios_implementation_plan": "Major feature. Algorithmic core (AutoSyncTimelineRetime, correlation, DP, language matching) is pure Kotlin and shareable. EmbeddedSubtitleTimelineLoader requires rewriting for iOS networking. Sidecar integration needs MPVKit adaptation. The iOS manual dialog is a functional minimal alternative.",
+      "tests": [
+        {"ref": "app/src/test/java/com/nuvio/tv/ui/screens/player/autosync/AutoSyncTimelineRetimeTest.kt"},
+        {"ref": "app/src/test/java/com/nuvio/tv/ui/screens/player/autosync/AutoSyncDenseDialogueRegressionTest.kt"},
+        {"ref": "app/src/test/java/com/nuvio/tv/ui/screens/player/autosync/AutoSyncReferenceConsistencyTest.kt"},
+        {"ref": "app/src/test/java/com/nuvio/tv/ui/screens/player/autosync/AutoSyncSecondaryLanguageTest.kt"},
+        {"ref": "app/src/test/java/com/nuvio/tv/ui/screens/player/autosync/AutoSyncTimingDumpTest.kt"}
+      ],
+      "status": "missing",
+      "platform_limitations": [
+        "Tightly coupled to Android ExoPlayer/Media3 extractor pipeline",
+        "Algorithmic core shareable; iOS needs MPVKit-based extraction"
+      ]
+    },
+    {
+      "id": "audio-sync-fallback",
+      "capability": "Speech-based audio subtitle synchronization using VAD, ASR, and audio correlation",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/AudioSubtitleSyncController.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/AudioSyncDecoder.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/AudioSyncExtractors.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/AudioSyncFallback.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/AudioSyncTracker.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/AudioSpotSampler.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/DialogueSpotPlanner.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/SubtitleAudioAligner.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/SubtitleCandidatePool.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/SubtitleSpeechTrack.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/SileroVad.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/SpeechAnalyzer.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/SpeechTimeline.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/PlaybackAudioTap.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/Fft.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/asr/AsrModel.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/asr/AsrSyncEngine.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/asr/SharedRecognizer.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/asr/SherpaSpeechToText.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/asr/SpeechSegmenter.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/asr/SubtitleBridge.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/asr/WordAnchorMatcher.kt"
+      ],
+      "source_behavior": "On-device speech-based sync (28 files). Uses: Silero VAD (LSTM-based voice activity detection), sherpa-onnx Zipformer ASR (74MB model, int8 quantized), FFT cross-correlation (SubtitleAudioAligner), dialogue spot sampling (4x30s spots via AudioSpotSampler), extractor tapping (PlaybackAudioTap captures decoded PCM), multi-hypothesis tracker (AudioSyncTracker: Provisional→Locked→Refined state machine with rate correction). Falls back when AutoSync V2 finds no embedded reference.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "iOS has no audio sync fallback. Manual cue-timing dialog is the only sync mechanism.",
+      "gaps": [
+        "Whole audio sync fallback pipeline missing on iOS",
+        "No Silero VAD (iOS SpeechAnalyzer API could replace)",
+        "No sherpa-onnx ASR (iOS on-device speech recognition APIs could replace)",
+        "No FFT cross-correlation alignment (pure math, portable)",
+        "No audio spot sampling or extractor tapping",
+        "No multi-hypothesis tracker"
+      ],
+      "port_required": false,
+      "ios_implementation_plan": "iOS has equivalent platform APIs: SpeechAnalyzer/iOS 26+ for VAD+ASR, Accelerate framework for FFT. Audio tapping via AudioSink→AVAudioPCMBuffer. The state machine (SubtitleAudioAligner+AudioSyncTracker) is pure Kotlin. Major feature (~8000 lines); iOS manual dialog is functional alternative.",
+      "tests": [
+        {"ref": "app/src/test/java/com/nuvio/tv/ui/screens/player/audiosync/AudioSubtitleSyncTest.kt"},
+        {"ref": "app/src/test/java/com/nuvio/tv/ui/screens/player/audiosync/AsrMatchingTest.kt"},
+        {"ref": "app/src/test/java/com/nuvio/tv/ui/screens/player/audiosync/SpeechTimelineTest.kt"},
+        {"ref": "app/src/test/java/com/nuvio/tv/ui/screens/player/audiosync/SpotSamplingTest.kt"},
+        {"ref": "app/src/test/java/com/nuvio/tv/ui/screens/player/audiosync/SubtitleCandidatePoolTest.kt"}
+      ],
+      "status": "missing",
+      "platform_limitations": [
+        "sherpa-onnx can be compiled for iOS ARM64 via ONNX Runtime",
+        "Apple native speech APIs (iOS 26+) may replace 74MB ASR model",
+        "Different audio tapping plumbing required (ExoPlayer→AVAudioPCMBuffer)"
+      ]
+    },
+    {
+      "id": "subtitle-timing-dialog",
+      "capability": "Manual subtitle timing correction dialog with cue capture, display, and sync application",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/SubtitleTimingDialog.kt",
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerRuntimeControllerSubtitleTiming.kt"
+      ],
+      "source_behavior": "Reference dialog: opens, loads cues from selected addon track via downloadSubtitleBody (3 retries, 350ms linear backoff), captures video position, shows cue list, user taps matching cue. Delay = captured_position - cue_start - 300ms_reaction_compensation. Persisted to track preferences. Range: [-180s, +180s]. Uses buildSubtitleRequest for HTTP with full credential scoping.",
+      "existing_ios_equivalent": [
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerScreenRuntimeSubtitleActions.kt"
+      ],
+      "target_behavior": "iOS timing dialog: captureSubtitleAutoSyncTime captures position, loadSubtitleAutoSyncCues downloads+parses cues via httpGetTextWithHeaders + sanitizePlaybackHeaders + PlayerSubtitleCueParser. applySubtitleAutoSyncCue computes delay = captured_position - cue_start - 300ms. Persists via PlayerTrackPreferenceStorage.saveSubtitleDelayMs. Range: [-60s, +60s]. No retry with backoff in cue loading path.",
+      "gaps": [
+        "iOS delay range narrower (-60s/+60s vs -180s/+180s)",
+        "iOS uses sanitizePlaybackHeaders (no credential scoping) vs buildSubtitleRequest",
+        "iOS no retry-with-backoff in cue loading (reference: 3 attempts, 350ms linear backoff)",
+        "iOS simpler loading state management (no separate loading/error/cues state machine)"
+      ],
+      "port_required": true,
+      "ios_implementation_plan": "1. Expand iOS delay range to [-180s, +180s] 2. Add retry-with-backoff to cue loading 3. Apply header scoping to timing dialog subtitle requests",
+      "tests": [],
+      "status": "partial",
+      "platform_limitations": []
+    },
+    {
+      "id": "subtitle-selection-overlay",
+      "capability": "Subtitle selection UI with language/option/style management",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/SubtitleSelectionOverlay.kt"
+      ],
+      "source_behavior": "Three-rail overlay: language selection, option selection, style configuration. Supports: internal/ADDON subtitles, off state, preferred/primary-secondary language, show-only-preferred, forced subtitles, ASS/SSA detection for style rail visibility, session-scoped state, option focus memory, long-press to disable, libass-aware style limitations.",
+      "existing_ios_equivalent": [
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/SubtitleModal.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/SubtitleSelectionModel.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/SubtitleStylePanel.kt"
+      ],
+      "target_behavior": "iOS has separate subtitle modal and style panel (two modals vs unified three-rail). Lacks: ASS/SSA detection for style disabling, long-press to disable, session-scoped state, secondary language auto-selection.",
+      "gaps": [
+        "Two separate modals vs unified three-rail overlay",
+        "No ASS/SSA detection for style option disabling",
+        "No long-press to disable subtitles",
+        "No session-scoped remember blocks",
+        "No secondary language preference in auto-selection"
+      ],
+      "port_required": false,
+      "ios_implementation_plan": "Platform UI convention difference. Functional gaps (ASS-locked styles, long-press disable) can be added in iOS idiom.",
+      "tests": [
+        {"ref": "composeApp/src/commonTest/kotlin/com/nuvio/app/features/player/SubtitleSelectionModelTest.kt"}
+      ],
+      "status": "platform-adaptation",
+      "platform_limitations": [
+        "iOS uses bottom sheet modals vs Android three-rail overlay — platform convention"
+      ]
+    },
+    {
+      "id": "subtitle-route-datasource",
+      "capability": "Subtitle request routing through dedicated download path with ExoPlayer DataSource integration",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerSubtitleDataSource.kt"
+      ],
+      "source_behavior": "SubtitleRoutingDataSourceFactory wraps ExoPlayer DataSource to route subtitle track requests through the subtitle download path (with header scoping). HTTP subtitle URIs without a registered route are refused if they carry a nuvio_type=subtitle marker. Non-HTTP internal tracks go through media data source as normal.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "iOS has no DataSource routing — all HTTP subtitles go through mpv's shared HTTP client with global http-header-fields. No subtitle-specific route table or refuse mechanism.",
+      "gaps": [
+        "No subtitle-specific data source routing",
+        "No nuvio_type=subtitle marker or refuse mechanism"
+      ],
+      "port_required": false,
+      "ios_implementation_plan": "iOS architecture fundamentally different — ExoPlayer DataSource abstraction doesn't exist on MPVKit. Header scoping via applyRequestHeaders/restore pattern around sub-add is the iOS equivalent.",
+      "tests": [
+        {"ref": "app/src/test/java/com/nuvio/tv/ui/screens/player/SubtitleRoutingTest.kt"},
+        {"ref": "app/src/test/java/com/nuvio/tv/ui/screens/player/SubtitleCredentialScopeTest.kt"}
+      ],
+      "status": "platform-adaptation",
+      "platform_limitations": [
+        "MPVKit doesn't expose DataSource abstraction — all HTTP through mpv's internal client"
+      ]
+    },
+    {
+      "id": "subtitle-track-preferences",
+      "capability": "Save and restore subtitle/audio track selections per content ID",
+      "source_files": [],
+      "source_behavior": "Reference persists track preferences via AutoSync preferences and Nuvio settings infrastructure.",
+      "existing_ios_equivalent": [
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerTrackPreferenceStorage.kt",
+        "composeApp/src/iosMain/kotlin/com/nuvio/app/features/player/PlayerTrackPreferenceStorage.ios.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerScreenRuntimeTrackActions.kt"
+      ],
+      "target_behavior": "iOS saves to NSUserDefaults: subtitle type (DISABLED/INTERNAL/ADDON), language, name, track ID, addon ID/URL/addon name, audio language/name/track ID, subtitle delay ms. restorePersistedTrackPreferenceIfNeeded restores on playback. Preferred language auto-selection with resolution priority. Functionally equivalent.",
+      "gaps": [],
+      "port_required": false,
+      "ios_implementation_plan": "Already implemented and functionally equivalent.",
+      "tests": [
+        {"ref": "composeApp/src/commonTest/kotlin/com/nuvio/app/features/player/PlayerTrackSelectionTest.kt"}
+      ],
+      "status": "equivalent",
+      "platform_limitations": []
+    },
+    {
+      "id": "external-subtitles-forwarding",
+      "capability": "Forward subtitles to external players (Infuse, VLC, etc.)",
+      "source_files": [],
+      "source_behavior": "Reference caches subtitles to local files and provides content:// URIs.",
+      "existing_ios_equivalent": [
+        "composeApp/src/iosMain/kotlin/com/nuvio/app/features/player/SubtitleCacheProvider.ios.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/SubtitleForwarder.kt"
+      ],
+      "target_behavior": "iOS SubtitleCacheProvider.ios.kt is no-op pass-through. SubtitleForwarder passes addon subtitles as URL strings. External players accept URLs directly. Works correctly for iOS ecosystem.",
+      "gaps": [],
+      "port_required": false,
+      "ios_implementation_plan": "Already adapted for iOS — no change needed.",
+      "tests": [],
+      "status": "equivalent",
+      "platform_limitations": [
+        "iOS external players accept URLs directly, no caching needed"
+      ]
+    },
+    {
+      "id": "subtitle-language-matching",
+      "capability": "Language code normalization and matching for subtitle selection",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/autosync/SubtitleLanguageMatching.kt"
+      ],
+      "source_behavior": "Extensive language matching with 135+ language code overrides, region-specific subtag parsing (Brazilian vs European Portuguese, Latino vs Castilian Spanish, Indonesian vs Malaysian), track label/content-based variant detection. Normalizes ISO 639-1/2/3 codes.",
+      "existing_ios_equivalent": [
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerSubtitleCueParser.kt"
+      ],
+      "target_behavior": "iOS has a simpler normalizeLanguageCode in PlayerSubtitleCueParser.kt that handles basic BCP-47 normalization and language name detection. No region-specific variant detection, no 135+ code override table, no track label-based variant inference.",
+      "gaps": [
+        "iOS language matching is simpler — no region variant detection (pt-BR vs pt-PT, es-419 vs es-ES)",
+        "No 135+ language code override table",
+        "No track label/content-based variant inference"
+      ],
+      "port_required": true,
+      "ios_implementation_plan": "Port SubtitleLanguageMatching to common Kotlin — no platform dependencies. Currently used only by AutoSync pipeline which is also missing.",
+      "tests": [],
+      "status": "missing",
+      "platform_limitations": []
+    }
+  ],
+  "additional_files_inspected": [
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerScreenRuntimeState.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerScreenRuntimeEffects.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerScreenRuntimeUi.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerEngine.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/SubtitleCacheProvider.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/SubtitleForwarder.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/AddonSubtitleStartupPolicy.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerTrackSelection.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerSettingsStorage.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/streams/StreamModels.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerModels.kt",
+    "composeApp/src/commonTest/kotlin/com/nuvio/app/features/player/PlayerTrackSelectionTest.kt",
+    "composeApp/src/commonTest/kotlin/com/nuvio/app/features/player/AddonSubtitleStartupPolicyTest.kt",
+    "composeApp/src/commonTest/kotlin/com/nuvio/app/features/player/SubtitleSelectionModelTest.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerScreen.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/NuvioMpvSurfaceView.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/audiosync/AudioSyncFfmpegDecoder.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/autosync/AutoSyncExtractorsFactory.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/addons/AddonHttpClient.kt",
+    "iosApp/iosApp/Player/MPVPlayerBridge.swift"
+  ],
+  "risks": [
+    {
+      "risk": "Missing per-subtitle headers map on AddonSubtitle — addons may return per-subtitle auth tokens/cookies that iOS silently drops",
+      "severity": "high",
+      "impact": "Some addon subtitle URLs fail on iOS if they require per-subtitle headers for authentication or CDN access",
+      "mitigation": "Add optional headers field to AddonSubtitle model and pass through to MPV sub-add headers"
+    },
+    {
+      "risk": "No subtitle HTTP credential scoping — stream headers forwarded to arbitrary redirect targets without per-hop stripping",
+      "severity": "high",
+      "impact": "Stream auth tokens, cookies, and API keys may leak to third-party CDN/subtitle hosts via HTTP redirects. mpv's http-header-fields is per-process global — racing sub-add calls can corrupt headers between requests",
+      "mitigation": "Implement header allowlisting per redirect hop in Kotlin layer before bridge, and serialize header apply/restore around sub-add calls"
+    },
+    {
+      "risk": "No charset detection — non-UTF-8 subtitles render as mojibake on iOS",
+      "severity": "medium",
+      "impact": "Windows-1251/1252/etc subtitles from addons display garbage text on iOS",
+      "mitigation": "Port SubtitleCharsetDetector to common Kotlin"
+    },
+    {
+      "risk": "No subtitle sanitization pipeline (mojibake, SDH, RTL) applied before MPV rendering",
+      "severity": "medium",
+      "impact": "Users may see garbled text, missing SDH filtering, incorrectly rendered RTL subtitles",
+      "mitigation": "Apply sanitization in Kotlin layer before sub-add command"
+    },
+    {
+      "risk": "No two-client TLS fallback for subtitle downloads — SSL errors on self-signed CDNs cause subtitle load failures",
+      "severity": "medium",
+      "impact": "Subtitles from CDNs with self-signed/expired TLS certs fail to load on iOS while working on Android",
+      "mitigation": "Add permissive TLS retry fallback in subtitle download path"
+    },
+    {
+      "risk": "Subtitle addon fetching is sequential not parallel — slower subtitle list population on startup",
+      "severity": "low",
+      "impact": "Users see subtitle list populate slower than on Android when multiple addons are installed",
+      "mitigation": "Convert to parallel async per-addon fetches with timeout"
+    },
+    {
+      "risk": "iOS subtitle delay range [-60s,+60s] vs reference [-180s,+180s]",
+      "severity": "low",
+      "impact": "Extreme subtitle offsets >1 minute cannot be corrected on iOS",
+      "mitigation": "Expand iOS range constants to match reference"
+    },
+    {
+      "risk": "AutoSync V2 and audio sync fallback entirely missing — no automatic subtitle correction",
+      "severity": "low",
+      "impact": "iOS users must manually adjust subtitle timing; no automatic sync available",
+      "mitigation": "Document as known limitation; manual cue dialog is functional alternative"
+    },
+    {
+      "risk": "Custom subtitle fonts missing — iOS cannot import custom fonts",
+      "severity": "low",
+      "impact": "iOS users limited to system default subtitle font",
+      "mitigation": "Port SubtitleFontStore and MPV sub-fonts-dir integration"
+    }
+  ]
+}

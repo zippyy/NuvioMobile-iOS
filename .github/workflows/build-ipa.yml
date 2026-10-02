@@ -22,7 +22,7 @@ on:
 jobs:
   build-ipa:
     name: Build Nuvio for iOS and iPadOS
-    runs-on: macos-15-intel
+    runs-on: macos-15
     steps:
       - name: Checkout Repository & Submodules
         uses: actions/checkout@v5
@@ -106,10 +106,17 @@ jobs:
           print("\nDone.")
           PYEOF
 
-      - name: Select Latest Stable Xcode
+      # Match the Full build's installed iOS 26 SDK instead of a moving default.
+      - name: Select iOS 26 SDK Toolchain
         uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: latest-stable
+          xcode-version: '26.3'
+
+      - name: Verify Apple toolchain
+        run: |
+          xcodebuild -version
+          xcodebuild -showsdks
+          xcrun --sdk iphoneos --show-sdk-version
 
       - name: Make gradlew executable
         run: chmod +x ./gradlew
@@ -224,24 +231,28 @@ jobs:
       - name: Set artifact suffix
         run: |
           if [ "${{ inputs.mode }}" = "full" ]; then
-            echo "BUILD_SUFFIX=Full" >> $GITHUB_ENV
+            echo "BUILD_SUFFIX=Full" >> "$GITHUB_ENV"
           else
-            echo "BUILD_SUFFIX=Enhanced" >> $GITHUB_ENV
+            echo "BUILD_SUFFIX=Enhanced" >> "$GITHUB_ENV"
           fi
 
       - name: Package App into .ipa
         run: |
+          set -euo pipefail
           cd iosApp/build/Build/Products/Release-iphoneos
-          APP_DIR=$(ls -d *.app | head -n 1)
+          APP_DIR=Nuvio.app
+          test -d "$APP_DIR"
           APP_VERSION=$(/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" "$APP_DIR/Info.plist")
-          mkdir Payload
-          mv "$APP_DIR" Payload/
+          mkdir -p Payload
+          ditto "$APP_DIR" "Payload/$APP_DIR"
           IPA_NAME="Nuvio-v${APP_VERSION}-${BUILD_SUFFIX}.ipa"
           zip -q -r "$IPA_NAME" Payload
-          echo "IPA_NAME=$IPA_NAME" >> $GITHUB_ENV
+          unzip -tq "$IPA_NAME"
+          echo "IPA_NAME=$IPA_NAME" >> "$GITHUB_ENV"
 
       - name: Upload iOS Artifact
         uses: actions/upload-artifact@v6
         with:
           name: Nuvio-iOS-${{ env.BUILD_SUFFIX }}
+          if-no-files-found: error
           path: iosApp/build/Build/Products/Release-iphoneos/${{ env.IPA_NAME }}

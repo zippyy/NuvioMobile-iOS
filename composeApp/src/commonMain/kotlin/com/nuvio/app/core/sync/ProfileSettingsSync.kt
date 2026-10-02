@@ -169,6 +169,34 @@ object ProfileSettingsSync {
         }
     }
 
+    /** Export only settings; credentials and authentication sessions are deliberately excluded. */
+    fun exportBackup(): String {
+        val blob = exportSettingsBlob()
+        return SettingsBackup.encode(ProfileRepository.activeProfileId, json.encodeToJsonElement(blob.features) as JsonObject)
+    }
+
+    fun inspectBackup(text: String): Set<String> = SettingsBackup.decode(text).keys
+
+    /** Restore into the profile the user confirmed, never whichever profile became active later. */
+    suspend fun restoreBackup(text: String, selected: Set<String>, expectedProfileId: Int, expectedAccountId: String?) {
+        val imported = SettingsBackup.decode(text)
+        syncMutex.withLock {
+            require(ProfileRepository.activeProfileId == expectedProfileId &&
+                (AuthRepository.state.value as? AuthState.Authenticated)?.userId == expectedAccountId) { "Active account or profile changed; reopen restore" }
+            val current = exportSettingsBlob()
+            val restored = SettingsBackup.restore(json.encodeToJsonElement(current.features) as JsonObject, imported, selected)
+            // Decode the complete payload before the first storage write.
+            val features = json.decodeFromJsonElement<MobileProfileSettingsFeatures>(restored)
+            isApplyingRemoteBlob = true
+            try {
+                applyRemoteBlob(current.copy(features = features))
+                skipNextPushSignature = currentObservedStateSignature()
+            } finally {
+                isApplyingRemoteBlob = false
+            }
+        }
+    }
+
     @OptIn(FlowPreview::class)
     private fun observeLocalChangesAndPush() {
         val signatureFlows = listOf(

@@ -23,6 +23,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.material3.TextButton
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -43,7 +48,15 @@ fun AudioTrackModal(
     onTrackSelected: (Int) -> Unit,
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
+    volumeBoostSupported: Boolean = false,
+    readVolumeBoostPercent: () -> Int = { 100 },
+    onVolumeBoostChanged: (Int) -> Unit = {},
+    audioDelaySupported: Boolean = false,
+    readAudioDelayMs: () -> Int = { 0 },
+    onAudioDelayChanged: (Int) -> Unit = {},
 ) {
+    var boostPercent by remember(visible) { mutableStateOf(readVolumeBoostPercent()) }
+    var delayMs by remember(visible) { mutableStateOf(readAudioDelayMs()) }
     PlayerOverlayScaffold(
         visible = visible,
         onDismiss = onDismiss,
@@ -67,6 +80,34 @@ fun AudioTrackModal(
                     style = MaterialTheme.typography.headlineMedium,
                     modifier = Modifier.padding(bottom = 8.dp),
                 )
+
+                if (volumeBoostSupported) {
+                    Text("Volume boost: $boostPercent%", color = Color.White)
+                    androidx.compose.material3.Slider(
+                        value = boostPercent.toFloat(),
+                        valueRange = 0f..200f,
+                        steps = 39,
+                        onValueChange = { value ->
+                            boostPercent = value.toInt().coerceIn(0, 200)
+                            onVolumeBoostChanged(boostPercent)
+                        },
+                    )
+                    TextButton(onClick = { boostPercent = 100; onVolumeBoostChanged(100) }) { Text("Reset volume") }
+                }
+                if (audioDelaySupported) {
+                    Text("Audio delay: ${delayMs} ms", color = Color.White)
+                    Row {
+                        TextButton(onClick = {
+                            delayMs = (delayMs - 50).coerceAtLeast(-60_000)
+                            onAudioDelayChanged(delayMs)
+                        }) { Text("−50 ms") }
+                        TextButton(onClick = { delayMs = 0; onAudioDelayChanged(0) }) { Text("Reset") }
+                        TextButton(onClick = {
+                            delayMs = (delayMs + 50).coerceAtMost(60_000)
+                            onAudioDelayChanged(delayMs)
+                        }) { Text("+50 ms") }
+                    }
+                }
 
                 if (audioTracks.isEmpty()) {
                     Text(

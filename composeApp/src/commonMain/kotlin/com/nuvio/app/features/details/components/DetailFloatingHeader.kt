@@ -37,7 +37,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
-import coil3.compose.AsyncImage
+import com.nuvio.app.features.artwork.ArtworkAsyncImage as AsyncImage
+import com.nuvio.app.features.artwork.withArtwork
+import com.nuvio.app.features.artwork.rememberArtworkRevision
 import com.nuvio.app.core.ui.NuvioBackButton
 import com.nuvio.app.core.ui.platformPhysicalTopInset
 import com.nuvio.app.features.details.MetaDetails
@@ -56,6 +58,8 @@ fun DetailFloatingHeader(
     onToggleSaved: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val artworkRevision = rememberArtworkRevision()
+    val artwork = remember(meta, artworkRevision) { meta.withArtwork() }
     val useNativeNavigation = LocalUseNativeNavigation.current
     val safeAreaTop = if (useNativeNavigation) {
         platformPhysicalTopInset()
@@ -69,7 +73,7 @@ fun DetailFloatingHeader(
     } else {
         MaterialTheme.colorScheme.background
     }
-    var logoLoadError by remember(meta.id, meta.logo) {
+    var logoLoadError by remember(meta.id, artwork.logo) {
         mutableStateOf(false)
     }
 
@@ -122,9 +126,9 @@ fun DetailFloatingHeader(
                         .padding(horizontal = 10.dp),
                     contentAlignment = Alignment.Center,
                 ) {
-                    if (!meta.logo.isNullOrBlank() && !logoLoadError) {
+                    if (!artwork.logo.isNullOrBlank() && !logoLoadError) {
                         AsyncImage(
-                            model = meta.logo,
+                            model = artwork.logo,
                             contentDescription = stringResource(Res.string.detail_logo_content_description, meta.name),
                             modifier = Modifier
                                 .width(logoWidth)

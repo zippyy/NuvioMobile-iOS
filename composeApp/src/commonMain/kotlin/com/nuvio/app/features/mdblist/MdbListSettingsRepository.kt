@@ -27,6 +27,7 @@ object MdbListSettingsRepository {
     }
 
     fun onProfileChanged() {
+        MdbListMetadataService.clearCache()
         loadFromDisk()
     }
 

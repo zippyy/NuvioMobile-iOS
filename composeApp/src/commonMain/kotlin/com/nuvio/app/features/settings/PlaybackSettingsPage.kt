@@ -140,6 +140,7 @@ internal fun LazyListScope.playbackSettingsContent(
             libassRenderType = libassRenderType,
         )
     }
+    torrServerSettingsContent(isTablet)
 }
 
 private fun formatStep(value: Float): String {

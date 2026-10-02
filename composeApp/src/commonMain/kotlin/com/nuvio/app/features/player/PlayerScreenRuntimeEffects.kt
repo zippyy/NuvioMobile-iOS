@@ -1,6 +1,10 @@
 package com.nuvio.app.features.player
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import com.nuvio.app.features.shuffle.EpisodeShuffleRuntime
+import com.nuvio.app.features.details.MetaDetails
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import com.nuvio.app.features.details.MetaDetailsRepository
@@ -445,17 +449,26 @@ private fun PlayerScreenRuntime.BindPlayerMetadataAndSkipEffects() {
         }
     }
 
-    LaunchedEffect(playerMetaVideos, activeSeasonNumber, activeEpisodeNumber) {
+    val shuffleRevision by EpisodeShuffleRuntime.store.revision.collectAsState()
+    val shuffleWatched by com.nuvio.app.features.watched.WatchedRepository.uiState.collectAsState()
+    val shuffleProgress by WatchProgressRepository.uiState.collectAsState()
+    LaunchedEffect(playbackSnapshot.isPlaying, playbackSession.videoId, playbackSession.profileId) {
+        if (isSeries && playbackSnapshot.isPlaying) {
+            EpisodeShuffleRuntime.recordPlayed(parentMetaId, playerMetaVideos.firstOrNull { it.season == activeSeasonNumber && it.episode == activeEpisodeNumber }?.id ?: playbackSession.videoId, playbackSession.profileId)
+        }
+    }
+    LaunchedEffect(playerMetaVideos, activeSeasonNumber, activeEpisodeNumber, shuffleRevision, shuffleWatched.items, shuffleProgress.entries) {
         if (!isSeries || playerMetaVideos.isEmpty()) {
             nextEpisodeInfo = null
             return@LaunchedEffect
         }
         val curSeason = activeSeasonNumber ?: return@LaunchedEffect
         val curEpisode = activeEpisodeNumber ?: return@LaunchedEffect
-        val nextVideo = PlayerNextEpisodeRules.resolveNextEpisode(
-            videos = playerMetaVideos,
-            currentSeason = curSeason,
-            currentEpisode = curEpisode,
+        val nextVideo = EpisodeShuffleRuntime.nextEpisode(
+            meta = MetaDetails(id = parentMetaId, type = parentMetaType, name = title, videos = playerMetaVideos),
+            season = curSeason,
+            episode = curEpisode,
+            profileId = playbackSession.profileId,
         )
         val nextSeason = nextVideo?.season
         val nextEpisode = nextVideo?.episode

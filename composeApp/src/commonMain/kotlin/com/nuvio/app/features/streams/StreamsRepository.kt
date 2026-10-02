@@ -132,13 +132,15 @@ object StreamsRepository {
             )
         }
 
+        val (fitRuntime, fitSpeed) = connectionFitSnapshot(type, videoId, parentMetaId)
+        val fit = connectionFitPolicy(fitRuntime, fitSpeed)
         val embeddedStreams = MetaDetailsRepository.findEmbeddedStreams(videoId)
         if (embeddedStreams.isNotEmpty()) {
             log.d { "Using ${embeddedStreams.size} embedded streams for type=$type id=$videoId" }
             val group = AddonStreamGroup(
                 addonName = embeddedStreams.first().addonName,
                 addonId = "embedded",
-                streams = embeddedStreams,
+                streams = fit?.apply(embeddedStreams) ?: embeddedStreams,
                 isLoading = false,
             )
             val presentedGroup = StreamBadgePresentation.apply(
@@ -268,6 +270,8 @@ object StreamsRepository {
                             if (currentGroup.addonId == group.addonId) group else currentGroup
                         },
                         installedOrder = installedAddonOrder,
+                        runtimeMinutes = fitRuntime,
+                        connectionMbps = fitSpeed,
                     )
                     val anyLoading = updated.any { it.isLoading }
                     current.copy(
@@ -323,6 +327,8 @@ object StreamsRepository {
                                 bingeGroupOnly = true,
                                 debridEnabled = debridSettings.canResolvePlayableLinks,
                                 activeResolverProviderId = debridSettings.activeResolverProviderId,
+                                runtimeMinutes = fitRuntime,
+                                connectionMbps = fitSpeed,
                             )
                             if (earlyMatch != null) {
                                 autoSelectTriggered = true
@@ -365,6 +371,8 @@ object StreamsRepository {
                                         bingeGroupOnly = false,
                                         debridEnabled = debridSettings.canResolvePlayableLinks,
                                         activeResolverProviderId = debridSettings.activeResolverProviderId,
+                                runtimeMinutes = fitRuntime,
+                                connectionMbps = fitSpeed,
                                     )
                                     _uiState.update { it.copy(autoPlayStream = selected) }
                                 }
@@ -402,6 +410,8 @@ object StreamsRepository {
                                     bingeGroupOnly = false,
                                     debridEnabled = debridSettings.canResolvePlayableLinks,
                                     activeResolverProviderId = debridSettings.activeResolverProviderId,
+                                runtimeMinutes = fitRuntime,
+                                connectionMbps = fitSpeed,
                                 )
                                 if (evaluation.stream != null || !evaluation.hasPendingDebridCandidate) {
                                     autoSelectTriggered = true
@@ -556,6 +566,8 @@ object StreamsRepository {
                                     }
                                 },
                                 installedOrder = installedAddonOrder,
+                        runtimeMinutes = fitRuntime,
+                        connectionMbps = fitSpeed,
                             )
                             val anyLoading = updated.any { it.isLoading }
                             current.copy(
@@ -589,6 +601,8 @@ object StreamsRepository {
                             bingeGroupOnly = !timeoutElapsed,
                             debridEnabled = debridSettings.canResolvePlayableLinks,
                             activeResolverProviderId = debridSettings.activeResolverProviderId,
+                                runtimeMinutes = fitRuntime,
+                                connectionMbps = fitSpeed,
                         )
                         if (earlyMatch != null) {
                             autoSelectTriggered = true
@@ -637,6 +651,8 @@ object StreamsRepository {
                                 bingeGroupOnly = !timeoutElapsed,
                                 debridEnabled = debridSettings.canResolvePlayableLinks,
                                 activeResolverProviderId = debridSettings.activeResolverProviderId,
+                                runtimeMinutes = fitRuntime,
+                                connectionMbps = fitSpeed,
                             )
                             if (earlyMatch != null) {
                                 autoSelectTriggered = true
@@ -665,6 +681,8 @@ object StreamsRepository {
                                 bingeGroupOnly = false,
                                 debridEnabled = debridSettings.canResolvePlayableLinks,
                                 activeResolverProviderId = debridSettings.activeResolverProviderId,
+                                runtimeMinutes = fitRuntime,
+                                connectionMbps = fitSpeed,
                             )
                             if (selected != null) {
                                 autoSelectTriggered = true
@@ -685,6 +703,8 @@ object StreamsRepository {
                                 bingeGroupOnly = true,
                                 debridEnabled = debridSettings.canResolvePlayableLinks,
                                 activeResolverProviderId = debridSettings.activeResolverProviderId,
+                                runtimeMinutes = fitRuntime,
+                                connectionMbps = fitSpeed,
                             )
                             if (earlyMatch != null) {
                                 autoSelectTriggered = true
@@ -712,6 +732,8 @@ object StreamsRepository {
                     bingeGroupOnly = false,
                     debridEnabled = debridSettings.canResolvePlayableLinks,
                     activeResolverProviderId = debridSettings.activeResolverProviderId,
+                                runtimeMinutes = fitRuntime,
+                                connectionMbps = fitSpeed,
                 )
                 _uiState.update {
                     it.copy(

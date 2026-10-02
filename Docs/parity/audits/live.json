@@ -1,0 +1,766 @@
+{
+  "domain": "Live TV (IPTV) — Reshaped reference → NuvioMobile iOS port",
+  "source_sha": "b9408cd5729fd99e9afe56cc334973fe0725bc7d",
+  "target_start_sha": "6ad6c72c4ebf5cf1d9edf5d5d5eb110fc457cf92",
+  "audited_files": [
+    "app/src/main/java/com/nuvio/tv/reshaped/livetv/LiveTvModels.kt",
+    "app/src/main/java/com/nuvio/tv/reshaped/livetv/LiveTvPlaylistParser.kt",
+    "app/src/main/java/com/nuvio/tv/reshaped/livetv/LiveTvEpg.kt",
+    "app/src/main/java/com/nuvio/tv/reshaped/livetv/LiveTvGuideCache.kt",
+    "app/src/main/java/com/nuvio/tv/reshaped/livetv/LiveTvHttp.kt",
+    "app/src/main/java/com/nuvio/tv/reshaped/livetv/LiveTvProviders.kt",
+    "app/src/main/java/com/nuvio/tv/reshaped/livetv/LiveTvRepository.kt",
+    "app/src/main/java/com/nuvio/tv/reshaped/livetv/LiveTvStorage.kt",
+    "app/src/main/java/com/nuvio/tv/reshaped/livetv/LiveTvPreferences.kt",
+    "app/src/main/java/com/nuvio/tv/reshaped/livetv/LiveTvPlaybackRegistry.kt",
+    "app/src/main/java/com/nuvio/tv/reshaped/livetv/LiveTvSyncData.kt",
+    "app/src/main/java/com/nuvio/tv/reshaped/livetv/LiveEdgeRecovery.kt",
+    "app/src/main/java/com/nuvio/tv/reshaped/livetv/LiveTvTsFlags.kt",
+    "app/src/main/java/com/nuvio/tv/reshaped/livetv/LiveTvLoadErrors.kt",
+    "app/src/main/java/com/nuvio/tv/reshaped/livetv/LiveTvDevice.kt",
+    "app/src/main/java/com/nuvio/tv/reshaped/livetv/LiveTvSetupServer.kt",
+    "app/src/main/java/com/nuvio/tv/ui/reshaped/livetv/LiveTvScreen.kt",
+    "app/src/main/java/com/nuvio/tv/ui/reshaped/livetv/LiveTvScreenModel.kt",
+    "app/src/main/java/com/nuvio/tv/ui/reshaped/livetv/LiveTvSourceDialog.kt",
+    "app/src/main/java/com/nuvio/tv/ui/reshaped/livetv/LiveTvCategoryDialog.kt",
+    "app/src/main/java/com/nuvio/tv/ui/reshaped/livetv/LiveTvNavigation.kt",
+    "app/src/main/java/com/nuvio/tv/ui/reshaped/livetv/LiveTvComponents.kt",
+    "app/src/main/java/com/nuvio/tv/ui/reshaped/livetv/LiveTvPreview.kt",
+    "app/src/main/java/com/nuvio/tv/ui/reshaped/livetv/LiveTvGuide.kt",
+    "app/src/main/java/com/nuvio/tv/ui/reshaped/livetv/LiveTvPlayerOverlay.kt",
+    "app/src/main/java/com/nuvio/tv/ui/reshaped/livetv/LiveTvFrameRate.kt",
+    "app/src/main/java/com/nuvio/tv/ui/reshaped/livetv/LiveTvNavigation.kt",
+    "app/src/main/java/com/nuvio/tv/ui/reshaped/livetv/LiveTvZap.kt",
+    "app/src/main/java/com/nuvio/tv/ui/reshaped/livetv/LiveTvStreamDetails.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/LivePlaybackUiPolicy.kt",
+    "app/src/main/res/values/live_tv_strings.xml",
+    "app/src/test/java/com/nuvio/tv/reshaped/livetv/LiveTvPlaylistParserTest.kt",
+    "app/src/test/java/com/nuvio/tv/ui/screens/player/LivePlaybackUiPolicyTest.kt"
+  ],
+  "capabilities": [
+    {
+      "id": "m3u-parser",
+      "capability": "M3U playlist parsing — EXTINF, EXTVLCOPT, EXTHTTP, URL pipe headers, HLS stream detection, category-heading filtering, duplicate URL dedup",
+      "source_files": ["app/src/main/java/com/nuvio/tv/reshaped/livetv/LiveTvPlaylistParser.kt"],
+      "source_behavior": "Streaming line-by-line parser. Parses #EXTM3U url-tvg/x-tvg-url/tvg-url for EPG links. #EXT-X- tags mark HLS stream (single channel). #EXTINF reads tvg-id/tvg-logo/group-title/display-name. #EXTVLCOPT:http-user-agent and http-referrer accumulate pending headers. #EXTHTTP: parses JSON-like {key:val} headers. URL-pipe headers (url|Key=Val&Key2=Val2). Drops ignored lines and duplicates. Filters separator headings (##### SPORTS #####). Interning for shared group strings and header sets. Default headers: User-Agent VLC/3.0.0, Accept for mpegurl. Returns ParsedM3uPlaylist(channels, epgUrls, isHlsStream).",
+      "existing_ios_equivalent": ["composeApp/src/commonMain/kotlin/com/nuvio/app/features/livetv/LiveTvPlaylistParser.kt"],
+      "target_behavior": "Same function signature, line-by-line streaming. Parses #EXTM3U EPG URLs. #EXT-X- HLS detection. #EXTINF metadata (name/tvg-id/tvg-logo/group-title). #EXTVLCOPT User-Agent and Referer. URL-pipe headers. Category-heading filtering. Duplicate URL elimination. Default stream headers. Same ParsedM3uPlaylist return type.",
+      "gaps": [
+        "Missing EXTHTTP header parsing (JSON key:value style) — reference parses #EXTHTTP:{'key':'val',...} format common in TVHeadend playlists",
+        "Missing string interning for groups and header sets — reference uses HashMap interning to reduce memory for 1000s of channels sharing few distinct groups/header combos",
+        "Missing Accept header in LIVE_TV_PLAYLIST_HEADERS (reference includes 'application/x-mpegURL, application/vnd.apple.mpegurl, audio/mpegurl, text/plain, */*')"
+      ],
+      "port_required": true,
+      "tests": ["app/src/test/java/com/nuvio/tv/reshaped/livetv/LiveTvPlaylistParserTest.kt", "composeApp/src/commonTest/kotlin/com/nuvio/app/features/livetv/LiveTvPlaylistParserTest.kt"],
+      "status": "partial",
+      "platform_limitations": ["iOS Kotlin standard library — string interning may use Map with object references; acceptable to skip"]
+    },
+    {
+      "id": "m3u-parser-tests",
+      "capability": "M3U parser unit tests — channels/groups/logos/guide/headers, duplicates/separators, HLS manifest detection, guide key normalization",
+      "source_files": ["app/src/test/java/com/nuvio/tv/reshaped/livetv/LiveTvPlaylistParserTest.kt"],
+      "source_behavior": "JUnit tests: reads channel groups/logos/guide/headers; drops duplicates and category separators; recognises HLS manifest; tests name key normalization (liveTvNameKey). Additional tests for neighbour wrapping and guide-read-again scheduling.",
+      "existing_ios_equivalent": ["composeApp/src/commonTest/kotlin/com/nuvio/app/features/livetv/LiveTvPlaylistParserTest.kt"],
+      "target_behavior": "kotlin.test tests covering the same basic scenarios: channel metadata parsing, duplicate/separator dropping, HLS detection, name key normalization.",
+      "gaps": [
+        "Missing neighbour-wrapping test (LiveTvRepository.neighbour)",
+        "Missing schedule-read-again timing test (nextScheduleReadAt)",
+        "Missing guide matching test (LiveTvScheduleBuilder keysFor/add/build with truncated behaviour)"
+      ],
+      "port_required": true,
+      "tests": ["app/src/test/java/com/nuvio/tv/reshaped/livetv/LiveTvPlaylistParserTest.kt", "composeApp/src/commonTest/kotlin/com/nuvio/app/features/livetv/LiveTvPlaylistParserTest.kt"],
+      "status": "partial",
+      "platform_limitations": []
+    },
+    {
+      "id": "xtream-provider",
+      "capability": "Xtream Codes provider — login, channel categories, live streams, auto-detect TS vs HLS format per account",
+      "source_files": ["app/src/main/java/com/nuvio/tv/reshaped/livetv/LiveTvProviders.kt"],
+      "source_behavior": "Streaming JSON reader for Xtream API. Fetches get_live_categories (category_id→name map). Fetches get_live_streams, streaming each channel object. Calls login API to check allowed_output_formats from user_info: auto-selects TS extension unless account only allows HLS/m3u8. Builds live stream URL as serverUrl/live/{username}/{password}/{streamId}.{ext}. Normalizes settings (strip /player_api.php, trim). O(N) memory for N channels — never deserializes full JSON tree.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "NOT IMPLEMENTED — no Xtream provider code exists in target repo",
+      "gaps": [
+        "Entire Xtream provider missing",
+        "No LiveTvXtream.channels() implementation",
+        "No live format negotiation (TS vs HLS per account)",
+        "No JSON streaming reader pattern (readObjects) available in target",
+        "No LiveTvHttptext/stream pattern available in target"
+      ],
+      "port_required": true,
+      "tests": [],
+      "status": "missing",
+      "platform_limitations": []
+    },
+    {
+      "id": "stalker-provider",
+      "capability": "Stalker/MAG provider — session handshake, token auth, portal device profile, genre mapping, paged channel listing, per-play link resolution",
+      "source_files": ["app/src/main/java/com/nuvio/tv/reshaped/livetv/LiveTvProviders.kt"],
+      "source_behavior": "StalkerProvider with session management (ConcurrentHashMap keyed by portal settings). Full handshake flow: handshake (stb/handshake) → get_profile → token-based auth for subsequent calls. Paged ordered channel listing with parallel page fetching (4 concurrent, 500 max pages, single retry on failure). Streaming JSON reader (readStalkerPage) for the {js:{total_items,data:[{cmd/name/logo/xmltv_id,genre_id}]}} response. Channel logo URL resolution (portal origin detection, misc/logos/320/ folder). Per-play link resolution via create_link API call. Session expiry recovery (auto-retry once after fresh handshake). Base headers mimic MAG254 STB user agent + Cookie + Referer + X-User-Agent. Token header as Bearer Authorization.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "NOT IMPLEMENTED — no Stalker provider code exists in target repo",
+      "gaps": [
+        "Entire Stalker provider missing",
+        "No session management (handshake, token, get_profile)",
+        "No paged channel listing with parallel fetching",
+        "No per-play link resolution (create_link API)",
+        "No logo URL resolution (portal origin/root detection)",
+        "No Streaming JSON page reader (readStalkerPage)",
+        "No Stalker-specific error codes (StalkerToken, StalkerIncomplete)"
+      ],
+      "port_required": true,
+      "tests": [],
+      "status": "missing",
+      "platform_limitations": []
+    },
+    {
+      "id": "xmltv-epg-reader",
+      "capability": "XMLTV EPG parsing — streaming pull-parser, gzip detection, 100MB+ guide support, channel matching by tvgId then normalized name, truncated programme windowing",
+      "source_files": ["app/src/main/java/com/nuvio/tv/reshaped/livetv/LiveTvEpg.kt"],
+      "source_behavior": "Streaming pull-parser (XmlPullParser) with streaming input from LiveTvHttp.readFile (handles gzip or raw). Malformed tail does not fail the read (catches Exception). Programme windowing: LiveTvGuideWindow with pastMs/maxPast/aheadMs/maxAhead config (Regular=3h/6past/12h/18ahead, LowMemory=2h/4past/8h/10ahead). Channel matching: build LiveTvGuideRequest from channels (keys, keysByName using liveTvNameKey, keysWithoutLogo). LiveTvScheduleBuilder: match by channel id first, fall back to name-based alias matching. Deduplicates same-start programmes (guide channel matched by id and by name). Title interning. Logo extraction from <channel><icon src>. Truncated tracking for channels whose kept programmes were cut short. nextScheduleReadAt computes when to re-read based on truncated channel end times. currentProgrammes finds now-playing programme per key. TIMESTAMP parsing: XMLTV format (yyyyMMddHHmmss Z or local). Clock formatting: device time zone.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "NOT IMPLEMENTED — no EPG/XMLTV reader exists in target repo",
+      "gaps": [
+        "Entire XMLTV EPG reader missing",
+        "No pull-parser for XML (target uses KMP; XmlPullParser not available)",
+        "No gzip handling for compressed XMLTV files",
+        "No guide windowing logic (past/ahead programme limits per channel)",
+        "No channel matching by id then name alias",
+        "No truncated programme tracking and re-read scheduling",
+        "No programme title interning",
+        "No logo extraction from XMLTV channel elements",
+        "No XMLTV timestamp parsing",
+        "No currentProgrammes computation"
+      ],
+      "port_required": true,
+      "tests": [
+        "app/src/test/java/com/nuvio/tv/reshaped/livetv/LiveTvPlaylistParserTest.kt (contains guide matching test via builder)"
+      ],
+      "status": "missing",
+      "platform_limitations": [
+        "iOS lacks XmlPullParser — needs a streaming XML parser (XMLReader/SAX or KMP library)",
+        "Java-only APIs (XmlPullParser, GZIPInputStream, Deflater) not available in KMP"
+      ]
+    },
+    {
+      "id": "guide-cache",
+      "capacity": "Binary guide cache — saves last-read programmes to fast binary file, invalidated by guide file changes and cache key",
+      "source_files": ["app/src/main/java/com/nuvio/tv/reshaped/livetv/LiveTvGuideCache.kt"],
+      "source_behavior": "Cache file format: GZIP binary with version header, cache key (hash of EPG URLs + guide keys + window params), nextReadAt timestamp, guide file lastModified timestamps, logos map, flattened schedule with title interning (max 1000 chars). Atomic write via .tmp + rename. Read validates version, key, nextReadAt, guide file ages. VERSION=1.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "NOT IMPLEMENTED — no guide cache exists",
+      "gaps": [
+        "Entire guide cache missing — every app open would re-read XMLTV",
+        "No binary format design KMP-compatible",
+        "No atomic file write pattern in target's Storage abstractions"
+      ],
+      "port_required": true,
+      "tests": [],
+      "status": "missing",
+      "platform_limitations": [
+        "Java-specific GZIPOutputStream/DataOutputStream not available in KMP",
+        "Need KMP-compatible binary serialisation (or use Kotlin serialization)"
+      ]
+    },
+    {
+      "id": "livetv-http-client",
+      "capability": "Live TV dedicated HTTP client — OkHttp-based, separate from media playback networking, for playlists/guide/provider APIs",
+      "source_files": ["app/src/main/java/com/nuvio/tv/reshaped/livetv/LiveTvHttp.kt"],
+      "source_behavior": "Dedicated OkHttp client (15s connect, 45s read, follow redirects). stream(): GET with headers, returns InputStream (auto-gunzip for gzip magic). download(): GET with headers, saves gzip-compressed (auto-detect server gz, else FastGzipOutputStream at BEST_SPEED). readFile(): opens saved file, auto-gunzip. text(): convenience for small responses. GUIDE_READ_TIMEOUT_S=120s. Buffer 64KB.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "NOT IMPLEMENTED — target uses platform-native player networking (MPV) and does not fetch playlists or guides via its own HTTP client",
+      "gaps": [
+        "No dedicated HTTP client for playlist/guide/provider fetches",
+        "OkHttp not available on iOS/KMP — needs platform HTTP client (Ktor/Kohttp/URLSession)",
+        "No gzip transport handling",
+        "No download-to-file with compression",
+        "No streaming response consumption pattern"
+      ],
+      "port_required": true,
+      "tests": [],
+      "status": "missing",
+      "platform_limitations": [
+        "OkHttp is Android-specific; KMP replacement needed (Ktor HttpClient or platform URL loading)"
+      ]
+    },
+    {
+      "id": "multi-source-loading",
+      "capability": "Multi-source channel loading — concurrent source loads, per-source error isolation, channel merge into unified list, idle release, per-source jobs with cancellation",
+      "source_files": ["app/src/main/java/com/nuvio/tv/reshaped/livetv/LiveTvRepository.kt"],
+      "source_behavior": "Multiple LiveTvSource entries load concurrently (PARALLEL_SOURCES=2 semaphore). Each source has its own Job that can be cancelled independently (ConcurrentHashMap sourceJobs). Failed sources keep their old channels but show an error. Channels merged in source-add order. Idle release: after IDLE_RELEASE_MS (5 min) with no subscribers, all channels/guide/zap state released. Loading state tracked per-source. publish() recomputes shown channels, groups, source counts, hidden categories, guide version. Serial dispatcher for state publication. Writer dispatcher for saves. ensureLoaded/profile switch support.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "NOT IMPLEMENTED — no repository pattern exists for Live TV",
+      "gaps": [
+        "Entire repository missing",
+        "No multi-source loading with per-source cancellation",
+        "No idle release mechanism",
+        "No profile-switch support",
+        "No channel merge and group computation"
+      ],
+      "port_required": true,
+      "tests": [],
+      "status": "missing",
+      "platform_limitations": []
+    },
+    {
+      "id": "persistence-storage",
+      "capability": "Persistent storage — preferences for small data, bin file for hidden channels, per-source imported playlist files",
+      "source_files": ["app/src/main/java/com/nuvio/tv/reshaped/livetv/LiveTvStorage.kt"],
+      "source_behavior": "SharedPreferences for: sources JSON, hidden groups (newline-separated with marker for blank key), group order, group names (JSON map), favorite URLs (newline-separated), recent channel fields. Binary file for hidden channels (8 bytes each as Longs, DataOutputStream/InputStream). Per-source imported M3U playlists as files (live_tv/playlist_{profileId}_{sourceId}.m3u). Atomic temp+rename writes. Legacy migration from old single-source keys (source_type, source_url, stalker_*, xtream_*). Profile-scoped via key suffix.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "NOT IMPLEMENTED — target has no Live TV storage layer",
+      "gaps": [
+        "No preference-based Live TV storage",
+        "No binary file format for hidden channels",
+        "No playlist file management per source",
+        "No legacy migration path",
+        "Need iOS equivalents: SharedPreferences → iOS Preferences/UserDefaults or file-based KV store"
+      ],
+      "port_required": true,
+      "tests": [],
+      "status": "missing",
+      "platform_limitations": [
+        "SharedPreferences is Android-specific; iOS equivalent: UserDefaults or encrypted file"
+      ]
+    },
+    {
+      "id": "sync-model-and-sections",
+      "capability": "Cloud sync data model — LiveTvSyncData, source identity matching, set/map sync-merge logic",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/reshaped/livetv/LiveTvSyncData.kt",
+        "app/src/main/java/com/nuvio/tv/reshaped/sync/SyncSections.kt"
+      ],
+      "source_behavior": "LiveTvSyncData: sources, favorites, hiddenGroups, hiddenChannels, groupNames, groupOrder, recent. Source sync identity: M3U = 'm3u|{url.lowercase()}', Xtream = 'xtream|{serverUrl}|{username}', Stalker = 'stalker|{portalUrl}|{macAddress}'. Sync sections: sources (keyed by identity, preserving device-local id), favorites/hiddenGroups/groupNames/groupOrder/recent as sub-sections. Set/Map withSyncChange merges: applies remote adds/removes but preserves local changes made during sync. List<LiveTvSource>.withSyncChange matches by identity, preserves local id, skips removed sources, adds new ones. isSyncable: false for file-based M3U (device-local). LiveTvStorage.syncData() produces sync snapshot.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "NOT IMPLEMENTED — no Live TV sync data model or sections",
+      "gaps": [
+        "No LiveTvSyncData model",
+        "No source identity computation",
+        "No sync section layout",
+        "No withSyncChange merge logic",
+        "No integration with existing ProfileSettingsSync system"
+      ],
+      "port_required": true,
+      "tests": [],
+      "status": "missing",
+      "platform_limitations": [
+        "Reshaped's sync infra (SyncSections, SyncDoc) is Android-specific; needs KMP sync platform integration"
+      ]
+    },
+    {
+      "id": "playback-policy",
+      "capability": "Live playback UI policy — content type detection, live latch, live watch clock",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/ui/screens/player/LivePlaybackUiPolicy.kt",
+        "app/src/test/java/com/nuvio/tv/ui/screens/player/LivePlaybackUiPolicyTest.kt"
+      ],
+      "source_behavior": "isLiveContentType: only contentType=='channel' (not 'tv' — that's series synonym). isLivePlayback: latches once player reports live OR contentType=='channel'. LivePlaybackWatchClock: accumulates wall-clock time spent playing live streams, resets on leaving live. nextLiveLatch: once latched, stays latched.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "NOT IMPLEMENTED — no live playback detection in target player",
+      "gaps": [
+        "No isLiveContentType detection (contentType 'channel')",
+        "No live latch mechanism",
+        "No live watch clock for tracking accumulated live time",
+        "PlayerScreenRuntimeContent.kt and PlayerScreenRuntimePlaybackActions.kt have no live-awareness"
+      ],
+      "port_required": true,
+      "tests": [
+        "app/src/test/java/com/nuvio/tv/ui/screens/player/LivePlaybackUiPolicyTest.kt"
+      ],
+      "status": "missing",
+      "platform_limitations": []
+    },
+    {
+      "id": "playback-registry",
+      "capability": "Playback URL registry — maps playback URLs to list URLs for per-play Stalker links, live detection",
+      "source_files": ["app/src/main/java/com/nuvio/tv/reshaped/livetv/LiveTvPlaybackRegistry.kt"],
+      "source_behavior": "Thread-safe registry (Synchronized) of up to 16 playback→listUrl pairs. register(playbackUrl, listUrl). isLiveTv(url): true if url was registered. listUrlFor(playbackUrl): reverse lookup for Stalker links created per play.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "NOT IMPLEMENTED — no playback registry",
+      "gaps": [
+        "No URL registry for live playback detection",
+        "Player engine has no concept of 'live TV URL' for Stalker per-play links"
+      ],
+      "port_required": true,
+      "tests": [],
+      "status": "missing",
+      "platform_limitations": []
+    },
+    {
+      "id": "live-edge-recovery",
+      "capability": "Live edge recovery — auto-rejoin when stream falls behind live window",
+      "source_files": ["app/src/main/java/com/nuvio/tv/reshaped/livetv/LiveEdgeRecovery.kt"],
+      "source_behavior": "When PlaybackException.ERROR_CODE_BEHIND_LIVE_WINDOW fires: seekToDefaultPosition() + prepare(). Rate-limited: max 3 rejoins per 60s window.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "NOT IMPLEMENTED — no live edge recovery",
+      "gaps": [
+        "No behind-live-window detection in MPV player",
+        "No rejoin logic with rate limiting"
+      ],
+      "port_required": true,
+      "tests": [],
+      "status": "missing",
+      "platform_limitations": [
+        "MPV-specific live window API needed (--keep-open, cache-pause behavior)"
+      ]
+    },
+    {
+      "id": "ts-flags",
+      "capability": "MPEG-TS flags — ALLOW_NON_IDR_KEYFRAMES for IPTV transport streams",
+      "source_files": ["app/src/main/java/com/nuvio/tv/reshaped/livetv/LiveTvTsFlags.kt"],
+      "source_behavior": "ExtraFor(url): returns FLAG_ALLOW_NON_IDR_KEYFRAMES when isLiveTv(url) else 0. Allows TS streams without IDR frames to start on first I-frame, as IPTV players do.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "NOT IMPLEMENTED — MPV handles TS differently, but no live-specific TS config",
+      "gaps": [
+        "No non-IDR keyframe handling for TS live streams",
+        "MPV-equivalent: demuxer-lavf-allow-extensions=ts or hwdec=auto may need live tuning"
+      ],
+      "port_required": true,
+      "tests": [],
+      "status": "missing",
+      "platform_limitations": [
+        "ExoPlayer-specific flag; MPV needs alternative (demuxer/--ts-* flags set in mpv.conf or via bridge)"
+      ]
+    },
+    {
+      "id": "load-error-policy",
+      "capability": "Live TV load error policy — quick HTTP retries for temporary channel refusals",
+      "source_files": ["app/src/main/java/com/nuvio/tv/reshaped/livetv/LiveTvLoadErrors.kt"],
+      "source_behavior": "policyFor(url, fallback): returns custom policy for live URLs. HTTP errors (400/401/403/404/410) get 3 retries at 0.7s, 1.4s, 2.1s. Other errors use fallback default progressive live retry counts.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "NOT IMPLEMENTED — no load error policy for live TV",
+      "gaps": [
+        "No HTTP retry policy for live channels",
+        "MPV would retry differently; may need --retry-on-error or custom retry logic via bridge"
+      ],
+      "port_required": true,
+      "tests": [],
+      "status": "missing",
+      "platform_limitations": [
+        "ExoPlayer-specific LoadErrorHandlingPolicy; MPV needs mpv property retry-on-error or external retry"
+      ]
+    },
+    {
+      "id": "frame-rate-matching",
+      "capability": "Live TV frame rate matching — skip AFR preflight, PTS-based measurement from first frames, snap to standard rates",
+      "source_files": ["app/src/main/java/com/nuvio/tv/ui/reshaped/livetv/LiveTvFrameRate.kt"],
+      "source_behavior": "skipAfrPreflightForLiveTv(url): returns true for live URLs, preflight probe skipped (one-connection providers). measureLiveTvFrameRate(): collect PTS of first 48 frames (about 1s of video), compute median gap, snap to standard rate. LiveTvFrameRateMatch: LaunchedEffect on tracked fps, calls matchDisplayToLiveTrack which calls FrameRateUtils.matchFrameRateAndWait. WeakHashMap per controller to measure once per channel.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "NOT IMPLEMENTED — no live frame rate matching",
+      "gaps": [
+        "No AFR preflight skip",
+        "No PTS measurement from first frames",
+        "No frame rate snap to standard rates",
+        "No display matching for live channels"
+      ],
+      "port_required": true,
+      "tests": [],
+      "status": "missing",
+      "platform_limitations": [
+        "ExoPlayer-specific VideoFrameMetadataListener; MPV equivalent via observe_property('estimated-vf-fps') or frame metadata"
+      ]
+    },
+    {
+      "id": "channel-name-normalization",
+      "capability": "Channel name normalization — strip quality tags, country prefixes, punctuation for guide matching and hide-key generation",
+      "source_files": ["app/src/main/java/com/nuvio/tv/reshaped/livetv/LiveTvEpg.kt"],
+      "source_behavior": "liveTvNameKey(): strips country tags (UK:, |UK|, [UK]), removes noise words (hd/fhd/uhd/sd/hq/4k/8k/hevc/h265/h264/1080p/1080i/720p/576p/50fps/60fps), lowercases, keeps only letters/digits/+, concatenates without spaces. liveTvGuideKey(): uses tvgId if present (lowercased), else '\\u0001' + nameKey. liveTvHideKey(): FNV-1a 64-bit hash of (sourceId + group + name), so hidden status survives URL rotation.",
+      "existing_ios_equivalent": ["composeApp/src/commonMain/kotlin/com/nuvio/app/features/livetv/LiveTvModels.kt"],
+      "target_behavior": "liveTvNameKey, liveTvGuideKey, liveTvHideKey implemented identically (FNV-1a hash, same noise set, same country tag regex pattern, same NAME_KEY_PREFIX).",
+      "gaps": [],
+      "port_required": false,
+      "tests": ["ParserTest includes normalization test"],
+      "status": "equivalent",
+      "platform_limitations": []
+    },
+    {
+      "id": "models-data-types",
+      "capability": "Live TV data models — LiveTvChannel, LiveTvSource, LiveTvSourceType, LiveTvStalkerSettings, LiveTvXtreamSettings, LiveTvProgramme, LiveTvRecentChannel, LiveTvUiState",
+      "source_files": ["app/src/main/java/com/nuvio/tv/reshaped/livetv/LiveTvModels.kt"],
+      "source_behavior": "Full models with computed properties: LiveTvSource.label (extracts host from URL), identity (for sync dedup). LiveTvUiState: complete state container including sources, channels, groups, hidden groups, hidden channel keys, shown channels, source counts, source errors, current programmes, guide logos, guide version, recent channel, favorite URLs, EPG loading flag, isLoading, isLoaded, error, addedCount. logoFor() fallback from channel to guide. visibleGroups computed property. Ungrouped marker constant.",
+      "existing_ios_equivalent": ["composeApp/src/commonMain/kotlin/com/nuvio/app/features/livetv/LiveTvModels.kt"],
+      "target_behavior": "Core models present: LiveTvChannel, LiveTvRecentChannel, LiveTvProgramme, LiveTvSourceType, LiveTvStalkerSettings, LiveTvXtreamSettings, LiveTvSource. Computed identity, label, NAME_NOISE set, NAME_TAG regex, liveTvNameKey, liveTvGuideKey, liveTvHideKey, currentProgrammes utility function. Missing: LiveTvUiState state container entirely.",
+      "gaps": [
+        "LiveTvUiState not implemented — screens have no unified state representation",
+        "No source label computation (host-from-URL utility)",
+        "No source identity (sync dedup key)",
+        "Ungrouped marker constant not exported"
+      ],
+      "port_required": true,
+      "tests": [],
+      "status": "partial",
+      "platform_limitations": []
+    },
+    {
+      "id": "preferences-settings",
+      "capability": "Live TV preferences — enabled state, preview on/off, preview sound on/off",
+      "source_files": ["app/src/main/java/com/nuvio/tv/reshaped/livetv/LiveTvPreferences.kt"],
+      "source_behavior": "Three boolean preferences persisted via SharedPreferences (nuvio_live_tv_menu). Flow-based StateFlow for reactive UI. Compose integration hooks: rememberLiveTvEnabled(), rememberLiveTvPreviewsEnabled(), rememberLiveTvPreviewSoundEnabled(). LIVE_TV_ROUTE constant ('reshaped_live_tv'). Lazy loading on first access.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "NOT IMPLEMENTED — no Live TV preferences",
+      "gaps": [
+        "No preference storage for Live TV enabled/preview/preview sound",
+        "No navigation route constant",
+        "No Compose/KMP state flow reactive integration"
+      ],
+      "port_required": true,
+      "tests": [],
+      "status": "missing",
+      "platform_limitations": []
+    },
+    {
+      "id": "navigation-menu-entry",
+      "capability": "Live TV menu entry — dynamic drawer item, auto-navigate away when disabled",
+      "source_files": ["app/src/main/java/com/nuvio/tv/ui/reshaped/livetv/LiveTvNavigation.kt"],
+      "source_behavior": "rememberLiveTvMenuItem(): shows DrawerItem with LiveTv icon when enabled. LaunchedEffect on enabled+route: navigates to Home when disabled while on Live TV screen.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "NOT IMPLEMENTED — no Live TV nav entry",
+      "gaps": [
+        "No navigation drawer item for Live TV",
+        "No auto-redirect when disabled while Live TV is open",
+        "No route registration in navigation graph"
+      ],
+      "port_required": true,
+      "tests": [],
+      "status": "missing",
+      "platform_limitations": [
+        "NativeTabBridge only has Home/Search/Library/Settings tabs; no extensible tab for Live TV"
+      ]
+    },
+    {
+      "id": "livetv-screen",
+      "capability": "Live TV screen — categories column, channel list with programmes, live preview panel, search, filtering",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/ui/reshaped/livetv/LiveTvScreen.kt",
+        "app/src/main/java/com/nuvio/tv/ui/reshaped/livetv/LiveTvScreenModel.kt",
+        "app/src/main/java/com/nuvio/tv/ui/reshaped/livetv/LiveTvComponents.kt"
+      ],
+      "source_behavior": "Full screen: 3-column layout (categories|channels|preview). Categories include All, Favorites, per-source, and per-group. Filtering done off main thread. Recent channel row at top. Search with 200ms debounce. Toggle favorite via long-click. Channel shows logo, name, programme, progress bar, time left. Preview panel: starts playing focused channel after 400ms rest (ExoPlayer at lowest bitrate, capped at 720p/1080p by RAM). LIVE badge. Guide button. Mute/unmute. Empty state when no sources. Loading/error/EPG-loading status bar. Category dialog and source dialog access. Remote-friendly: focus-based category selection, channel list scrolls to playing channel on return. Input fields with D-pad + software keyboard.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "NOT IMPLEMENTED — no Live TV screen",
+      "gaps": [
+        "No Live TV screen UI at all",
+        "No category/channel list with programme display",
+        "No live preview player",
+        "No search with debounce",
+        "No favorites toggle via long-click",
+        "No recent channel row",
+        "No empty/loading/error state display",
+        "No D-pad optimized text input fields",
+        "No focus-based category selection with delay"
+      ],
+      "port_required": true,
+      "tests": [],
+      "status": "missing",
+      "platform_limitations": [
+        "Android TV Compose components (NuvioDialog, CardDefaults, LazyColumn with remote focus) need iOS equivalents",
+        "ExoPlayer for preview not available; may use MPV in miniature window"
+      ]
+    },
+    {
+      "id": "source-dialog",
+      "capability": "Source dialog — add/remove Live TV sources, QR code + setup server for phone control",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/ui/reshaped/livetv/LiveTvSourceDialog.kt",
+        "app/src/main/java/com/nuvio/tv/reshaped/livetv/LiveTvSetupServer.kt"
+      ],
+      "source_behavior": "Full dialog: lists saved sources with channel count/errors, two-press remove. Adding: tabbed form for M3U/Xtream/Stalker with saveable fields. QR code for phone setup page (embedded web page with same form + file upload). Setup server: NanoHTTPD on port 8110-8119, random 16-byte hex token per session, CORS-style origin guard, POST /token/api/source and /token/api/playlist (file upload up to 64MB). Phone page rendered from strings. Lifecycle-bound: runs while dialog is open and app is foreground. QR generation (QrCodeGenerator 400px). Redacted URL display (password=... stripped).",
+      "existing_ios_equivalent": [],
+      "target_behavior": "NOT IMPLEMENTED — no source setup UI",
+      "gaps": [
+        "No source add/remove UI",
+        "No QR code display",
+        "No setup HTTP server",
+        "No phone setup web page",
+        "No file upload endpoint for M3U import via phone"
+      ],
+      "port_required": true,
+      "tests": [],
+      "status": "missing",
+      "platform_limitations": [
+        "NanoHTTPD is Android-specific; iOS equivalent: embed tiny HTTP server (nanohttpd or raw ServerSocket)",
+        "QR code generation (android.graphics.Bitmap) needs KMP library"
+      ]
+    },
+    {
+      "id": "category-dialog",
+      "capability": "Category dialog — hide/show categories, rename, reorder, per-channel hide within category",
+      "source_files": ["app/src/main/java/com/nuvio/tv/ui/reshaped/livetv/LiveTvCategoryDialog.kt"],
+      "source_behavior": "Lists categories with hide/show toggle, Show all/Hide all buttons, A-Z sort. Pick-up-and-move reorder (Hold OK to pick, ▲▼ to move, OK to drop). ▶ opens category's channels for individual hide/show with rename text field. Category rename updates groupNames. Hidden categories count shown at top. Focus returns to category after viewing its channels.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "NOT IMPLEMENTED — no category management UI",
+      "gaps": [
+        "No category hide/show",
+        "No category reorder (pick-up-and-move)",
+        "No individual channel hide within category",
+        "No category rename",
+        "No Show all/Hide all"
+      ],
+      "port_required": true,
+      "tests": [],
+      "status": "missing",
+      "platform_limitations": []
+    },
+    {
+      "id": "programme-guide",
+      "capability": "Programme guide grid — channels down, time across, selected programme detail, remote navigation",
+      "source_files": ["app/src/main/java/com/nuvio/tv/ui/reshaped/livetv/LiveTvGuide.kt"],
+      "source_behavior": "Grid guide: channel rows on left, programme cells across timeline. Now line indicator. Animated timeline scroll (spring). Time ruler at top showing 30-min slots. Colour-coded cells: past (dim), now (highlighted), future (brighter). Selected programme fills white. CH+/CH- for page up/down. OK plays. Back closes. Guide state tracks anchorMs (time anchor between channels) and viewStartMs. Programme selection stays on same programme between channel rows. 'No guide' for channels without data. Tracks truncated channels via guideVersion. Keyboard-only navigation (no mouse touch).",
+      "existing_ios_equivalent": [],
+      "target_behavior": "NOT IMPLEMENTED — no programme guide UI",
+      "gaps": [
+        "No guide grid at all",
+        "No time ruler/timeline",
+        "No programme cells with colour-coding",
+        "No channel rows with logos",
+        "No now-line indicator",
+        "No remote-friendly navigation in guide"
+      ],
+      "port_required": true,
+      "tests": [],
+      "status": "missing",
+      "platform_limitations": [
+        "Custom grid rendering with LazyColumn + offset positioning; iOS equivalent needs custom layout"
+      ]
+    },
+    {
+      "id": "player-overlay",
+      "capability": "Player overlay — channel zap (▲▼/CH+/CH-), info card (Now/Next), channel list panel with categories, guide access",
+      "source_files": [
+        "app/src/main/java/com/nuvio/tv/ui/reshaped/livetv/LiveTvPlayerOverlay.kt",
+        "app/src/main/java/com/nuvio/tv/ui/reshaped/livetv/LiveTvZap.kt",
+        "app/src/main/java/com/nuvio/tv/ui/reshaped/livetv/LiveTvStreamDetails.kt"
+      ],
+      "source_behavior": "Overlay on top of player: CH+/CH- and ▲▼ (when controls hidden) zap channels. ◀ opens channel list from zapped category, ◀ again opens categories. ▶ opens player controls. OK shows Now/Next info card (6s auto-hide), OK again opens controls. Banner on channel switch (4s). Info card: stream details chips (resolution, fps, codec, audio), current programme with progress bar, upcoming programme. Channel list panel: logo, name, current programme, progress bar, playing indicator (red dot). Categories column beside list. Guide accessible from list (▶). Stalker link resolution per switch. switchTo() with 350ms settle for rapid presses. Bumped bannerKey on each switch. Stream metadata read from ExoPlayer at 1s interval while info open.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "NOT IMPLEMENTED — no Live TV player overlay",
+      "gaps": [
+        "No channel zap (▲▼ / CH+/CH-)",
+        "No Now/Next info card",
+        "No channel list panel over player",
+        "No categories panel",
+        "No channel switch banner",
+        "No stream details display (resolution, fps, codec, audio)",
+        "No guide from player overlay",
+        "No Stalker per-play link resolution during switch",
+        "Keep-player-for-zap optimization (ExoPlayer reuse) not applicable to MPV"
+      ],
+      "port_required": true,
+      "tests": [],
+      "status": "missing",
+      "platform_limitations": [
+        "Player engine (MPV) handles switching differently — no ExoPlayer reuse optimization"
+      ]
+    },
+    {
+      "id": "live-device",
+      "capability": "Live TV device detection — low-memory check for preview/guide window sizing",
+      "source_files": ["app/src/main/java/com/nuvio/tv/reshaped/livetv/LiveTvDevice.kt"],
+      "source_behavior": "LiveTvDevice.isLowMemory(): checks ActivityManager.isLowRamDevice + totalMem < 2.5GB. Low memory reduces preview cap to 720p, guide window to 2h/4past/8h/10ahead. Cached result.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "NOT IMPLEMENTED — no device detection for Live TV scaling",
+      "gaps": [
+        "No low-memory detection for iOS device capabilities",
+        "Needs iOS equivalent: Device RAM check or device class detection"
+      ],
+      "port_required": true,
+      "tests": [],
+      "status": "missing",
+      "platform_limitations": [
+        "ActivityManager is Android TV-specific; iOS equivalent: system RAM API"
+      ]
+    },
+    {
+      "id": "live-preview-player",
+      "capability": "Live preview player — small ExoPlayer for channel preview in list, lowest bitrate, capped resolution, fade-in audio",
+      "source_files": ["app/src/main/java/com/nuvio/tv/ui/reshaped/livetv/LiveTvPreview.kt"],
+      "source_behavior": "Separate ExoPlayer instance for channel preview. Config: force lowest bitrate, max video 1280x720 (low memory) / 1920x1080 (normal), no subtitles, audio disabled when preview sound off. Buffer: 1.5-2s target, 3-5s max, 0.5s min. Playback stops and retries as HLS on error. Stalker channels skip preview. Releases player on lifecycle stop. Detach/attach TextureView lifecycle. Fade-in audio over ~500ms. 'LIVE' badge overlay. Video aspect ratio tracking. Only plays after 400ms focus rest.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "NOT IMPLEMENTED — no preview player",
+      "gaps": [
+        "No separate player for channel preview",
+        "No low-bitrate-forcing configuration",
+        "No resolution capping",
+        "No audio fade-in",
+        "No HLS retry fallback"
+      ],
+      "port_required": true,
+      "tests": [],
+      "status": "missing",
+      "platform_limitations": [
+        "ExoPlayer not available; preview would need second MPV instance or platform streaming API"
+      ]
+    },
+    {
+      "id": "guide-loader-epg-lifecycle",
+      "capability": "EPG lifecycle — download, cache, re-read scheduling, per-minute programme tick, idle cancellation",
+      "source_files": ["app/src/main/java/com/nuvio/tv/reshaped/livetv/LiveTvRepository.kt"],
+      "source_behavior": "startEpg(): creates guide job with generation counter. Downloads per EPG URL to gz file with 10h expiry. Reads XMLTV via LiveTvHttp + readXmlTvGuide. Falls back to guide cache (LiveTvGuideCache) on first open. Progressive guide loading: each guide's programmes shown as they are read (not waiting for slowest). whileSeen() suspends guide downloads when nobody views Live TV (grace period 10s). Per-min tick updates currentProgrammes. nextScheduleReadAt schedules next read at truncated channel end time (min 1h, max 10h). Failed guides retry after 30min. Force guide download on manual Refresh.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "NOT IMPLEMENTED — no EPG lifecycle",
+      "gaps": [
+        "No EPG download scheduling",
+        "No XMLTV reading at all",
+        "No guide cache",
+        "No per-minute programme tick",
+        "No idle suspension of guide loading",
+        "No force-refresh of guides"
+      ],
+      "port_required": true,
+      "tests": [],
+      "status": "missing",
+      "platform_limitations": [
+        "Threading model (whileSeen subscriptionCount) uses Android-specific coroutine patterns"
+      ]
+    },
+    {
+      "id": "string-resources",
+      "capability": "Live TV string resources — all UI labels, error messages, hints, web page texts (116 strings)",
+      "source_files": ["app/src/main/res/values/live_tv_strings.xml"],
+      "source_behavior": "116 string IDs covering: titles, channel counts, empty states, loading/errors, source dialog, category dialog, player overlay (banner, info, guide hints), guide (now/next/ended), preview (mute/unmute, live badge), setup web page (all tab labels, hints, send/sent/failed/too large/connection error messages).",
+      "existing_ios_equivalent": [],
+      "target_behavior": "NOT IMPLEMENTED — no Live TV string resources",
+      "gaps": [
+        "No string resources defined for Live TV",
+        "Need iOS resource file equivalents (Android XML → iOS .strings or KMP composable resources)"
+      ],
+      "port_required": true,
+      "tests": [],
+      "status": "missing",
+      "platform_limitations": []
+    },
+    {
+      "id": "header-handling-player",
+      "capability": "HTTP header handling — sanitization, JSON encoding for MPV bridge, per-channel stream headers",
+      "source_files": [
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerEngine.kt",
+        "composeApp/src/iosMain/kotlin/com/nuvio/app/features/player/PlayerEngine.ios.kt"
+      ],
+      "source_behavior": "sanitizePlaybackHeaders(): trims key/value, removes empty, removes Range header. encodePlaybackHeadersForBridge(): sanitizes then JSON-encodes for MPV bridge. loadFileWithAudio takes headersJson:String?. PlayerEngine.ios.kt passes headers to bridge.",
+      "existing_ios_equivalent": ["composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerEngine.kt", "composeApp/src/iosMain/kotlin/com/nuvio/app/features/player/PlayerEngine.ios.kt"],
+      "target_behavior": "Headers sanitized and JSON-encoded for MPV bridge. Default VLC User-Agent and Accept headers from parser are passed through to player as channel's headers map.",
+      "gaps": [
+        "No normalization for playback URL (PlayerMediaSourceFactory.normalizePlaybackRequest not in target)",
+        "No httpResponseHeaders handling (sourceResponseHeaders passed through sanitize but not used further)",
+        "Headers from parser are passed as-is; no dedup/channel vs playback header merging"
+      ],
+      "port_required": true,
+      "tests": ["composeApp/src/commonTest/kotlin/com/nuvio/app/features/player/PlayerScreenRuntimeStateTest.kt (has testPlayerScreenArgs with sourceHeaders)"],
+      "status": "partial",
+      "platform_limitations": []
+    },
+    {
+      "id": "player-bridge-cleanup",
+      "capability": "MPV player bridge — Swift ↔ Kotlin bridge for iOS native MPV player",
+      "source_files": [
+        "composeApp/src/iosMain/kotlin/com/nuvio/app/features/player/PlayerBridge.kt",
+        "iosApp/iosApp/Player/MPVPlayerBridge.swift"
+      ],
+      "source_behavior": "NuvioPlayerBridge interface defines all player operations (load, play, pause, seek, tracks, subs, video/audio config). NuvioPlayerBridgeFactory registers + creates bridges. MPVPlayerBridge.swift implements the bridge on Swift side. loadFileWithAudio handles headersJson. Polling for snapshots every 250ms. UIKitViewController for video surface.",
+      "existing_ios_equivalent": ["composeApp/src/iosMain/kotlin/com/nuvio/app/features/player/NuvioPlayerBridge.kt"],
+      "target_behavior": "Fully functional MPV bridge. Headers passed as JSON string. No live-specific logic (no isLive, no unseekable, no liveEdge, no liveWatchClock).",
+      "gaps": [
+        "No live-specific player behavior (unseekable flag for live streams)",
+        "No live edge detection or recovery integration",
+        "No TS flag configuration for live streams",
+        "No frame rate measurement hook"
+      ],
+      "port_required": true,
+      "tests": [],
+      "status": "partial",
+      "platform_limitations": [
+        "iOS SDK has unseekable property; MPV can report live via demuxer-http property but not via Swift bridge currently"
+      ]
+    },
+    {
+      "id": "player-screen-no-livetv-integration",
+      "capability": "Player screen integration points — content type 'channel', launch from Live TV, no save progress, switchToSourceStream for channel switch",
+      "source_files": [
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerScreenRuntimeSourceActions.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerScreenRuntimePlaybackActions.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerScreenRuntimeState.kt"
+      ],
+      "source_behavior": "Player handles content types ('movie', 'series', 'channel'). No live-specific codec/seek/progress behavior for channel type. PlayerScreenRuntimeState test shows contentType='channel' in test args but no live-triggered behavior. No switchToSourceStream for channel switching — only for stream selection within a single playback. PlayerScreenRuntimeEffects has no live overlay or channel zap.",
+      "existing_ios_equivalent": ["composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerScreenRuntimeState.kt", "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerScreenRuntimeSourceActions.kt", "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerScreenRuntimePlaybackActions.kt", "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerScreenRuntimeGestureActions.kt"],
+      "target_behavior": "No live-specific discrimination in player screen runtime. contentType can be 'channel' but nothing special happens (no seek-disabled, no live latch, no unseekable, no progress-save skip). switchToSourceStream exists for normal stream switching but not tied to channel zapping.",
+      "gaps": [
+        "No live latch or content-type-aware behavior in player runtime",
+        "No isSeekable=false for live channel content type",
+        "No skip-progress-save for channel content type",
+        "No live edge / behind-live-window detection in player runtime",
+        "No channel-specific error display (reconnect banner vs failed-load dialog)",
+        "switchToSourceStream exists but no zap mechanism (keep player across channel switches)"
+      ],
+      "port_required": true,
+      "tests": [],
+      "status": "missing",
+      "platform_limitations": [
+        "MPV seek/keep behavior differs from ExoPlayer. MPV can keep player between loads with replace or loadfile append"
+      ]
+    },
+    {
+      "id": "sync-integration",
+      "capability": "Profile settings sync — existing sync infrastructure for Live TV integration",
+      "source_files": [
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/core/sync/ProfileSettingsSync.kt",
+        "composeApp/src/commonMain/kotlin/com/nuvio/app/core/sync/SyncManager.kt"
+      ],
+      "source_behavior": "ProfileSettingsSync handles per-profile preference sync via Supabase. SyncManager orchestrates full sync cycle. LiveTvSections (from reference) would slot into this as another section type. Currently no Live TV sections registered in target.",
+      "existing_ios_equivalent": [],
+      "target_behavior": "Sync infrastructure exists (ProfileSettingsSync, SyncManager, SupabaseProvider) but has no Live TV data sections.",
+      "gaps": [
+        "No Live TV sync sections in ProfileSettingsSync",
+        "No LiveTvSyncData serialization for sync",
+        "No applySync implementation for Live TV data"
+      ],
+      "port_required": true,
+      "tests": [],
+      "status": "missing",
+      "platform_limitations": []
+    }
+  ],
+  "additional_files_inspected": [
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/livetv/LiveTvModels.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/livetv/LiveTvPlaylistParser.kt",
+    "composeApp/src/commonTest/kotlin/com/nuvio/app/features/livetv/LiveTvPlaylistParserTest.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerEngine.kt",
+    "composeApp/src/iosMain/kotlin/com/nuvio/app/features/player/PlayerEngine.ios.kt",
+    "composeApp/src/iosMain/kotlin/com/nuvio/app/features/player/PlayerBridge.kt",
+    "composeApp/src/iosMain/kotlin/com/nuvio/app/features/player/NuvioPlayerBridge.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerModels.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerScreenRuntimeState.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerScreenRuntimeSourceActions.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerScreenRuntimePlaybackActions.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerScreenRuntimeGestureActions.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerScreenRuntimeEffects.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerScreenContent.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/PlayerControls.kt",
+    "composeApp/src/commonTest/kotlin/com/nuvio/app/features/player/PlayerScreenRuntimeStateTest.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/navigation/Routes.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/core/sync/ProfileSettingsSync.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/core/sync/SyncManager.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/core/sync/SyncPlatform.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/core/network/SupabaseProvider.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/core/network/NetworkStatusRepository.kt",
+    "composeApp/src/commonMain/kotlin/com/nuvio/app/core/ui/NativeTabBridge.kt",
+    "iosApp/iosApp/Player/MPVPlayerBridge.swift",
+    "iosApp/iosApp/Player/NowPlayingController.swift",
+    "iosApp/iosApp/Info.plist",
+    "app/src/main/java/com/nuvio/tv/reshaped/sync/SyncSections.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/NuvioMpvSurfaceView.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerRuntimeController.kt",
+    "app/src/main/java/com/nuvio/tv/ui/screens/player/PlayerRuntimeControllerPlaybackEvents.kt"
+  ],
+  "risks": [
+    "CRITICAL: 17 of 32 capabilities entirely missing (missing: xtream-provider, stalker-provider, xmltv-epg-reader, guide-cache, livetv-http-client, multi-source-loading, persistence-storage, sync-model-and-sections, playback-policy, playback-registry, live-edge-recovery, ts-flags, load-error-policy, frame-rate-matching, preferences-settings, navigation-menu-entry, source-dialog, category-dialog, programme-guide, player-overlay, live-device, live-preview-player, guide-loader-epg-lifecycle, string-resources, sync-integration, player-screen-no-livetv-integration) — essential for any usable Live TV feature",
+    "CRITICAL: Target has 0 Live TV screens (no LiveTvScreen, no LiveTvPlayerOverlay, no LiveTvGuide, no dialogs) — the entire user-facing feature is absent",
+    "HIGH: MPV engine differences — reference uses ExoPlayer with TS flags, load error policies, live edge recovery, frame rate measurement via VideoFrameMetadataListener. MPV on iOS has different mechanisms for these (--keep-open, --ts-* flags, observe_property). Ports of these capabilities must use MPV-specific approaches",
+    "HIGH: HTTP client dependency — reference uses OkHttp for playlist/guide/provider fetches. iOS needs KMP-compatible HTTP (Ktor/Kohttp or platform URL loading) for Xtream/Stalker/XMLTV downloads",
+    "MEDIUM: XML streaming — reference uses XmlPullParser for XMLTV. iOS/KMP lacks this; needs SAX/XMLReader or KMP XML library alternative",
+    "MEDIUM: Preview player — reference uses separate ExoPlayer instance at lowest bitrate. iOS preview would need second MPV instance or platform streaming (MediaPlayer/VideoView) which may have different resource profiles",
+    "MEDIUM: Threading model differences — reference uses Android TV-specific constructs (WeakHashMap for frame meter, ConcurrentHashMap for sessions, Semaphore for load permits, serial dispatchers). iOS KMP needs equivalent synchronisation primitives",
+    "MEDIUM: 3 Kotlin Live TV files exist in target (models, parser, parser test) with partial coverage — these can serve as baseline but need extension; models missing LiveTvUiState entirely",
+    "LOW: String resources — 116 Android XML strings need iOS .strings / KMP resource file",
+    "LOW: Setup server — NanoHTTPD not available on iOS; needs alternative (raw ServerSocket-based HTTP server or embedded Jetty/Ktor adapter)",
+    "VERIFIED EQUIVALENT: Channel name normalization (liveTvNameKey, liveTvGuideKey, liveTvHideKey) already ported correctly to target models"
+  ]
+}

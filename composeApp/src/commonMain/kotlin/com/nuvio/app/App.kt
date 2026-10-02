@@ -1924,6 +1924,7 @@ private fun MainAppContent(
                                             .then(if (navBarStyleSetting == NavBarStyle.ADAPTIVE) Modifier.nestedScroll(navBarScrollState.nestedScrollConnection) else Modifier)
                                             .padding(innerPadding),
                                         selectedTab = selectedTab,
+                                        onLiveTvClick = { navController.navigate(LiveTvRoute) },
                                         searchFocusRequestCount = searchFocusRequestCount,
                                         rootActionsEnabled = tabsRouteActive,
                                         homeScrollToTopRequests = homeScrollToTopRequests,
@@ -2118,6 +2119,20 @@ private fun MainAppContent(
                             }
                         }
                     }
+                }
+                entry<LiveTvRoute> { route ->
+                    val onBack = rememberGuardedPopBackStack(navController, route)
+                    val profileState by ProfileRepository.state.collectAsStateWithLifecycle()
+                    val profileId = profileState.activeProfile?.profileIndex ?: ProfileRepository.activeProfileId
+                    com.nuvio.app.features.livetv.LiveTvScreen(
+                        profileId = profileId,
+                        onBack = onBack,
+                        onPlay = { channel ->
+                            val launch = com.nuvio.app.features.livetv.liveTvPlayerLaunch(profileId, channel)
+                            val launchId = PlayerLaunchStore.put(launch)
+                            navController.navigate(PlayerRoute(launchId, launch.title))
+                        },
+                    )
                 }
                 entry<DetailRoute> { route ->
                     val onBack = rememberGuardedPopBackStack(navController, route)
@@ -3700,6 +3715,7 @@ private fun rememberGuardedPopBackStack(
 @Composable
 private fun AppTabHost(
     selectedTab: AppScreenTab,
+    onLiveTvClick: () -> Unit = {},
     modifier: Modifier = Modifier,
     searchFocusRequestCount: Int = 0,
     rootActionsEnabled: Boolean = true,
@@ -3746,6 +3762,7 @@ private fun AppTabHost(
             when (selectedTab) {
                 AppScreenTab.Home -> {
                     HomeScreen(
+                        onLiveTvClick = onLiveTvClick,
                         modifier = Modifier.fillMaxSize(),
                         animateCollectionGifs = animateHomeCollectionGifs,
                         scrollToTopRequests = homeScrollToTopRequests,

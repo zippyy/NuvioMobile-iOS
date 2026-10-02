@@ -116,6 +116,7 @@ fun HomeScreen(
     continueWatchingDisintegrationRequest: DisintegrationRequest<String>? = null,
     onFolderClick: ((collectionId: String, folderId: String) -> Unit)? = null,
     onFirstCatalogRendered: (() -> Unit)? = null,
+    onLiveTvClick: (() -> Unit)? = null,
 ) {
     LaunchedEffect(Unit) {
         AddonRepository.initialize()
@@ -469,7 +470,7 @@ fun HomeScreen(
             cloudLibraryUiState = cloudLibraryUiState,
         )
     }
-    val (continueWatchingItems, upcomingItems) = remember(
+    val (sequentialContinueWatchingItems, upcomingItems) = remember(
         allContinueWatchingItems,
         continueWatchingPreferences.sortMode,
     ) {
@@ -478,6 +479,7 @@ fun HomeScreen(
             mode = continueWatchingPreferences.sortMode,
         )
     }
+    val continueWatchingItems = com.nuvio.app.features.shuffle.rememberHomeShuffleItems(sequentialContinueWatchingItems)
     val hasContinueWatchingRows = continueWatchingItems.isNotEmpty() || upcomingItems.isNotEmpty()
 
     LaunchedEffect(activeProfileId, continueWatchingItems.isNotEmpty(), hasUserScrolledContinueWatching) {
@@ -925,6 +927,14 @@ fun HomeScreen(
                 }
             }
 
+            onLiveTvClick?.let { openLiveTv ->
+                item(key = "live-tv-entry") {
+                    androidx.compose.material3.TextButton(
+                        onClick = openLiveTv,
+                        modifier = Modifier.padding(horizontal = homeSectionPadding),
+                    ) { androidx.compose.material3.Text("Live TV") }
+                }
+            }
             when {
                 !hasActiveAddons && !hasRenderableCollectionRows -> {
                     homeContinueWatchingSections(

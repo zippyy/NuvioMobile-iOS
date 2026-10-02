@@ -11,6 +11,15 @@ interface PlayerEngineController {
     fun retry()
     fun setPlaybackSpeed(speed: Float)
     fun setMuted(muted: Boolean) {}
+    fun setVolumeBoostPercent(percent: Int) {}
+    fun getVolumeBoostPercent(): Int = 100
+    fun supportsVolumeBoost(): Boolean = false
+    fun setAudioDelayMs(delayMs: Int) {}
+    fun getAudioDelayMs(): Int = 0
+    fun supportsAudioDelay(): Boolean = false
+    fun seekToLiveEdge() {}
+    fun requestSeekPreview(positionMs: Long) {}
+    fun cancelSeekPreview() {}
     fun getAudioTracks(): List<AudioTrack>
     fun getSubtitleTracks(): List<SubtitleTrack>
     fun selectAudioTrack(index: Int)
