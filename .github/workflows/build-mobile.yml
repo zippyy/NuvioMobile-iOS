@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - cmp-rewrite
+      - port/nuvio-reshaped-ios
 
 permissions:
   contents: read
