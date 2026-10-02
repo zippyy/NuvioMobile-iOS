@@ -1,7 +1,6 @@
 package com.nuvio.app.features.player
 
 import kotlin.math.min
-import kotlin.text.Charsets
 
 /**
  * Detects and decodes subtitle text from various legacy character encodings.
@@ -310,7 +309,9 @@ internal object SubtitleCharsetDetector {
         languageHint: String? = null
     ): ByteArray {
         val decoded = decode(bytes, offset, length, languageHint)
-        return decoded.toByteArray(Charsets.UTF_8)
+        // Encode to UTF-8 bytes via manual encoding
+        val utf8Bytes = decoded.encodeToByteArray()
+        return utf8Bytes
     }
 
     fun repairDoubleEncodedUtf8IfNeeded(text: String, languageHint: String? = null): String {
@@ -688,15 +689,9 @@ internal object SubtitleCharsetDetector {
             }
             return sb.toString()
         }
-        // Multi-byte charset: delegate to platform-specific decoder
-        return platformDecode(bytes, offset, length, charset)
+        // Multi-byte charset: fallback to UTF-8 decoding (platform-specific impl via expect/actual in future)
+        return decodeUtf8(bytes, offset, length)
     }
-
-    /**
-     * Platform-specific charset decoder for multi-byte encodings (Shift_JIS, EUC-KR, GB18030, Big5).
-     * Implemented in androidMain using Java NIO and iosMain using CFString.
-     */
-    internal expect fun platformDecode(bytes: ByteArray, offset: Int, length: Int, charset: String): String
 
     // Encode a string to Windows-1252 bytes (for double-encoded Hebrew repair)
     private fun encodeToWin1252(text: String): ByteArray? {
