@@ -116,6 +116,7 @@ fun HomeScreen(
     continueWatchingDisintegrationRequest: DisintegrationRequest<String>? = null,
     onFolderClick: ((collectionId: String, folderId: String) -> Unit)? = null,
     onFirstCatalogRendered: (() -> Unit)? = null,
+    onLiveTvClick: (() -> Unit)? = null,
 ) {
     LaunchedEffect(Unit) {
         AddonRepository.initialize()
@@ -926,6 +927,14 @@ fun HomeScreen(
                 }
             }
 
+            onLiveTvClick?.let { openLiveTv ->
+                item(key = "live-tv-entry") {
+                    androidx.compose.material3.TextButton(
+                        onClick = openLiveTv,
+                        modifier = Modifier.padding(horizontal = homeSectionPadding),
+                    ) { androidx.compose.material3.Text("Live TV") }
+                }
+            }
             when {
                 !hasActiveAddons && !hasRenderableCollectionRows -> {
                     homeContinueWatchingSections(

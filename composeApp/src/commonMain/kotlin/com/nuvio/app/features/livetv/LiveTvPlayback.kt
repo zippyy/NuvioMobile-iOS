@@ -6,7 +6,7 @@ import com.nuvio.app.features.player.PlayerLaunch
 fun liveTvPlayerLaunch(profileId: Int, channel: LiveTvChannel): PlayerLaunch = PlayerLaunch(
     profileId=profileId,title=channel.name,sourceUrl=channel.streamUrl,
     sourceHeaders=safeLiveTvHeaders(channel.headers),logo=channel.logoUrl,
-    streamTitle=channel.name,providerName="Live TV",contentType="channel",
+    streamTitle=channel.name,providerName="Live TV",contentType="channel",streamType="live",
     videoId="live:${channel.sourceId}:${channel.hideKey}",parentMetaId="live:${channel.sourceId}:${channel.hideKey}",parentMetaType="channel",
     initialPositionMs=0,initialProgressFraction=null,
 )
