@@ -1,10 +1,13 @@
 package com.nuvio.app.features.livetv
 
 import kotlinx.coroutines.runBlocking
+import kotlin.test.Test
 private fun assertEquals(expected: Any?, actual: Any?) = check(expected == actual) { "Expected <$expected>, got <$actual>" }
 private fun assertFalse(value: Boolean) = check(!value)
 
-fun main() = runBlocking {
+class LiveTvBehaviorTest {
+@Test
+fun providersGuideAndPersistence() = runBlocking {
     val channel = parseM3uPlaylist(sequenceOf("#EXTM3U", "#EXTINF:-1,News", "#EXTHTTP:{\"Authorization\":\"Bearer abc\"}", "https://tv.test/live|Referer=https%3A%2F%2Ftv.test%2F&X-Bad=bad%0D%0AInjected%3Ayes")).channels.single()
     assertEquals("Bearer abc", channel.headers["Authorization"])
     assertEquals("https://tv.test/", channel.headers["Referer"])
@@ -97,4 +100,6 @@ https://play.test/news
     repository.refresh()
     assertEquals("Imported",repository.state.value.channels.single().name)
     println("PASS imported playlist source survives provider-independent refresh")
+}
+
 }

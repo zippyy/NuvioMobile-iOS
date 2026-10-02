@@ -146,6 +146,31 @@ jobs:
             CODE_SIGN_IDENTITY="" \
             build
 
+      - name: Run iOS parity regression tests
+        run: |
+          ./gradlew :composeApp:iosSimulatorArm64Test \
+            --console=plain --no-configuration-cache --max-workers=1 \
+            --tests 'com.nuvio.app.features.livetv.*' \
+            --tests 'com.nuvio.app.features.connection.*' \
+            --tests 'com.nuvio.app.features.shuffle.*' \
+            --tests 'com.nuvio.app.features.artwork.*' \
+            --tests 'com.nuvio.app.features.mdblist.*' \
+            --tests 'com.nuvio.app.features.torrent.*' \
+            --tests 'com.nuvio.app.features.trailer.YouTubeStreamResolverTest*' \
+            --tests 'com.nuvio.app.features.player.Subtitle*' \
+            --tests 'com.nuvio.app.features.player.ConnectionFit*' \
+            --tests 'com.nuvio.app.core.sync.Reshaped*'
+
+      - name: Upload parity test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: iOS-parity-test-results
+          if-no-files-found: warn
+          path: |
+            composeApp/build/test-results/
+            composeApp/build/reports/tests/
+
       - name: Package App into .ipa
         run: |
           set -euo pipefail
