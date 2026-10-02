@@ -62,7 +62,7 @@ fun projectHomeShuffle(item: ContinueWatchingItem, video: MetaVideo): ContinueWa
 /** Only next-up cards change: an in-progress episode must always keep its resume identity. */
 @Composable
 fun rememberHomeShuffleItems(items: List<ContinueWatchingItem>): List<ContinueWatchingItem> {
-    val profile by ProfileRepository.uiState.collectAsState()
+    val profile by ProfileRepository.state.collectAsState()
     val profileId = profile.activeProfile?.profileIndex ?: ProfileRepository.activeProfileId
     val revision by EpisodeShuffleRuntime.store.revision.collectAsState()
     val watched by WatchedRepository.uiState.collectAsState()

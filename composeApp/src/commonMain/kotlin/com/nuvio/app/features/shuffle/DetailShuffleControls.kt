@@ -13,7 +13,7 @@ import com.nuvio.app.features.watchprogress.WatchProgressRepository
 
 @Composable
 fun DetailShuffleControls(meta: MetaDetails, onPlay: (MetaVideo) -> Unit) {
-    val profile by ProfileRepository.uiState.collectAsState()
+    val profile by ProfileRepository.state.collectAsState()
     val profileId = profile.activeProfile?.profileIndex ?: ProfileRepository.activeProfileId
     val revision by EpisodeShuffleRuntime.store.revision.collectAsState()
     val watched by WatchedRepository.uiState.collectAsState()

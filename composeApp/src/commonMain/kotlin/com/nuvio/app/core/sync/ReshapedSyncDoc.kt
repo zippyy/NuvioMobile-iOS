@@ -13,9 +13,9 @@ internal object SyncDoc {
     fun encode(sections: SyncSections): String = buildJsonObject {
         put("v", VERSION)
         put("s", buildJsonObject {
-            sections.toSortedMap().forEach { (section, entries) ->
+            sections.entries.sortedBy { it.key }.forEach { (section, entries) ->
                 if (entries.isNotEmpty()) put(section, buildJsonObject {
-                    entries.toSortedMap().forEach { (key, entry) ->
+                    entries.entries.sortedBy { it.key }.forEach { (key, entry) ->
                         put(key, buildJsonObject { entry.value?.let { put("v", it) }; put("t", entry.time) })
                     }
                 })

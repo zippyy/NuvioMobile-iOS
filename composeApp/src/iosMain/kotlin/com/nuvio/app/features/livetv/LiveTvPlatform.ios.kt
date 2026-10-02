@@ -16,8 +16,8 @@ import platform.zlib.*
 
 @Composable
 actual fun rememberLiveTvStore(): LiveTvStore = IosLiveTvStore
-actual fun liveTvNow(): Long=(NSDate().timeIntervalSince1970*1000).toLong()
-actual fun liveTvTimeLabel(epochMs: Long): String=NSDateFormatter().apply { dateFormat="HH:mm" }.stringFromDate(NSDate(timeIntervalSince1970=epochMs/1000.0))
+actual fun liveTvNow(): Long=(NSDate().timeIntervalSince1970*1000.0).toLong()
+actual fun liveTvTimeLabel(epochMs: Long): String=NSDateFormatter().apply { dateFormat="HH:mm" }.stringFromDate(NSDate.dateWithTimeIntervalSince1970(epochMs/1000.0))
 private val liveHttp=HttpClient(Darwin) {
     followRedirects=false; expectSuccess=false
     install(HttpTimeout) { connectTimeoutMillis=15_000; socketTimeoutMillis=120_000; requestTimeoutMillis=120_000 }
@@ -44,11 +44,11 @@ internal fun gunzipLiveTv(input: ByteArray): ByteArray {
     if(input.size<2 || input[0]!=0x1f.toByte() || input[1]!=0x8b.toByte()) return input
     return memScoped {
         val stream=alloc<z_stream>(); platform.posix.memset(stream.ptr,0,sizeOf<z_stream>().toULong())
-        check(inflateInit2_(stream.ptr,31,zlibVersion(),sizeOf<z_stream>().toInt())==Z_OK)
+        check(inflateInit2_(stream.ptr,31,zlibVersion()?.toKString(),sizeOf<z_stream>().toInt())==Z_OK)
         try {
             input.usePinned { pinned ->
                 stream.next_in=pinned.addressOf(0).reinterpret(); stream.avail_in=input.size.toUInt()
-                val chunks=mutableListOf<ByteArray>(); var total=0; var status: Int
+                val chunks=mutableListOf<ByteArray>(); var total=0; var status: Int = Z_OK
                 do {
                     val chunk=ByteArray(64*1024)
                     chunk.usePinned { output ->

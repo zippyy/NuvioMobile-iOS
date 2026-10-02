@@ -1,6 +1,7 @@
 package com.nuvio.app.features.artwork
 
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.graphics.painter.Painter
@@ -12,7 +13,7 @@ import com.nuvio.app.features.profiles.ProfileRepository
 import com.nuvio.app.features.watchprogress.ContinueWatchingItem
 
 @Composable fun rememberArtworkRevision(): Long {
-    val profile by ProfileRepository.uiState.collectAsState()
+    val profile by ProfileRepository.state.collectAsState()
     val revision by ArtworkRepository.store.revision.collectAsState()
     return revision + (profile.activeProfile?.profileIndex ?: ProfileRepository.activeProfileId).toLong()
 }
@@ -37,6 +38,7 @@ fun ContinueWatchingItem.withArtwork(): ContinueWatchingItem = copy(
 fun ArtworkAsyncImage(
     model: Any?, contentDescription: String?, modifier: Modifier = Modifier,
     contentScale: ContentScale = ContentScale.Fit,
+    alignment: Alignment = Alignment.Center,
     placeholder: Painter? = null, error: Painter? = null, fallback: Painter? = error,
     onSuccess: ((AsyncImagePainter.State.Success) -> Unit)? = null,
     onError: ((AsyncImagePainter.State.Error) -> Unit)? = null,
@@ -45,7 +47,7 @@ fun ArtworkAsyncImage(
     val original = (model as? String)?.let { ArtworkFallbacks.original(it) }
     AsyncImage(
         model = if (failed && original != null) original else model,
-        contentDescription = contentDescription, modifier = modifier, contentScale = contentScale,
+        contentDescription = contentDescription, modifier = modifier, contentScale = contentScale, alignment = alignment,
         placeholder = placeholder, error = error, fallback = fallback,
         onSuccess = onSuccess,
         onError = { state -> if (!failed && original != null) failed = true else onError?.invoke(state) },
