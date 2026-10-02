@@ -79,10 +79,31 @@ jobs:
           echo "Nuvio Engine Apple XCFramework installed"
 
       - name: Generate local.properties
+        env:
+          NUVIO_SUPABASE_URL: ${{ secrets.NUVIO_SUPABASE_URL || secrets.SUPABASE_URL }}
+          NUVIO_SUPABASE_ANON_KEY: ${{ secrets.NUVIO_SUPABASE_ANON_KEY || secrets.SUPABASE_ANON_KEY }}
+          NUVIO_SUPABASE_FALLBACK_URL: ${{ secrets.NUVIO_SUPABASE_FALLBACK_URL || secrets.SUPABASE_FALLBACK_URL }}
         run: |
-          cat << 'EOF' > local.properties
-          SUPABASE_URL=${{ secrets.SUPABASE_URL }}
-          SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}
+          set -euo pipefail
+          python3 - <<'PY'
+          import os
+          from pathlib import Path
+          from urllib.parse import urlsplit
+
+          required = ('NUVIO_SUPABASE_URL', 'NUVIO_SUPABASE_ANON_KEY')
+          missing = [name for name in required if not os.environ.get(name, '').strip()]
+          if missing:
+              raise SystemExit('::error::Missing Nuvio account configuration: ' + ', '.join(missing) + '. Configure the matching repository Actions secrets (legacy SUPABASE_URL / SUPABASE_ANON_KEY are also accepted).')
+          url = urlsplit(os.environ['NUVIO_SUPABASE_URL'].strip())
+          if url.scheme != 'https' or not url.hostname:
+              raise SystemExit('::error::NUVIO_SUPABASE_URL must be a valid HTTPS account-service URL')
+          values = {name: os.environ.get(name, '').strip() for name in required + ('NUVIO_SUPABASE_FALLBACK_URL',)}
+          if any('\n' in value or '\r' in value for value in values.values()):
+              raise SystemExit('::error::Nuvio account configuration must be single-line values')
+          Path('local.properties').write_text(''.join(f'{name}={value}\n' for name, value in values.items()))
+          print('Nuvio account configuration is present; values are not logged.')
+          PY
+          cat << 'EOF' >> local.properties
           TRAKT_CLIENT_ID=${{ secrets.TRAKT_CLIENT_ID }}
           TRAKT_CLIENT_SECRET=${{ secrets.TRAKT_CLIENT_SECRET }}
           TRAKT_REDIRECT_URI=${{ secrets.TRAKT_REDIRECT_URI }}

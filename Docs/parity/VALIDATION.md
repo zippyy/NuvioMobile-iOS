@@ -1,5 +1,9 @@
 # Native build and parity validation
 
+## Account sign-in configuration correction
+
+After the repaired IPA installed, the owner reported Nuvio account sign-in failing. The workflow generated `SUPABASE_URL` / `SUPABASE_ANON_KEY`, while `generateRuntimeConfigs` consumes `NUVIO_SUPABASE_URL` / `NUVIO_SUPABASE_ANON_KEY`. Those legacy property names therefore produced empty runtime auth constants even if matching Actions secrets existed. CI now writes the exact consumed names, accepting either prefixed or legacy repository secret names, and refuses to build when the required account-service configuration is absent or the URL is not HTTPS. Values are not logged. Configuration-generation and missing-config failure paths are checked with noncredential fixtures. Actual sign-in must be tested with the rebuilt IPA and the existing Nuvio account-service configuration; compilation is not an auth acceptance test.
+
 ## Sideload packaging correction
 
 The green build at `ff24f917` produced an archive with 27 unused MPVKit dummy frameworks embedded by Xcode. Each declared `MinimumOSVersion=100.0`; each device Mach-O slice also declared iOS 100.0 and had no symbols or exports. The app and widget load only system libraries, so none of these stubs is a runtime dependency. The user reported Feather and KSign hanging at installation. ZIP integrity alone did not catch this invalid embedded-bundle metadata and was insufficient installation evidence.
